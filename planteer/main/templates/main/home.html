@@ -1,0 +1,51 @@
+{% extends 'main/base.html' %}
+
+{% block title %}Home - Planteer{% endblock %}
+
+{% block content %}
+
+<section class="hero hero-with-bg">
+    <div class="hero-content">
+        <div class="hero-text-title">Planteer</div>
+        <div class="hero-text-subtitle">Plant Database For Plants Lovers</div>
+        <div class="hero-search-box">
+            <form class="hero-search-form" action="{% url 'plants:plant_search' %}" method="get">
+                <input type="text" name="q" placeholder="Search For Plant...">
+                <button type="submit">Search</button>
+            </form>
+        </div>
+    </div>
+</section>
+
+<section class="plants-section">
+    <div class="section-header">
+        <div class="section-header-left">
+            <h2>Plants</h2>
+            <p>Learn more about plants</p>
+        </div>
+        <div class="section-header-right">
+            <a href="{% url 'plants:plant_list' %}">More</a>
+        </div>
+    </div>
+
+    <div class="plants-grid">
+        {% for plant in latest_plants %}
+            <a href="{% url 'plants:plant_detail' plant.id %}" class="plant-card">
+                <div class="plant-card-image">
+                    {% if plant.image %}
+                        <img src="{{ plant.image.url }}" alt="{{ plant.name }}">
+                    {% endif %}
+                </div>
+                <div class="plant-card-body">
+                    <div class="plant-card-name">{{ plant.name }}</div>
+                    <div class="plant-card-brief">Brief about plant</div>
+                    <div class="plant-card-category">{{ plant.category|title }}</div>
+                </div>
+            </a>
+        {% empty %}
+            <p>No plants yet.</p>
+        {% endfor %}
+    </div>
+</section>
+
+{% endblock %}

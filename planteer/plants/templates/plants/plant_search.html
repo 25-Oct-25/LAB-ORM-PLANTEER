@@ -1,0 +1,65 @@
+{% extends 'main/base.html' %}
+
+{% block title %}Search - Planteer{% endblock %}
+
+{% block content %}
+
+<h1 class="page-title">Search</h1>
+
+<div class="search-box-page">
+    <form class="search-form" method="get">
+        <!-- بحث نصي -->
+        <input type="text" name="q" placeholder="Search by name or description..."
+               value="{{ query }}">
+
+        <!-- اختيار الكاتيقوري -->
+        <select name="category">
+            <option value="">All categories</option>
+            {% for value,label in categories %}
+                <option value="{{ value }}"
+                        {% if value == selected_category %}selected{% endif %}>
+                    {{ label }}
+                </option>
+            {% endfor %}
+        </select>
+
+        <!-- فلتر الأكل -->
+        <select name="edible">
+            <option value="">All types</option>
+            <option value="yes" {% if selected_edible == 'yes' %}selected{% endif %}>Edible</option>
+            <option value="no" {% if selected_edible == 'no' %}selected{% endif %}>Not edible</option>
+        </select>
+
+        <button type="submit">Search</button>
+    </form>
+</div>
+
+<div class="plants-grid">
+    {% for plant in results %}
+        <a href="{% url 'plants:plant_detail' plant.id %}" class="plant-card">
+            <div class="plant-card-image">
+                {% if plant.image %}
+                    <img src="{{ plant.image.url }}" alt="{{ plant.name }}">
+                {% endif %}
+            </div>
+            <div class="plant-card-body">
+                <div class="plant-card-name">{{ plant.name }}</div>
+                <div class="plant-card-brief">
+                    <p>{{ plant.description }}</p>
+                </div>
+                <div class="plant-card-category">
+                    {{ plant.category|title }}
+                    {% if plant.is_edible %}
+                        · Edible
+                    {% else %}
+                        · Not edible
+                    {% endif %}
+                </div>
+            </div>
+        </a>
+    {% empty %}
+        <p>No results.</p>
+    {% endfor %}
+</div>
+
+{% endblock %}

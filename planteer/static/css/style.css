@@ -1,0 +1,806 @@
+/* ========== Base ========== */
+
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+}
+
+html, body {
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    background-color: #ffffff;
+    color: #111827;
+}
+
+a {
+    color: inherit;
+    text-decoration: none;
+}
+
+img {
+    max-width: 100%;
+    display: block;
+}
+
+.page {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+.site-main {
+    flex: 1 0 auto;
+}
+
+.container {
+    width: 100%;
+    margin: 0 auto;
+    padding: 0 32px;
+}
+
+/* ========== Header / Navbar ========== */
+
+.site-header {
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    background-color: #ffffff;
+    border-bottom: 1px solid #e5e7eb;
+}
+
+.header-inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 72px;
+}
+
+.logo a {
+    font-weight: 600;
+    font-size: 20px;
+}
+
+.main-nav {
+    display: flex;
+    align-items: center;
+    gap: 24px;
+    font-size: 14px;
+}
+
+.main-nav a {
+    padding: 6px 0;
+}
+
+.main-nav a:not(.btn-primary):hover {
+    color: #111111;
+    text-decoration: underline;
+}
+
+.btn-primary {
+    padding: 30px 20px;
+    border-radius: 10px;
+    background-color: #000;
+    color: #fff !important;
+    font-size: 13px;
+    font-weight: 500;
+}
+
+.btn-primary:hover {
+    opacity: 0.9;
+}
+
+.btn-outline {
+    padding: 8px 18px;
+    border-radius: 999px;
+    border: 1px solid #111111;
+    background: transparent;
+    font-size: 13px;
+    cursor: pointer;
+    transition: all 0.2s ease; /* تحسين زر الـOutline */
+}
+
+/* ========== Hero Section (Home) ========== */
+.hero {
+    margin-top: 40px;
+    padding: 0 32px;
+    border-radius: 24px;
+    background-color: #f6f6ff;
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 600px;
+}
+
+.hero-with-bg {
+    background-image: url("https://images.pexels.com/photos/1470171/pexels-photo-1470171.jpeg");
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+}
+
+.hero-content {
+    width: 100%;
+    max-width: 600px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    background-color: rgba(255, 255, 255, 0.4);
+    backdrop-filter: blur(2px);
+    padding: 30px;
+    border-radius: 16px;
+    text-align: center;
+}
+
+.hero-text-title {
+    font-size: 40px;
+    font-weight: 700;
+    margin-bottom: 8px;
+}
+
+.hero-text-subtitle {
+    font-size: 20px;
+    font-weight: 500;
+    margin-bottom: 24px;
+}
+
+.hero-search-box {
+    margin-top: 12px;
+    max-width: 420px;
+    width: 100%;
+}
+
+.hero-search-form {
+    display: flex;
+    gap: 12px;
+    width: 100%;
+}
+
+.hero-search-form input[type="text"] {
+    flex: 1;
+    padding: 10px 12px;
+    border-radius: 999px;
+    border: 1px solid #d1d5db;
+    font-size: 14px;
+    outline: none;
+}
+
+.hero-search-form button {
+    padding: 10px 18px;
+    border-radius: 999px;
+    border: none;
+    background-color: #111111;
+    color: #ffffff;
+    font-size: 13px;
+    cursor: pointer;
+}
+
+.hero-search-form button:hover {
+    opacity: 0.9;
+}
+
+.hero-media {
+    position: relative;
+    min-height: 220px;
+    border-radius: 16px;
+    overflow: hidden;
+    background-color: #e5e7eb;
+    display: none;
+}
+
+.hero-media img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+/* ========== Section Header (Plants / Search) ========== */
+
+.section-header {
+    margin-top: 40px;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+}
+
+.section-header-left h2 {
+    font-size: 22px;
+    font-weight: 600;
+    margin: 0 0 4px;
+}
+
+.section-header-left p {
+    margin: 0;
+    color: #6b7280;
+    font-size: 14px;
+}
+
+.section-header-right a {
+    font-size: 13px;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    color: #111111;
+}
+
+.section-header-right a::after {
+    content: "→";
+    font-size: 14px;
+}
+
+/* ========== Plant Cards Grid ========== */
+
+.plants-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 20px;
+}
+
+.plant-card {
+    background-color: #f9fafb;
+    border-radius: 14px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    /* إضافة حركات التحول */
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    border: 1px solid transparent;
+}
+
+.plant-card:hover {
+    /* رفع البطاقة قليلاً عند المرور عليها */
+    transform: translateY(-5px);
+    /* إضافة ظل خفيف */
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+    border-color: #d1d5db; 
+}
+
+.plant-card-image {
+    width: 100%;
+    padding-top: 65%;
+    position: relative;
+    background-color: #e5e7eb;
+}
+
+.plant-card-image img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.plant-card-body {
+    padding: 14px 14px 16px;
+}
+
+.plant-card-name {
+    font-size: 14px;
+    font-weight: 500;
+    margin-bottom: 2px;
+}
+
+.plant-card-brief {
+    font-size: 12px;
+    color: #6b7280;
+    margin-bottom: 4px;
+}
+
+.plant-card-category {
+    font-size: 12px;
+    font-weight: 500;
+}
+
+/* ========== All Plants page ========== */
+
+.page-title {
+    font-size: 24px;
+    font-weight: 600;
+    margin-top: 32px;
+    margin-bottom: 24px;
+}
+
+/* ========== Detail Page ========== */
+
+.plant-detail {
+    margin-top: 40px;
+}
+
+.plant-detail-main {
+    display: grid;
+    grid-template-columns: minmax(0, 2.3fr) minmax(0, 2.2fr);
+    gap: 40px;
+}
+
+.plant-detail-image {
+    border-radius: 16px;
+    overflow: hidden;
+    background-color: #e5e7eb;
+    max-height: 450px;
+}
+
+.plant-detail-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+/* تنسيق قسم الأزرار والعنوان */
+.plant-actions-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 15px;
+}
+
+.plant-actions {
+    display: flex;
+    gap: 10px;
+}
+
+.plant-detail-info-title {
+    font-size: 26px;
+    font-weight: 600;
+    margin-bottom: 8px;
+}
+
+.plant-actions .btn-delete {
+    padding: 8px 18px;
+    border-radius: 999px;
+    border: 1px solid #dc2626; /* لون أحمر للحذف */
+    background: transparent;
+    color: #dc2626;
+    font-size: 13px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.plant-actions .btn-delete:hover {
+    background-color: #fee2e2;
+    transform: translateY(-1px);
+}
+
+.plant-actions .btn-outline:hover {
+    background-color: #f3f4f6;
+    transform: translateY(-1px);
+}
+
+.plant-detail-category {
+    font-size: 13px;
+    color: #6b7280;
+    margin-bottom: 16px;
+}
+
+.plant-detail-meta {
+    font-size: 14px;
+    line-height: 1.7;
+    /* تحسين التباعد بين فقرات البيانات الوصفية */
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding: 15px 0;
+    border-top: 1px dashed #e5e7eb; 
+    margin-top: 15px;
+}
+
+.plant-detail-meta-label {
+    font-weight: 600;
+    color: #374151;
+    display: inline-block;
+    min-width: 100px;
+}
+
+/* Related plants section */
+
+.related-section {
+    margin-top: 40px;
+}
+
+.related-section h3 {
+    font-size: 18px;
+    font-weight: 500;
+    margin-bottom: 16px;
+}
+
+/* ========== Search Page ========== */
+
+.search-box-page {
+    margin-top: 32px;
+    margin-bottom: 24px;
+}
+
+.search-box-page .search-form {
+    display: flex;
+    gap: 12px;
+}
+
+.search-form input[type="text"] {
+    flex: 1;
+    padding: 10px 12px;
+    border-radius: 999px;
+    border: 1px solid #d1d5db;
+    font-size: 14px;
+    outline: none;
+}
+
+.search-form button {
+    padding: 10px 18px;
+    border-radius: 999px;
+    border: none;
+    background-color: #111111;
+    color: #ffffff;
+    font-size: 13px;
+    cursor: pointer;
+}
+
+/* ========== Contact Page ========== */
+
+.contact-page {
+    margin-top: 40px;
+    display: grid;
+    grid-template-columns: minmax(0, 3fr) minmax(0, 2fr); 
+    gap: 40px;
+}
+
+.contact-heading {
+    font-size: 28px;
+    font-weight: 600;
+    margin-bottom: 4px;
+    color: #1f2937;
+}
+
+.contact-subheading {
+    font-size: 14px;
+    color: #6b7280;
+    margin-bottom: 20px;
+}
+
+.contact-form-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 16px 20px;
+}
+
+.contact-form-grid .full-width {
+    grid-column: 1 / -1;
+}
+
+.form-label {
+    font-size: 13px;
+    margin-bottom: 4px;
+    display: block;
+}
+
+.form-input,
+.form-textarea {
+    width: 100%;
+    padding: 9px 11px;
+    border-radius: 10px;
+    border: 1px solid #d1d5db;
+    font-size: 14px;
+    outline: none;
+}
+
+.form-textarea {
+    min-height: 120px;
+    resize: vertical;
+}
+
+.contact-submit {
+    margin-top: 20px;
+}
+
+.contact-submit button {
+    width: 120px;
+    padding: 10px 0;
+    border-radius: 999px;
+    border: none;
+    background-color: #111827; /* لون متناسق مع زر الحفظ */
+    color: #ffffff;
+    font-size: 14px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.contact-submit button:hover {
+    background-color: #374151;
+}
+
+.contact-image {
+    border-radius: 18px;
+    overflow: hidden;
+    background-color: #e5e7eb;
+    height: 100%; 
+}
+
+.contact-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+/* ========== Messages Page ========== */
+
+.messages-page {
+    margin-top: 40px;
+}
+
+.messages-title {
+    font-size: 26px;
+    font-weight: 600;
+    margin-bottom: 24px;
+}
+
+.messages-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 24px;
+}
+
+.message-card {
+    padding: 16px 18px;
+    border-radius: 18px;
+    border: 1px solid #e5e7eb;
+    background-color: #ffffff;
+}
+
+.message-icon {
+    font-size: 20px;
+    margin-bottom: 8px;
+}
+
+.message-name {
+    font-size: 14px;
+    font-weight: 600;
+    margin-bottom: 2px;
+}
+
+.message-email {
+    font-size: 13px;
+    color: #6b7280;
+    margin-bottom: 8px;
+}
+
+.message-body {
+    font-size: 13px;
+    color: #4b5563;
+}
+
+/* ========== Footer ========== */
+
+.site-footer {
+    border-top: 1px solid #e5e7eb;
+    padding: 28px 0 36px;
+    margin-top: 40px;
+    flex-shrink: 0;
+}
+
+.footer-inner {
+    display: flex;
+    justify-content: space-between;
+    gap: 40px;
+    font-size: 12px;
+    color: #6b7280;
+}
+
+.footer-left {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.footer-sitename {
+    font-size: 13px;
+}
+
+.footer-social {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+.footer-social a {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.social-icon {
+    width: 18px;
+    height: 18px;
+    opacity: 0.8;
+    transition: 0.2s;
+}
+
+.social-icon:hover {
+    opacity: 1;
+    transform: scale(1.1);
+}
+
+.footer-social i {
+    font-size: 28px;
+    color: #4b5563;
+    margin-right: 12px;
+    transition: 0.2s;
+}
+
+.footer-social a:hover i {
+    color: #000;
+    transform: scale(1.15);
+}
+
+
+.footer-columns {
+    display: flex;
+    gap: 32px;
+}
+
+.footer-col {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.footer-topic {
+    font-weight: 500;
+    color: #111827;
+    margin-bottom: 6px;
+}
+
+/* ========== Plant Form Page ========== */
+
+.plant-form-page {
+    margin-top: 40px;
+    max-width: 640px;
+}
+
+.plant-form {
+    padding: 24px 22px 26px;
+    border-radius: 18px;
+    border: 1px solid #e5e7eb;
+    background-color: #ffffff;
+    box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.05); 
+}
+
+.form-group {
+    margin-bottom: 16px;
+}
+
+.form-group .form-label {
+    font-size: 13px;
+    margin-bottom: 4px;
+    display: block;
+}
+
+.plant-form input[type="text"],
+.plant-form select,
+.plant-form textarea,
+.plant-form input[type="file"] {
+    border: 1px dashed #d1d5db;
+    background-color: #f9fafb;
+}
+
+.plant-form textarea {
+    min-height: 120px;
+    resize: vertical;
+}
+
+.checkbox-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.plant-form-actions {
+    margin-top: 20px;
+    display: flex;
+    gap: 10px;
+    align-items: center; 
+}
+
+.form-input {
+    width: 100%;
+    padding: 9px 11px;
+    border-radius: 10px;
+    border: 1px solid #d1d5db;
+    font-size: 14px;
+    outline: none;
+}
+
+.plant-form-actions .btn {
+    padding: 10px 20px;
+    border-radius: 999px;
+    background-color: #111827;
+    color: #ffffff;
+    border: 1px solid #111827;
+    font-size: 14px;
+    transition: background-color 0.2s;
+}
+
+.plant-form-actions .btn:hover {
+    background-color: #374151;
+}
+
+.plant-form-actions .btn-outline:hover {
+    background-color: #f3f4f6;
+    transform: none;
+}
+
+.form-textarea {
+    width: 100%;
+    padding: 9px 11px;
+    border-radius: 10px;
+    border: 1px solid #d1d5db;
+    font-size: 14px;
+    outline: none;
+    min-height: 120px;
+    resize: vertical;
+}
+
+/* ========== Media Queries (للاستجابة) ========== */
+
+@media (max-width: 900px) {
+    .hero {
+        padding: 28px 20px;
+    }
+
+    .plant-detail-main {
+        grid-template-columns: 1fr;
+    }
+    
+    .contact-page {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 800px) {
+    .messages-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+
+@media (max-width: 700px) {
+    .footer-inner {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+}
+
+@media (max-width: 600px) {
+    .plants-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .hero-text-title {
+        font-size: 32px;
+    }
+    
+    /* جعل شريط البحث عمودياً في الجوال */
+    .hero-search-form {
+        flex-direction: column; 
+        gap: 8px;
+    }
+
+    .hero-search-form button {
+        width: 100%; 
+    }
+}
+
+.search-form select {
+    padding: 10px 12px;
+    border-radius: 999px;
+    border: 1px solid #d1d5db;
+    font-size: 14px;
+    outline: none;
+    background-color: #fff;
+}

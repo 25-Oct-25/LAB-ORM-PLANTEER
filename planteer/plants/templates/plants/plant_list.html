@@ -1,0 +1,28 @@
+{% extends 'main/base.html' %}
+
+{% block title %}All Plants - Planteer{% endblock %}
+
+{% block content %}
+
+<h1 class="page-title">All Plants</h1>
+
+<div class="plants-grid">
+    {% for plant in plants %}
+        <a href="{% url 'plants:plant_detail' plant.id %}" class="plant-card">
+            <div class="plant-card-image">
+                {% if plant.image %}
+                    <img src="{{ plant.image.url }}" alt="{{ plant.name }}">
+                {% endif %}
+            </div>
+            <div class="plant-card-body">
+                <div class="plant-card-name">{{ plant.name }}</div>
+                <div class="plant-card-brief"><p>{{ plant.description }}</p></div>
+                <div class="plant-card-category">{{ plant.category|title }}</div>
+            </div>
+        </a>
+    {% empty %}
+        <p>No plants found.</p>
+    {% endfor %}
+</div>
+
+{% endblock %}
