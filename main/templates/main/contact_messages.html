@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% block title %}Messages{% endblock %}
+{% block content %}
+<h1>Messages from users</h1>
+<ul>
+  {% for msg in messages %}
+    <li>
+      <strong>{{ msg.first_name }} {{ msg.last_name }}</strong>
+      ({{ msg.email }})<br>
+      {{ msg.message }}
+    </li>
+  {% empty %}
+    <li>No messages yet.</li>
+  {% endfor %}
+</ul>
+{% endblock %}

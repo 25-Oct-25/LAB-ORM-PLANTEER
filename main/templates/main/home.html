@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+{% load static %} 
+{% block title %}Home - Planeteer{% endblock %}
+{% block content %}
+
+
+<!-- Hero section   -->
+<section class="hero">
+  <div>
+    <h1 class="hero-title">Planeteer</h1>
+    <p class="hero-subtitle">
+      Plant database for plant lovers. Discover indoor, outdoor and edible plants, all in one place.
+    </p>
+
+    <div class="hero-actions">
+      <a href="{% url 'plants:all' %}" class="btn btn-primary">Browse all plants</a>
+      <a href="{% url 'plants:new' %}" class="btn btn-outline">Add a new plant</a>
+    </div>
+  </div>
+
+  
+  <div class="hero-image"></div>
+</section>
+
+<!--  plants section -->
+<section>
+  <div class="section-header">
+    <h2 class="section-title">Latest plants</h2>
+    <span class="section-sub">Recently added entries</span>
+  </div>
+
+  <div class="plant-grid">
+    {% for plant in latest_plants %}
+      <article class="plant-card">
+        {% if plant.image %}
+          <img src="{{ plant.image.url }}" alt="{{ plant.name }}">
+        {% endif %}
+        <div class="plant-card-body">
+          <h3 class="plant-card-name">{{ plant.name }}</h3>
+          <p class="plant-card-meta">
+            {{ plant.category|title }} ·
+            {% if plant.is_edible %}Edible{% else %}Not edible{% endif %}
+          </p>
+          <a href="{% url 'plants:detail' plant.id %}" class="plant-card-link">
+            View details →
+          </a>
+        </div>
+      </article>
+    {% empty %}
+      <p>No plants yet. Start by adding a new plant.</p>
+    {% endfor %}
+  </div>
+</section>
+
+{% endblock %}
