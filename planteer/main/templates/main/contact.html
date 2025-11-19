@@ -1,0 +1,43 @@
+{% extends 'main/base.html' %}
+
+{% block title %}Contact Us - Planteer{% endblock %}
+
+{% block content %}
+
+<section class="contact-page">
+    <div>
+        <div class="contact-heading">Contact us</div>
+        <div class="contact-subheading">
+            Subheading for description or instructions
+        </div>
+
+        <form method="post">
+            {% csrf_token %}
+            <div class="contact-form-grid">
+              <div>
+                  <label class="form-label">Full name</label>
+                  {{ form.full_name }}
+              </div>
+              <div class="full-width">
+                  <label class="form-label">Email address</label>
+                  {{ form.email }}
+              </div>
+              <div class="full-width">
+                  <label class="form-label">Your message</label>
+                  {{ form.message }}
+              </div>
+            </div>
+
+
+            <div class="contact-submit">
+                <button type="submit">Submit</button>
+            </div>
+        </form>
+    </div>
+
+    <div class="contact-image">
+        <img src="https://images.pexels.com/photos/593655/pexels-photo-593655.jpeg" alt="contact">
+    </div>
+</section>
+
+{% endblock %}
