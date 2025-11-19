@@ -1,0 +1,19 @@
+*{
+    box-sizing: border-box;
+    font-family: "Ubuntu", sans-serif;
+}
+
+.page{
+    padding: 3rem;
+}
+
+.card {
+    height: 360px;
+    overflow: hidden; /* لو النص طويل ما يخرب الارتفاع */
+}
+/* للصور */
+.card-img-top {
+    height: 200px;
+    object-fit: cover;
+    width: 100%;
+}

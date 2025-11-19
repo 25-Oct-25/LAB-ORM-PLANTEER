@@ -1,0 +1,73 @@
+{% extends "main/base.html" %}
+{% load static %}
+
+{% block title %}All Plants{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="row ">
+        <div class="col-lg-4 col-md-4">
+           <h2 class=" my-4"> {{request.GET.category}} Plants</h2>
+        </div>
+         <div class="col-lg-8 col-md-8  mb-md-3 mb-sm-3  mt-2  d-flex justify-content-end">
+  <form action="{% url 'plant:all_plants_view' %}" method="GET" class="my-3">
+    <div class="row">
+        <div class="col-lg-4 col-md-12 mb-md-3 mb-sm-3 col-sm-12"><div class="input-group ">
+      <label class="input-group-text" for="category">Category</label>
+      <select name="category" id="category" class="form-select">
+        <option value="all" {% if request.GET.category == 'all' %} selected {% endif %}>All</option>
+        <option value="fruits" {% if request.GET.category == 'fruits' %} selected {% endif %}>Fruits</option>
+        <option value="vegetables" {% if request.GET.category == 'vegetables' %} selected {% endif %}>Vegetables</option>
+        <option value="flowers" {% if request.GET.category == 'flowers' %} selected {% endif %}>Flowers</option>
+      </select>
+    </div>
+
+   </div>
+        <div class="col-lg-4 col-md-12 col-sm-12 mb-md-3 mb-sm-3">
+             <div class="input-group">
+      <label class="input-group-text" for="is_edible">Edibility</label>
+      <select name="is_edible" id="is_edible" class="form-select">
+        <option value="true" {% if request.GET.is_edible == 'true' %} selected {% endif %}>Yes</option>
+        <option value="false" {% if request.GET.is_edible == 'false' %} selected {% endif %}>No</option>
+      </select>
+    </div>
+        </div>
+        <div class="col-lg-3 col-md-12 col-sm-12 d-flex justify-content-center">
+      <button type="submit" class="btn btn-primary px-5 ">Apply</button>
+    </div>
+    </div>
+
+    
+  </form>
+</div>
+
+
+        </div>
+    </div>
+    <div class="row">
+       
+         {% if plants %}
+            {% for plant in plants %}
+                <div class="col-lg-4 col-md-6 col-sm-12 my-3">
+                    <a href="{% url 'plant:plant_detail_view' plant.id %}" style="text-decoration: none;">
+                  <div class="card mx-auto shadow-sm" style="width: 18rem; cursor: pointer;">
+                      <img src="{{ plant.image.url }}" class="card-img-top" alt="{{ plant.name }}">
+                      <div class="card-body">
+                          <h5 class="card-title">{{ plant.name }}</h5>
+                          <p class="card-text">
+                              <strong>About:</strong> {{ plant.about }}<br>
+                              <strong>Category:</strong> {{ plant.category }}<br>
+                          </p>
+                      </div>
+                  </div>
+              </a>
+
+                </div>
+            {% endfor %}
+        {% else %}
+            <p class="text-center mt-4">No plants to display.</p>
+        {% endif %}
+    </div>
+</div>
+
+{% endblock %}

@@ -1,0 +1,54 @@
+{% extends "main/base.html" %}
+{% load static %}
+
+{% block content %}
+<div class="container mt-5">
+    <h2 class="mb-4">Create New Plant</h2>
+                 <form action="{% url 'plant:create_plant_view' %}" method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+
+        <div class="mb-3">
+            <label for="name" class="form-label">Plant Name</label>
+            <input type="text" class="form-control" id="name" name="name" required>
+        </div>
+
+        <div class="mb-3">
+            <label for="about" class="form-label">About</label>
+            <textarea class="form-control" id="about" name="about" rows="3" required></textarea>
+        </div>
+
+        <div class="mb-3">
+            <label for="used_for" class="form-label">Used For</label>
+            <textarea class="form-control" id="used_for" name="used_for" rows="3"></textarea>
+        </div>
+
+        <div class="mb-3">
+    <label class="form-label">Category</label><br>
+
+   {% for value, label in CategoryChoices %}
+    <div class="form-check">
+        <input class="form-check-input" type="radio" name="category" id="{{value}}" value="{{value}}" required>
+        <label class="form-check-label" for="{{value}}">
+            {{label}}
+        </label>
+    </div>
+            {% endfor %}
+
+        </div>
+
+
+
+        <div class="mb-3 form-check">
+            <input type="checkbox" class="form-check-input" id="is_edible" name="is_edible">
+            <label class="form-check-label" for="is_edible">Is Edible</label>
+        </div>
+
+        <div class="mb-3">
+            <label for="image" class="form-label">Plant Image</label>
+            <input class="form-control" type="file" id="image" name="image" required>
+        </div>
+
+        <button type="submit" class="btn btn-success">Create Plant</button>
+    </form>
+</div>
+{% endblock %}

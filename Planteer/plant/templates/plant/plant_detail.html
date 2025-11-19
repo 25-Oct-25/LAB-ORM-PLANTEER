@@ -1,0 +1,99 @@
+{% extends "main/base.html" %}
+{% load static %}
+
+{% block title %}{{ plant.name }}{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="row">
+
+
+        <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h1 class="modal-title fs-5" id="exampleModalLabel">Delete Post</h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        Are You sure you want to delete {{plant.name}} ?
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <a href="{% url 'plant:plant_delete_view' plant.id %}" class="btn btn-danger">delete</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container mt-5">
+        <div class="row align-items-center">
+
+            <div class="col-6 ">
+                <img src="{{ plant.image.url }}" alt="{{ plant.name }}" class="img-fluid rounded shadow-sm">
+            </div>
+
+            <!-- Plant Details -->
+            <div class="col-6 mt-4 ">
+                <h2 class="fw-bold">{{ plant.name }}</h2>
+                <h5 class="text-muted">{{ plant.get_category_display }}</h5>
+                <p class="text-muted mt-3">{{ plant.about }}</p>
+                <p>
+                    <strong>Is Edible:</strong>
+                    {% if plant.is_edible %}
+                    <span class="badge bg-success">Yes</span>
+                    {% else %}
+                    <span class="badge bg-danger">No</span>
+                    {% endif %}
+
+                </p>
+
+                <strong>
+                    <p>Used For:<br>
+                        {{ plant.used_for }}
+                    </p>
+                </strong>
+
+                <small class="text-muted d-block mt-3">Added on: {{ plant.created_at|date:"F d, Y" }}</small>
+
+                <div class="d-flex justify-content-center my-3">
+                    <button type="button" class="btn btn-danger" data-bs-toggle="modal"
+                        data-bs-target="#exampleModal">Delete</button>
+                    <a href="{% url 'plant:plant_update_view' plant.id %}" class="btn btn-success mx-2">Update</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container">
+        <h2 class="text-center my-4">All Plants</h2>
+        <div class="row">
+
+            {% if plants %}
+            {% for plant in plants %}
+            <div class="col-lg-4 col-md-6 col-sm-12 my-3">
+                <a href="{% url 'plant:plant_detail_view' plant.id %}" style="text-decoration: none;">
+                    <div class="card mx-auto shadow-sm" style="width: 18rem; cursor: pointer;">
+                        <img src="{{ plant.image.url }}" class="card-img-top" alt="{{ plant.name }}">
+                        <div class="card-body">
+                            <h5 class="card-title">{{ plant.name }}</h5>
+                            <p class="card-text">
+                                <strong>About:</strong> {{ plant.about }}<br>
+                                <strong>Category:</strong> {{ plant.category }}<br>
+                            </p>
+                        </div>
+                    </div>
+                </a>
+
+            </div>
+            {% endfor %}
+            {% else %}
+            <p class="text-center mt-4">No plants to display.</p>
+            {% endif %}
+
+
+
+        </div>
+    </div>
+
+    {% endblock %}
