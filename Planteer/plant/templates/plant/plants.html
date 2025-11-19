@@ -1,0 +1,46 @@
+{% extends 'main/base.html' %}
+{% load static %}
+{% block title %} Add plant{% endblock %}
+
+
+{% block content %}
+
+<div class="d-flex align-items-center justify-content-between mt-5">
+    <h3>All Plants</h3>
+    <div class="d-flex justify-content-end gap-2">
+        <form action="{% url 'plant:all_plants_view' %}" method="GET" class="d-flex gap-2">
+            <select name="category" class="form-control" >
+                <option value="">Category</option>
+                <option value="flowering">Flowering</option>
+                <option value="succulents">Succulents</option>
+                <option value="trees">Trees</option>
+            </select>
+
+            <select name="is_edible" class="form-control">
+                <option value="">Is Edible</option>
+                <option value="True">Edible</option>
+                <option value="False">Not Edible</option>
+            </select>
+            <input type="submit" value="filter" class="btn btn-dark">
+        </form>
+    </div>
+</div>
+<section class="cards mt-5">
+<div class="row  row-cols-1 row-cols-md-3 row-cols-sm-2 row-cols-lg-3 g-4">
+        {% for p in plants %}
+        <div class="col">
+            <a href="{% url 'plant:plant_detail_view' p.id %}" class="text-decoration-none w-100">
+                <div class="card h-100 border-0" style="width: 100%;">
+                    <img src="{{p.image.url}}" class="card-img-top" alt="{{p.name}}">
+                    <div class="card-body">
+                        <p class="card-text fw-bold">{{p.name}}</p>
+                        <p>{{p.used_for}}</p>
+                        <p class="card-text fw-bold">{{p.category}}</p>
+                    </div>
+                </div>
+            </a>
+        </div>
+        {% endfor %}
+    </div>
+</section>
+{%endblock%}
