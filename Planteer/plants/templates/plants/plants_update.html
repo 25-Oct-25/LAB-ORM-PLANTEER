@@ -1,0 +1,62 @@
+{% extends 'main/base.html' %}
+{% load static %}
+
+{% block content %}
+
+<div class="update-wrapper">
+
+    <div class="update-card">
+
+        <h1 class="update-title">Update Plant</h1>
+
+        <form method="POST" enctype="multipart/form-data" class="update-form">
+            {% csrf_token %}
+
+            <div class="form-grid">
+
+                <div class="form-left">
+                    <label>Name</label>
+                    <input type="text" name="name" value="{{ plant.name }}" required>
+
+                    <label>About</label>
+                    <textarea name="about" rows="3">{{ plant.about }}</textarea>
+
+                    <label>Used For</label>
+                    <textarea name="used_for" rows="3">{{ plant.used_for }}</textarea>
+
+                    <label>Category</label>
+                    <select name="category">
+                        <option value="MED" {% if plant.category == "MED" %}selected{% endif %}>Medicinal</option>
+                        <option value="ORN" {% if plant.category == "ORN" %}selected{% endif %}>Ornamental</option>
+                        <option value="ARO" {% if plant.category == "ARO" %}selected{% endif %}>Aromatic</option>
+                        <option value="FRT" {% if plant.category == "FRT" %}selected{% endif %}>Fruit Plants</option>
+                        <option value="TOX" {% if plant.category == "TOX" %}selected{% endif %}>Toxic Plants</option>
+                        <option value="IN" {% if plant.category == "IN" %}selected{% endif %}>Indoor Plants</option>
+                        <option value="OUT" {% if plant.category == "OUT" %}selected{% endif %}>Outdoor Plants</option>
+                    </select>
+
+                    <div class="edible-row">
+                        <span>Edible?</span>
+                        <input type="checkbox" name="is_edible" {% if plant.is_edible %}checked{% endif %}>
+                    </div>
+                </div>
+
+                <div class="form-right">
+                    <p class="current-img-title">Current Image</p>
+                    <img src="{{ plant.image.url }}" class="current-img">
+
+                    <label>Upload New Image</label>
+                    <input type="file" name="image">
+                </div>
+
+            </div> 
+
+            <button type="submit" class="update-btn">Update Plant</button>
+
+        </form>
+
+    </div>
+
+</div>
+
+{% endblock %}
