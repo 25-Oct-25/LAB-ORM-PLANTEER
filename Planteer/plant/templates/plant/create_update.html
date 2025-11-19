@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+{% block title %}{{ title }}{% endblock %}
+
+{% block content %}
+<div style="max-width: 600px; margin: 40px auto; background: #fff; padding: 0;">
+    <h2 class="section-title" style="margin-bottom: 30px;">{{ title }}</h2>
+    
+    <form method="POST" enctype="multipart/form-data" style="display: flex; flex-direction: column; gap: 20px;">
+        {% csrf_token %}
+        
+        {% for field in form %}
+        <div>
+            <label style="display: block; margin-bottom: 5px; font-weight: 600;">{{ field.label }}</label>
+            <div style="border: 1px solid #ddd; padding: 5px; border-radius: 6px;">
+                {{ field }}
+            </div>
+        </div>
+        {% endfor %}
+
+        <button type="submit" class="btn-black" style="margin-top: 10px; cursor: pointer;">Save Plant</button>
+    </form>
+</div>
+{% endblock %}
