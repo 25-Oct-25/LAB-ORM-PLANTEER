@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Search Results{% endblock %}
+
+{% block content %}
+<div class="search_results_container">
+
+  <form method="get" action="{% url 'plants:search_view' %}" class="search_form">
+    <input type="text" name="q" placeholder="Search For Plant..." class="search_input" id="search_bar" />
+    <button type="submit" class="search_button">Search</button>
+  </form>
+
+  <h1 class="search_results_title">Search Results</h1>
+
+  <div class="plants_grid">
+    {% for plant in plants %}
+    <div class="plant_card">
+      <a href="{% url 'plants:plant_details_view' plant.id %}" class="plant_card_link">
+        <img src="{{ plant.image.url }}" alt="{{ plant.name }}" class="plant_image" />
+        <div class="plant_info">
+          <h4 class="plant_name">{{ plant.name }}</h4>
+          <p class="plant_about">{{ plant.about|truncatewords:5 }}</p>
+          <p class="plant_category">{{ plant.get_category_display }}</p>
+        </div>
+      </a>
+    </div>
+    {% empty %}
+    <p>No plants found for your search.</p>
+    {% endfor %}
+  </div>
+
+  <div class="back_button_container">
+    <a href="{% url 'plants:plants_view' %}" class="back_button">Back to All Plants</a>
+  </div>
+</div>
+{% endblock %}

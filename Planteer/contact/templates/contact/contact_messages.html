@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Messages from Users{% endblock %}
+
+{% block content %}
+<section class="max-w-7xl mx-auto py-20 px-6">
+
+    <h1 class="text-4xl font-bold mb-16">Messages from Users</h1>
+
+    <!-- 3-Column Grid -->
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-12">
+        {% for c in contacts %}
+        <div class="space-y-3">
+
+            <span class="material-icons text-gray-600">alternate_email</span>
+
+            <div class="font-semibold">{{ c.first_name }} {{ c.last_name }}</div>
+
+            <a href="mailto:{{ c.email }}" class="text-blue-700 text-sm">{{ c.email }}</a>
+
+            <p class="text-gray-600 text-sm leading-relaxed">
+                {{ c.message }}
+            </p>
+
+        </div>
+        {% endfor %}
+    </div>
+
+</section>
+{% endblock %}

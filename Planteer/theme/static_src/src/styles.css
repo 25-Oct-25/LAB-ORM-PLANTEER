@@ -1,0 +1,500 @@
+@import "tailwindcss";
+
+/**
+  * A catch-all path to Django template files, JavaScript, and Python files
+  * that contain Tailwind CSS classes and will be scanned by Tailwind to generate the final CSS file.
+  *
+  * If your final CSS file is not being updated after code changes, you may want to broaden or narrow
+  * the scope of this path.
+  */
+@source "../../../**/*.{html,py,js}";
+
+/* Navbar (Header) */
+.navbar {
+  @apply w-full bg-white;
+}
+
+.navbar_container {
+  @apply max-w-7xl mx-auto flex items-center justify-between py-4 px-6;
+}
+
+.navbar_brand {
+  @apply font-semibold text-lg text-black hover:text-green-700;
+}
+
+.navbar_links {
+  @apply hidden md:flex items-center gap-6 text-sm;
+}
+
+.navbar_link {
+  @apply hover:text-green-700;
+}
+
+.navbar_btn {
+  @apply text-white px-4 py-2 bg-black rounded hover:bg-green-700 transition;
+}
+
+/* Mobile Menu Button */
+.mobile_menu_btn {
+  @apply md:hidden flex flex-col gap-1 cursor-pointer;
+}
+
+.mobile_menu_bar {
+  @apply w-6 h-[2px] bg-black;
+}
+
+/* Mobile Menu Container (hidden by default) */
+.mobile_menu {
+  @apply flex flex-col gap-4 mt-4 px-6 pb-4 text-sm md:hidden;
+}
+
+.mobile_menu a {
+  @apply hover:text-green-700;
+}
+
+/* Main Content */
+main {
+  @apply min-h-screen;
+}
+
+/* Footer */
+.footer {
+  @apply w-full px-10 py-10 text-sm flex justify-center
+}
+
+.short_border {
+  @apply border-t border-gray-300 mb-10 w-full
+}
+
+.site_name {
+  @apply text-black text-2xl
+}
+
+.grid_r_l {
+  @apply grid grid-cols-1 md:grid-cols-2 gap-10
+}
+
+/* Hero Section */
+.hero_container {
+  @apply relative max-w-7xl mx-auto flex items-center justify-center h-64 md:h-96 mb-16 px-6;
+}
+
+.hero_bg {
+  @apply absolute inset-0 w-full h-full object-cover rounded-lg opacity-30;
+}
+
+.hero_text_container {
+  @apply relative text-center z-10;
+}
+
+.hero_title {
+  @apply text-5xl font-bold text-black;
+}
+
+.hero_subtitle {
+  @apply text-4xl font-semibold text-black mt-2 mb-6;
+}
+
+/* Search Form */
+.search_form {
+  @apply flex justify-center gap-2;
+}
+
+.search_input {
+  @apply  bg-white/80 rounded-l-md border border-gray-300 px-4 py-2 w-60 focus:outline-none focus:ring-2 focus:ring-green-600;
+}
+
+.search_button {
+  @apply bg-black text-white px-4 py-2 rounded-r-md hover:bg-green-700;
+}
+
+/* Plants Section */
+.plants_section {
+  @apply max-w-7xl mx-auto px-6 mb-20;
+}
+
+.plants_header {
+  @apply flex justify-between items-center mb-6;
+}
+
+.plants_right_title {
+  @apply grid-cols-2
+}
+
+.plants_title {
+  @apply text-3xl font-semibold text-black;
+}
+
+.plants_subtitle {
+  @apply text-gray-500
+}
+
+.plants_more_link {
+  @apply text-green-700 hover:underline font-semibold;
+}
+
+.plants_grid {
+  @apply grid grid-cols-1 sm:grid-cols-3 gap-6;
+}
+
+.plant_card {
+  @apply  rounded-lg p-4 flex flex-col;
+}
+
+.plant_image {
+  @apply w-full h-40 object-cover rounded-md ;
+}
+
+.plant_info {
+  @apply flex flex-col gap-1;
+}
+
+.plant_name {
+  @apply font-semibold text-black text-base;
+}
+
+.plant_about {
+  @apply text-sm text-gray-500;
+}
+
+.plant_category {
+  @apply text-sm font-semibold text-green-700;
+}
+
+/* Add Plant */
+.add_plant_container {
+  @apply max-w-xl mx-auto mt-12 p-6 bg-white rounded-md shadow-md;
+}
+
+.add_plant_title {
+  @apply text-3xl font-bold mb-8 text-black text-center;
+}
+
+.messages_container {
+  @apply mb-6;
+}
+
+.message {
+  @apply p-4 rounded mb-4;
+}
+
+.message.success {
+  @apply bg-green-100 text-green-800;
+}
+
+.message.error {
+  @apply bg-red-100 text-red-800;
+}
+
+.add_plant_form {
+  @apply flex flex-col gap-6;
+}
+
+.form_group {
+  @apply flex flex-col;
+}
+
+.form_group label {
+  @apply mb-2 font-semibold text-gray-700;
+}
+
+.form_group input[type="text"],
+.form_group input[type="file"],
+.form_group select,
+.form_group textarea {
+  @apply border border-gray-300 rounded-md px-4 py-2 focus:outline-none focus:ring-2 focus:ring-green-600;
+}
+
+.form_group input[type="checkbox"] {
+  @apply self-start mt-2;
+}
+
+.add_submit_button {
+  @apply bg-black text-white font-semibold py-2 rounded hover:bg-green-700 transition duration-300;
+}
+/* Plants Section */
+.plants_container {
+  @apply max-w-7xl mx-auto px-6 mt-12;
+}
+
+.plants_title {
+  @apply text-3xl font-bold text-black  mt-12 mb-3 text-left;
+}
+
+.plants_grid {
+  @apply grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8;
+}
+
+.plant_card {
+  @apply bg-white rounded-lg overflow-hidden;
+}
+
+.plant_image {
+  @apply w-full h-40 object-cover rounded-t-lg;
+}
+
+.plant_info {
+  @apply p-4;
+}
+
+.plant_name {
+  @apply text-xl font-semibold text-black;
+}
+
+.plant_category {
+  @apply text-sm text-gray-600 mb-2;
+}
+
+.plant_about {
+  @apply text-sm text-gray-800 mb-4;
+}
+
+
+
+/* Add New Plant Button */
+.add_plant_button_container {
+  @apply text-center mt-12;
+}
+
+.add_plant_button {
+  @apply inline-block px-6 py-3 bg-black text-white font-semibold rounded hover:bg-green-700 transition duration-300;
+}
+
+/* Plant Details */
+.plant_details_container {
+  @apply flex-col max-w-7xl mx-auto px-6 mt-12;
+}
+
+
+.plant_name {
+  @apply text-4xl font-bold text-black;
+}
+
+.plant_category {
+  @apply text-gray-500 mt-2;
+}
+
+.plant_details_content {
+  @apply flex flex-col md:flex-row items-start md:items-center gap-10;
+}
+
+
+.plant_image_d {
+  @apply w-full md:w-1/2 h-130 object-cover rounded-xl shadow-lg;
+}
+
+.plant_info {
+  @apply w-full md:w-1/2 flex flex-col mt-6 md:mt-0;
+}
+
+.section_title {
+  @apply text-2xl font-semibold text-gray-800 mt-4;
+}
+
+.plant_about, .plant_used_for {
+  @apply text-gray-500 mt-2;
+}
+
+.plant_actions {
+  @apply mt-8 flex gap-4;
+}
+
+.edit_button {
+  @apply inline-block py-2 px-6 bg-black text-white rounded hover:bg-green-700 transition duration-300;
+}
+
+
+.back_button_container {
+  @apply text-center mt-8;
+}
+
+.back_button {
+  @apply inline-block py-2 px-6 bg-gray-800 text-white rounded hover:bg-gray-600 transition duration-300;
+}
+
+/* Search Results */
+.search_results_container {
+  @apply max-w-7xl mx-auto px-6 mt-12;
+}
+
+.search_results_title {
+  @apply text-3xl font-bold text-black mt-10 mb-6 text-left;
+}
+
+.plants_grid {
+  @apply grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8;
+}
+
+.plant_card {
+  @apply bg-white rounded-lg overflow-hidden;
+}
+
+.plant_image {
+  @apply w-full h-100 w-100 object-cover rounded-t-lg;
+}
+
+.plant_info {
+  @apply  flex-col text-left p-4;
+}
+
+.plant_name {
+  @apply text-3xl font-semibold text-black;
+}
+
+.plant_category {
+  @apply text-sm text-gray-600 mb-2;
+}
+
+.plant_about {
+  @apply text-sm text-gray-800 mb-4;
+}
+
+.view_details_button {
+  @apply inline-block px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700 transition duration-300;
+}
+
+.back_button_container {
+  @apply text-center mt-12;
+}
+
+.back_button {
+  @apply inline-block px-6 py-3 bg-gray-800 text-white rounded hover:bg-gray-600 transition duration-300;
+}
+
+/* Update Plant Page */
+.update_plant_container {
+  @apply max-w-7xl mx-auto px-6 mt-12;
+}
+
+.update_plant_title {
+  @apply text-3xl font-bold text-black mb-6;
+}
+
+.form_group {
+  @apply mb-4;
+}
+
+.form_group label {
+  @apply block text-lg font-semibold text-gray-700;
+}
+
+.form_group input[type="text"],
+.form_group textarea,
+.form_group select,
+.form_group input[type="file"] {
+  @apply w-full border border-gray-300 rounded-md p-3 mt-2;
+}
+
+.current_image {
+  @apply mb-4;
+}
+
+.plant_image_preview {
+  @apply w-48 h-48 object-cover rounded-md mb-4;
+}
+
+.update_submit_button {
+  @apply bg-black text-white font-semibold py-2 px-2 rounded hover:bg-green-700 transition duration-300 mt-6;
+}
+
+.delete_button {
+  @apply bg-red-600 text-white font-semibold py-2 px-2 rounded hover:bg-red-700 transition duration-300 mt-6;
+}
+
+.back_button {
+  @apply inline-block mt-8 px-6 py-3 bg-gray-800 text-white rounded hover:bg-gray-600 transition duration-300;
+}
+
+.messages_container {
+  @apply mb-6;
+}
+
+.message {
+  @apply p-4 rounded mb-4;
+}
+
+.message.success {
+  @apply bg-green-100 text-green-800;
+}
+
+.message.error {
+  @apply bg-red-100 text-red-800;
+}
+
+.plants_filter_container {
+  @apply max-w-7xl mx-auto px-6 mt-20 mb-20;
+}
+/* Filter Button */
+.filter_toggle_container {
+  @apply flex items-center gap-4;
+}
+
+.filter_toggle_container span {
+  @apply text-3xl cursor-pointer transition duration-300 hover:text-green-700;
+}
+
+/* Filter Form */
+.filter_form {
+  @apply flex flex-col items-center ;
+}
+
+.filter_group {
+  @apply flex flex-col items-center;
+}
+
+.filter_group label {
+  @apply mb-2 text-lg text-gray-700;
+}
+
+.filter_select {
+  @apply p-2 border border-gray-300 rounded-md;
+}
+
+.filter_button {
+  @apply  ml-7 mt-4 px-6 py-3 bg-black text-white font-semibold rounded hover:bg-green-700 transition duration-300;
+}
+
+/* Related Plants Section */
+.related_plants_section {
+  @apply mt-12;
+}
+
+.related_plants_title {
+  @apply text-2xl font-semibold text-black mb-6;
+}
+
+.related_plants_grid {
+  @apply grid grid-cols-3 sm:grid-cols-2 md:grid-cols-3 gap-6;
+}
+
+.related_plants_grid .plant_card {
+  @apply bg-white rounded-lg shadow-lg overflow-hidden;
+}
+
+.related_plants_grid .plant_image {
+  @apply w-full h-40 object-cover rounded-t-lg;
+}
+
+.related_plants_grid .plant_info {
+  @apply p-4;
+}
+
+.related_plants_grid .plant_name {
+  @apply text-xl font-semibold text-black;
+}
+
+.related_plants_grid .plant_category {
+  @apply text-sm text-gray-600;
+}
+
+/* Make the Related Plants Section responsive */
+@media (max-width: 640px) {
+  .related_plants_grid {
+    @apply grid-cols-1;
+  }
+}
+
+/* Utility Classes */
+.hidden {
+  display: none !important;
+}

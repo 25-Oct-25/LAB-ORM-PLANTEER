@@ -1,0 +1,126 @@
+{% load static tailwind_tags %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <title>{% block title %}{% endblock %}</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <!-- Google Icons -->
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  {% tailwind_css %}
+</head>
+
+<body class="bg-white text-gray-900 mt-7">
+
+  <header class="navbar">
+    <div class="navbar_container">
+
+      <a href="{% url 'main:home_view' %}" class="navbar_brand">Planteer</a>
+
+      <!-- Desktop Links -->
+      <nav class="navbar_links">
+        <a href="{% url 'plants:plants_view' %}" class="navbar_link">All Plants</a>
+        <a href="{% url 'contact:contact_view' %}" class="navbar_link">Contact Us</a>
+        <a href="{% url 'plants:add_plant_view' %}" class="navbar_btn">Add Plant</a>
+      </nav>
+
+      <!-- Mobile Menu Button -->
+      <div id="mobileMenuBtn" class="mobile_menu_btn">
+        <span class="mobile_menu_bar"></span>
+        <span class="mobile_menu_bar"></span>
+        <span class="mobile_menu_bar"></span>
+      </div>
+
+    </div>
+
+    <!-- Mobile Menu -->
+    <div id="mobileMenu" class="mobile_menu hidden">
+      <a href="{% url 'plants:plants_view' %}">All Plants</a>
+      <a href="{% url 'contact:contact_view' %}">Contact Us</a>
+      <a href="{% url 'plants:add_plant_view' %}" class="navbar_btn">Add Plant</a>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <main>
+    {% block content %}{% endblock %}
+  </main>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="w-full max-w-7xl">
+
+      <!-- short border -->
+      <div class="short_border"></div>
+
+      <!-- grid for left + right -->
+      <div class="grid_r_l">
+
+        <!-- Left side -->
+        <div class="space-y-12">
+          <div class="site_name">
+            Site name
+          </div>
+
+          <div class="flex flex-row gap-4">
+            <a href="#" target="_blank">
+              <img src="{% static 'images/7.svg' %}" class="h-4 w-4">
+            </a>
+            <a href="#" target="_blank">
+              <img src="{% static 'images/6.svg' %}" class="h-4 w-4">
+            </a>
+            <a href="#" target="_blank">
+              <img src="{% static 'images/4.svg' %}" class="h-4 w-4">
+            </a>
+            <a href="#" target="_blank">
+              <img src="{% static 'images/5.svg' %}" class="h-4 w-4">
+            </a>
+          </div>
+        </div>
+
+        <!-- Right side: 3 columns -->
+        <div class="grid grid-cols-3 gap-6">
+
+          <div class="text-black space-y-2">
+            <div class="font-semibold">Plants</div>
+            <a href="{% url 'plants:plants_view' %}" class="text-neutral-600 block">All</a>
+            <a href="{% url 'plants:add_plant_view' %}" class="text-neutral-600 block">Add</a>
+            <a href="{% url 'plants:search_view' %}" class="text-neutral-600 block">Search</a>
+          </div>
+
+          <div class="text-black space-y-2">
+            <div class="font-semibold">Contact</div>
+            <a href="{% url 'contact:contact_view' %}" class="text-neutral-600 block">Contact Us</a>
+            <a href="{% url 'contact:contact_messages_view' %}" class="text-neutral-600 block">Message</a>
+          </div>
+
+          <div class="text-black space-y-2">
+            <div class="font-semibold">Topic</div>
+            <a href="#" class="text-neutral-600 block">Page</a>
+            <a href="#" class="text-neutral-600 block">Page</a>
+            <a href="#" class="text-neutral-600 block">Page</a>
+          </div>
+
+        </div>
+
+      </div>
+    </div>
+  </footer>
+
+  {% block extra_script %}
+  {% endblock %}
+
+  <script>
+    const btn = document.getElementById("mobileMenuBtn");
+    const menu = document.getElementById("mobileMenu");
+
+    btn.addEventListener("click", () => {
+      menu.classList.toggle("hidden");
+    });
+  </script>
+
+</body>
+
+</html>
