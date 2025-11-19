@@ -1,0 +1,132 @@
+/* main/static/css/style.css
+   التنسيقات العامة المشتركة بين كل القوالب
+*/
+
+/*
+====================================
+1. التنسيقات العامة (General Styling)
+====================================
+*/
+body { 
+    background-color: #f8f9fa; 
+    color: #333; 
+    font-family: Arial, sans-serif;
+}
+a {
+    color: #17A2B8; /* لون الروابط */
+    text-decoration: none;
+    transition: color 0.2s;
+}
+a:hover {
+    color: #117a8b; 
+    text-decoration: none;
+}
+/* تنسيق الأزرار الخضراء */
+.btn-success, .bg-success {
+    background-color: #008000 !important;
+    border-color: #008000 !important;
+}
+.btn-success:hover {
+    background-color: #006400 !important;
+    border-color: #006400 !important;
+}
+
+/*
+====================================
+2. شريط التنقل (Navbar)
+====================================
+*/
+.navbar-brand { 
+    font-weight: bold; 
+    font-size: 1.5rem; 
+    color: #000000 !important; 
+}
+.nav-link {
+    font-size: 1.1rem;
+    font-weight: 500;
+}
+.nav-link.text-success {
+    font-weight: 700;
+}
+
+/*
+====================================
+3. البطاقات (Plant Cards)
+====================================
+*/
+.plant-card { 
+    border: none; 
+    border-radius: 8px; 
+    transition: transform 0.2s, box-shadow 0.2s; 
+    background: white; 
+    box-shadow: 0 2px 5px rgba(0,0,0,0.05); 
+}
+.plant-card:hover { 
+    transform: translateY(-3px); 
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1); 
+}
+.card-img-top { 
+    height: 180px; 
+    object-fit: cover; 
+    border-radius: 8px 8px 0 0; 
+}
+.card-title {
+    color: #008000; 
+    font-weight: 600;
+}
+
+/*
+====================================
+4. التذييل (Footer)
+====================================
+*/
+.footer { 
+    background-color: #f1f1f1; 
+    color: #555; 
+    padding: 25px 0; 
+    border-top: 1px solid #ddd; 
+}
+
+/* ... باقي الـ CSS ... */
+
+/* 4. تأثيرات الدخول للصفحة (Fade-in) */
+.fade-in {
+    opacity: 0;
+    animation: fadeInAnimation 1s ease-in forwards;
+}
+
+@keyframes fadeInAnimation {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+/* ... الكود السابق في style.css ... */
+
+/*
+====================================
+6. قسم الـ Hero Section (الجديد)
+====================================
+*/
+.hero-section-full {
+    /* الصورة الخلفية أصبحت جزءاً من كود القالب (inline style) */
+    background-size: cover;
+    background-position: center;
+    min-height: 400px; /* ارتفاع مناسب */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    margin-top: 50px !important; /* لترك مساحة شريط التنقل الثابت */
+}
+
+/* تنسيق حقل البحث */
+.search-input {
+    border-radius: 50px; /* حواف مستديرة لتبدو حديثة */
+    border: none;
+    padding: 10px 20px;
+}
+
+/* ظل خفيف للنص ليكون قابلاً للقراءة على أي خلفية */
+.text-shadow-lg {
+    text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.8);
+}

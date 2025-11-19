@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="container my-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-6 col-md-8">
+            <div class="card border-danger shadow-lg p-4">
+                <div class="card-body text-center">
+                    
+                    <i class="fas fa-exclamation-triangle fa-5x text-danger mb-4"></i>
+                    
+                    <h1 class="h3 card-title text-danger mb-3">Delete Confirmation</h1>
+                    
+                    <p class="lead">
+                        Are you sure you want to delete the plant: 
+                        <strong class="text-dark">{{ plant.name }}</strong>?
+                    </p>
+                    
+                    <p class="text-muted">
+                        **This action cannot be undone.**
+                    </p>
+
+                    <form method="POST" class="mt-4">
+                        {% csrf_token %}
+                        
+                        <div class="d-grid gap-2 d-sm-flex justify-content-sm-center">
+                            <button type="submit" class="btn btn-danger btn-lg px-4">
+                                Yes, delete the plant
+                            </button>
+                            
+                            <a href="{% url 'plants:plant_detail' pk=plant.pk %}" class="btn btn-secondary btn-lg px-4">
+                                Cancel
+                            </a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock content %}
