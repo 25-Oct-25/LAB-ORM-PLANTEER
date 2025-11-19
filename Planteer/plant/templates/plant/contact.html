@@ -1,0 +1,54 @@
+{% extends 'main/base.html' %}
+{% load static %}
+{% block title %} Add plant{% endblock %}
+
+
+{% block content %}
+<div class="d-flex flex-column flex-md-row justify-content-between align-items-start contact-wrapper">
+
+    <div class="col-12 col-md-6 contact-container">
+        <div class="col-12">
+            <h2 style="font-size: 40px;"><strong>Contact us</strong></h2>
+            <p>Subheading for heading or instructions</p>
+        </div>
+
+        <form class="row g-3 needs-validation" action="{% url 'plant:send_message_view' %}" method="post"
+            enctype="application/x-www-form-urlencoded">
+            {%csrf_token %}
+            <div class="col-md-6">
+                <label class="form-label">First name</label>
+                <input type="text" class="form-control" id="first_name" placeholder="Amwaj" name="first_name" required>
+            </div>
+            <div class="col-md-6">
+                <label class="form-label">Last name</label>
+                <input type="text" class="form-control" id="last_name" name="last_name" placeholder="Alzahrani"
+                    required>
+                <div class="valid-feedback">
+                    Looks good!
+                </div>
+            </div>
+            <div class="col-12">
+                <label for="validationCustom03" class="form-label">Email address</label>
+                <input type="email" class="form-control" id="email" placeholder="Amwaj@gamil.com" name="email" required>
+                <div class="invalid-feedback">
+                    Please provide a valid email.
+                </div>
+            </div>
+
+            <div class="col-12">
+                <label class="form-label">Your message</label>
+                <textarea class="form-control" id="message" name="message" rows="4" minlength="3"
+                    placeholder="Enter your question or message " required></textarea>
+            </div>
+
+            <div class="col-12">
+                <button class="btn btn-dark w-100" type="submit">Submit</button>
+            </div>
+        </form>
+    </div>
+
+    <div class="col-12 col-md-5">
+        <img src="{% static 'images/contact.jpg' %}" class="img-fluid img-contact rounded">
+    </div>
+</div>
+{% endblock %}

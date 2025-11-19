@@ -1,0 +1,25 @@
+{% extends 'main/base.html' %}
+{% load static %}
+{% block title %} Add plant{% endblock %}
+
+
+{% block content %}
+
+<h3>Message from Users</h3>
+<section class="cards mt-5">
+    <div class="row row-cols-1 row-cols-md-3 g-4">
+        {% for m in msg %}
+        <div class="col"> 
+            <div class="card align-items-start border-0" style="width: 18rem;">
+                <span class="material-symbols-outlined">account_circle</span>
+                <div class="card-body">
+                    <p class="card-text">{{m.first_name}} {{m.last_name}}</p>
+                    <a href="">{{m.email}}</a>
+                    <p class="card-text">{{m.message}}</p>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</section>
+{%endblock%}

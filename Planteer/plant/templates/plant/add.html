@@ -1,0 +1,52 @@
+{% extends 'main/base.html' %}
+{% load static %}
+{% block title %} Add plant{% endblock %}
+
+
+{% block content %}
+<h1>Add New Plant</h1>
+
+<div class="row">
+    <div class="col-6">
+        <form action="{% url 'plant:add_plant_view'%}" class="d-flex flex-column gap-2" method="post" enctype="multipart/form-data" >
+            {%csrf_token %}
+            <label for="name">Name</label>
+            <input type="text" placeholder="Name" name="name" class="form-control" minlength="3" maxlength="200" required/>
+
+            <label for="name">About The Plant</label>
+            <textarea name="about" placeholder="write the content of your post here" class="form-control" required minlength="2" required></textarea>
+
+            <label for="used_for">Used for</label>
+            <input type="text" placeholder="used for" name="used_for" class="form-control" required minlength="3" maxlength="200"required/>
+            
+            <label for="used_for">Category</label>
+             <select name="category" class="form-control" >
+                <option value="">Category</option>
+                <option value="flowering">Flowering</option>
+                <option value="succulents">Succulents</option>
+                <option value="trees">Trees</option>
+            </select>
+
+            <label for="is_published">Is edible?</label>
+            <div class="form-check">
+                <input class="form-check-input" type="radio" name="is_edible" id="radioYes" value="True" checked>
+                <label class="form-check-label" for="radioYes">
+                    Yes
+                </label>
+            </div>
+
+            <div class="form-check">
+                <input class="form-check-input" type="radio" name="is_edible" id="radioNo" value="False">
+                <label class="form-check-label" for="radioNo">
+                    No
+                </label>
+            </div>
+
+            <input type="file" name="image" class="form-control" accept="image/*" required>
+            
+            <input type="submit" value="Add Post" class="btn btn-primary "/>
+        </form>
+
+    </div>
+</div>
+{% endblock %}
