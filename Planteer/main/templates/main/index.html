@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Home - Planteer{% endblock %}
+
+{% block content %}
+<div class="hero_container">
+  <video autoplay loop muted playsinline class="hero_bg">
+    <source src="{% static 'videos/plants-bg.mp4' %}" type="video/mp4">
+  </video>
+  <div class="hero_text_container">
+    <h1 class="hero_title">Planteer</h1>
+    <h2 class="hero_subtitle">Plant Database For Plants Lovers</h2>
+
+    <form method="get" action="{% url 'plants:search_view' %}" class="search_form">
+      <input type="text" name="q" placeholder="Search For Plant..." class="search_input" id="search_bar" />
+      <button type="submit" class="search_button">Search</button>
+    </form>
+  </div>
+</div>
+
+<section class="plants_section">
+  <div class="plants_header">
+    <div class="plants_right_title">
+      <h3 class="plants_title">Plants</h3>
+      <h6 class="plants_subtitle">Learn more about plants</h6>
+    </div>
+    <a href="{% url 'plants:plants_view' %}" class="plants_more_link">More →</a>
+  </div>
+
+  <div class="plants_grid">
+    {% for plant in plants %}
+    <div class="plant_card">
+      <a href="{% url 'plants:plant_details_view' plant.id %}" class="plant_card_link">
+        <img src="{{ plant.image.url }}" alt="{{ plant.name }}" class="plant_image" />
+        <div class="plant_info">
+          <h4 class="plant_name">{{ plant.name }}</h4>
+          <p class="plant_about">{{ plant.about|truncatewords:5 }}</p>
+          <p class="plant_category">{{plant.get_category_display}}</p>
+        </div>
+      </a>
+    </div>
+    {% endfor %}
+  </div>
+</section>
+{% endblock %}
