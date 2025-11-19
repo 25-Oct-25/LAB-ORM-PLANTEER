@@ -1,0 +1,63 @@
+{% extends 'base.html' %}
+
+{% block title %}All Plants{% endblock %}
+
+{% block content %}
+<h1 class="h3 mb-3">All Plants</h1>
+
+<form method="get" class="row g-2 mb-4">
+  <div class="col-md-4">
+    <label class="form-label small text-muted">Search</label>
+    <input
+      type="search"
+      name="q"
+      class="form-control"
+      placeholder="Search by plant name..."
+      value="{{ query }}">
+  </div>
+
+  <div class="col-md-3">
+    <label class="form-label small text-muted">Category</label>
+    <select name="category" class="form-select">
+      <option value="ALL">All categories</option>
+      {% for value,label in categories %}
+        <option value="{{ value }}" {% if selected_category == value %}selected{% endif %}>
+          {{ label }}
+        </option>
+      {% endfor %}
+    </select>
+  </div>
+
+  <div class="col-md-3">
+    <label class="form-label small text-muted">Edible / Non-edible</label>
+    <select name="is_edible" class="form-select">
+      <option value="">All</option>
+      <option value="true" {% if selected_is_edible == 'true' %}selected{% endif %}>Edible only</option>
+      <option value="false" {% if selected_is_edible == 'false' %}selected{% endif %}>Non-edible only</option>
+    </select>
+  </div>
+
+  <div class="col-md-2 d-flex align-items-end">
+    <button class="btn btn-dark w-100" type="submit">Apply</button>
+  </div>
+</form>
+
+<div class="row g-4">
+  {% for plant in plants %}
+    <div class="col-6 col-md-3">
+      <div class="plant-card h-100">
+        <a href="{% url 'plants:plant_detail' plant.id %}" class="d-block text-decoration-none text-reset">
+            <img src="{{ plant.image.url }}" alt="{{ plant.name }}">
+            <div>
+                <h5 class="plant-title">{{ plant.name }}</h5>
+                <p class="plant-brief">Brief about plant</p>
+                <p class="plant-category">{{ plant.get_category_display }}</p>
+            </div>
+        </a>
+      </div>
+    </div>
+  {% empty %}
+    <p>No plants found matching the criteria.</p>
+  {% endfor %}
+</div>
+{% endblock %}

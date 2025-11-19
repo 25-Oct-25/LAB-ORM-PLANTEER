@@ -1,0 +1,84 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ plant.name }}{% endblock %}
+
+{% block content %}
+<div class="row mb-5 align-items-start">
+  <div class="col-md-6 mb-4 mb-md-0">
+    <img src="{{ plant.image.url }}" class="img-fluid plant-detail-img" alt="{{ plant.name }}">
+  </div>
+
+  <div class="col-md-6 ps-md-5">
+    
+    <h1 class="display-5 fw-bold mb-2">{{ plant.name }}</h1>
+    
+    <p class="text-muted mb-4" style="font-size: 1.1rem;">
+      {{ plant.get_category_display }}
+    </p>
+
+    <div class="mb-4">
+        <p class="text-secondary" style="line-height: 1.7; font-size: 1rem;">
+            {{ plant.about }}
+        </p>
+    </div>
+
+    <div class="d-flex flex-column gap-3">
+        <div>
+            <span class="detail-label">Is Edible:</span>
+            <span class="detail-value">{{ plant.is_edible|yesno:"Yes,No" }}</span>
+        </div>
+
+        <div>
+            <span class="detail-label">Used For:</span>
+            <span class="detail-value text-secondary">{{ plant.used_for }}</span>
+        </div>
+
+        <div>
+            <span class="detail-label">Native To:</span>
+            <span class="detail-value text-secondary">
+                {{ plant.native_to|default:"Unknown" }}
+            </span>
+        </div>
+        
+        <div>
+            <span class="detail-label text-muted small">Added on:</span>
+            <span class="detail-value text-muted small">{{ plant.created_at|date:"F j, Y" }}</span>
+        </div>
+    </div>
+
+    <div class="mt-5 pt-3 border-top">
+      <a href="{% url 'plants:plant_update' plant.id %}" class="btn btn-dark px-4 me-2">
+        Update
+      </a>
+      <a href="{% url 'plants:plant_delete' plant.id %}" class="btn btn-outline-danger px-4">
+        Delete
+      </a>
+    </div>
+
+  </div>
+</div>
+
+<div class="mt-5 pt-5">
+    <h3 class="h5 mb-4 text-muted">Related Plants</h3>
+    <div class="row g-4">
+      {% for p in related_plants %}
+        <div class="col-md-6 col-lg-4">
+          <div class="plant-card h-100">
+            <a href="{% url 'plants:plant_detail' p.id %}" class="d-block text-decoration-none text-reset">
+                <img src="{{ p.image.url }}" alt="{{ p.name }}">
+                <div>
+                    <h5 class="plant-title">{{ p.name }}</h5>
+                    <p class="plant-brief">Brief about plant</p>
+                    <p class="plant-category">{{ p.get_category_display }}</p>
+                </div>
+            </a>
+          </div>
+        </div>
+      {% empty %}
+        <div class="col-12">
+            <p class="text-muted">No related plants found in the same category.</p>
+        </div>
+      {% endfor %}
+    </div>
+</div>
+{% endblock %}
