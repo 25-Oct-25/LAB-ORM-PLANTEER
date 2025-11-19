@@ -1,0 +1,52 @@
+{% extends 'main/base.html' %}
+{% load static %}
+
+{% block content %}
+
+<div class="home-page">
+
+    <!-- الهيرو -->
+    <div class="home-hero">
+        <img src="{% static 'images/home.jpg' %}" alt="Hero Image">
+
+        <!-- البحث -->
+        <div class="home-search-box">
+            <form action="{% url 'plants:search' %}" method="GET">
+                <input type="text" name="q" placeholder="Search plants..." class="home-search-input">
+                <button class="home-search-btn">Search</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- أحدث النباتات -->
+    <h2 class="home-section-title">Featured Plants</h2>
+
+    <div class="home-cards">
+
+        {% for plant in latest_plants %}
+        <div class="plant-card">
+
+            {% if plant.image %}
+                <img src="{{ plant.image.url }}" alt="{{ plant.name }}">
+            {% else %}
+                <img src="{% static 'images/home.jpg' %}" alt="Plant Image">
+            {% endif %}
+
+            <h3>{{ plant.name }}</h3>
+
+            <!-- ✅ إصلاح الوصف: استخدام about بدل description -->
+            <p>{{ plant.about|truncatewords:10 }}</p>
+
+        </div>
+        {% endfor %}
+
+    </div>
+
+    <!-- زر المزيد -->
+    <div class="home-more">
+        <a href="{% url 'plants:all_plants' %}" class="more-btn">More</a>
+    </div>
+
+</div>
+
+{% endblock %}

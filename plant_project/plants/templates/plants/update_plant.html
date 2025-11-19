@@ -1,0 +1,22 @@
+{% extends 'main/base.html' %}
+{% load static %}
+
+{% block content %}
+
+<div class="add-plant-page">
+
+    <h1 class="add-plant-title">Update Plant</h1>
+
+    <form method="POST" enctype="multipart/form-data" class="add-plant-form">
+        {% csrf_token %}
+
+      
+        {{ form.as_p }}
+
+        <!-- زر حفظ -->
+        <button class="add-btn">Save Changes</button>
+    </form>
+
+</div>
+
+{% endblock %}
