@@ -34,7 +34,9 @@
   <div class="plants-grid">
     {% for plant in plants %}
     <div class="plant-card">
-     <a href="{% url 'plants:plant_detail' plant.id %}"> <img src="{{ plant.image.url }}" alt=""></a>
+        {% if plant.image %}
+      <a href="{% url 'plants:plant_detail' plant.id %}"> <img src="{{ plant.image.url }}" alt=""></a>
+      {% endif %}
       <div class="plant-card-body">
         <h4>{{ plant.name }}</h4>
         <p>Brief about plant</p>
