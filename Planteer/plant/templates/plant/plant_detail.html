@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ plant.name }}{% endblock %}
+
+{% block content %}
+
+<div class="detail-container">
+    <div>
+        <img src="{{ plant.image.url }}" alt="{{ plant.name }}" class="detail-img-full">
+    </div>
+
+    <div class="detail-content">
+        <h1>{{ plant.name }}</h1>
+        <p class="detail-category">{{ plant.category }}</p>
+
+        <span class="detail-label">About:</span>
+        <p class="detail-text">{{ plant.about }}</p>
+
+        <span class="detail-label">Native to / Used for:</span>
+        <p class="detail-text">{{ plant.used_for }}</p>
+
+        <span class="detail-label">Is Edible:</span>
+        <p class="detail-text">{% if plant.is_edible %}Yes, Safe to eat.{% else %}No, Not edible.{% endif %}</p>
+
+        <div style="margin-top: 40px; display: flex; gap: 15px;">
+            <a href="{% url 'plant:plant_update' plant.id %}" class="btn-black">Update</a>
+            <a href="{% url 'plant:plant_delete' plant.id %}" style="color: red; align-self: center;" onclick="return confirm('Sure?')">Delete</a>
+        </div>
+    </div>
+</div>
+
+<div style="margin-top: 80px; margin-bottom: 40px;">
+    <h3 class="section-title">Related Plants</h3>
+</div>
+
+<div class="plants-grid">
+    {% for rp in related_plants %}
+    <a href="{% url 'plant:plant_detail' rp.id %}" class="plant-card">
+        <div class="card-img-box">
+            <img src="{{ rp.image.url }}" alt="{{ rp.name }}" class="card-img">
+        </div>
+        <div class="card-info">
+            <h3>{{ rp.name }}</h3>
+            <span class="card-meta">{{ rp.category }}</span>
+        </div>
+    </a>
+    {% empty %}
+    <p style="color: #777;">No related plants.</p>
+    {% endfor %}
+</div>
+
+{% endblock %}
