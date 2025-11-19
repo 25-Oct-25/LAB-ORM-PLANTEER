@@ -1,0 +1,46 @@
+{% extends 'main/base.html' %}
+
+{% block content %}
+
+<div class="form-wrapper">
+    <h2 class="form-title">Edit Plant</h2>
+
+    <form method="POST" enctype="multipart/form-data" class="add-form">
+        {% csrf_token %}
+
+        <label>Name</label>
+        <input type="text" name="name" value="{{ plant.name }}" required>
+
+        <label>About</label>
+        <textarea name="about" rows="4" required>{{ plant.about }}</textarea>
+
+        <label>Used For</label>
+        <textarea name="used_for" rows="3">{{ plant.used_for }}</textarea>
+
+        <label>Category</label>
+        <select name="category">
+            {% for value, display in plant.CategoryChoices.choices %}
+                <option value="{{ value }}" {% if plant.category == value %}selected{% endif %}>
+                    {{ display }}
+                </option>
+            {% endfor %}
+        </select>
+
+        <label>Is Edible?</label>
+        <input type="checkbox" name="is_edible" {% if plant.is_edible %}checked{% endif %}>
+
+        <label>Current Image</label>
+        {% if plant.image %}
+            <img src="{{ plant.image.url }}" class="plant-img" style="max-width:200px;">
+        {% else %}
+            <p>No image uploaded.</p>
+        {% endif %}
+
+        <label>Change Image</label>
+        <input type="file" name="image">
+
+        <button type="submit" class="submit-btn">Update</button>
+    </form>
+</div>
+
+{% endblock %}

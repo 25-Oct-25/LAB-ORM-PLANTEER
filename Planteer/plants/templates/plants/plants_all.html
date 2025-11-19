@@ -1,0 +1,52 @@
+{% extends "main/base.html" %}
+
+{% block content %}
+
+<h2>All Plants</h2>
+
+<form method="GET" class="filter-bar">
+
+    <select name="category">
+        <option value="all">All Categories</option>
+
+        <option value="MED" {% if selected_category == 'MED' %}selected{% endif %}>Medicinal</option>
+        <option value="ORN" {% if selected_category == 'ORN' %}selected{% endif %}>Ornamental</option>
+        <option value="ARO" {% if selected_category == 'ARO' %}selected{% endif %}>Aromatic</option>
+        <option value="FRT" {% if selected_category == 'FRT' %}selected{% endif %}>Fruit Plants</option>
+        <option value="TOX" {% if selected_category == 'TOX' %}selected{% endif %}>Toxic Plants</option>
+        <option value="IN" {% if selected_category == 'IN' %}selected{% endif %}>Indoor Plants</option>
+        <option value="OUT" {% if selected_category == 'OUT' %}selected{% endif %}>Outdoor Plants</option>
+    </select>
+
+
+    <select name="edible">
+        <option value="">Edible?</option>
+        <option value="yes" {% if selected_edible == 'yes' %}selected{% endif %}>Yes</option>
+        <option value="no" {% if selected_edible == 'no' %}selected{% endif %}>No</option>
+    </select>
+
+    <button type="submit">Filter</button>
+</form>
+
+<div class="plants-grid">
+    {% for plant in plants %}
+        <div class="plant-card">
+
+            {% if plant.image %}
+                <img src="{{ plant.image.url }}" class="plant-img" />
+            {% else %}
+                <img src="/media/images/default.jpeg" class="plant-img" />
+            {% endif %}
+
+            <a href="{% url 'plants:plants_detail' plant.id %}" class="plant-title">
+                {{ plant.name }}
+            </a>
+
+            <p class="brief">{{ plant.about|truncatechars:30 }}</p>
+            <p class="category">{{ plant.get_category_display }}</p>
+
+        </div>
+    {% endfor %}
+</div>
+
+{% endblock %}
