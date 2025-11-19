@@ -1,0 +1,63 @@
+{%extends 'main/base.html'%}
+
+{% block title %}{{ plant.name }}{% endblock %}
+
+{% block content %}
+<div class="plant-details-container">
+
+    <div class="plant-main-content">
+
+        <div class="plant-image-section">
+            {% if plant.image %}
+            <img src="{{ plant.image.url }}" alt="{{ plant.name }}" class="plant-main-image">
+            {% else %}
+            <div class="no-image">No Image Available</div>
+            {% endif %}
+        </div>
+        <div class="plant-text-section">
+            <h1 class="plant-title">{{ plant.name }}</h1>
+            <p class="plant-category">{{ plant.get_category_display }}</p>
+
+            <div class="plant-description">
+                <p>{{ plant.about|linebreaks }}</p>
+            </div>
+
+            <div class="plant-info">
+                <p><strong>Is Edible:</strong> {{ plant.is_edible|yesno:"Yes,No" }}</p>
+                <p><strong>Used For:</strong><br>{{ plant.used_for|linebreaks }}</p>
+            </div>
+        </div>
+    </div>
+
+     <div class="plant-actions mt-5">
+        <div class="d-flex gap-3 justify-content-end">
+            <a href="/plants/{{ plant.id }}/update/" class="btn btn-outline-success">
+                <i class="fas fa-edit"></i> Update Plant
+            </a>
+            <a href="/plants/{{ plant.id }}/delete/" class="btn btn-outline-danger"
+            onclick="return confirm('Are you sure you want to delete this plant?')">
+                
+                <i class="fas fa-trash"></i> Delete Plant
+            </a>
+        </div>
+    </div>
+    <div class="related-plants-section">
+        <h2 class="related-plants-title">Related Plants</h2>
+
+        <div class="related-plants-list">
+            {% for related_plant in related_plants %}
+            <div class="related-plant-item">
+                <strong>{{ related_plant.name }}</strong>
+                <span class="plant-brief">{{ related_plant.about|truncatewords:10 }}</span>
+            </div>
+
+            {% if forloop.counter|divisibleby:2 and not forloop.last %}
+            <div class="category-label">{{ related_plant.get_category_display }}</div>
+            {% endif %}
+            {% empty %}
+            <p class="no-related-plants">No related plants found.</p>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,101 @@
+{% extends 'main/base.html' %}
+{% load static %}
+
+{% block title %}Search Results - Planteer{% endblock %}
+
+{% block content %}
+
+<div class="row mt-4">
+    <div class="col-12">
+        <h3>
+            {% if query or order_by %}
+                Search Results
+                {% if query %}<small class="text-muted">for "{{ query }}"</small>{% endif %}
+                {% if order_by %}<small class="text-muted">(Filtered)</small>{% endif %}
+            {% else %}
+                All Plants
+            {% endif %}
+        </h3>
+    </div>
+</div>
+
+<div class="row mb-4">
+    <div class="col-md-8">
+        <form method="GET" action="{% url 'plants:search_view' %}" class="d-flex">
+            <input type="text" 
+                   name="search" 
+                   class="form-control me-2" 
+                   placeholder="Search for plants..." 
+                   value="{{ query }}">
+            <button type="submit" class="btn btn-success">Search</button>
+        </form>
+    </div>
+    <div class="col-md-4">
+        <div class="dropdown">
+            <button class="btn btn-outline-secondary dropdown-toggle w-100" type="button" id="sortDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                <i class="fas fa-filter"></i> Filter by: 
+                {% if order_by == "edible" %}Edible Only
+                {% elif order_by == "non_edible" %}Non-Edible Only
+                {% elif order_by == "trees" %}Trees
+                {% elif order_by == "fruits" %}Fruits
+                {% elif order_by == "vegetables" %}Vegetables
+                {% elif order_by == "flowers" %}Flowers
+                {% elif order_by == "herbs" %}Herbs
+                {% elif order_by == "succulents" %}Succulents
+                {% else %}All Plants
+                {% endif %}
+            </button>
+            <ul class="dropdown-menu w-100" aria-labelledby="sortDropdown">
+                <li><a class="dropdown-item" href="?{% if query %}search={{ query }}{% endif %}">All Plants</a></li>
+                <li><hr class="dropdown-divider"></li>
+                <li><a class="dropdown-item" href="?{% if query %}search={{ query }}&{% endif %}order_by=edible">Edible Only</a></li>
+                <li><a class="dropdown-item" href="?{% if query %}search={{ query }}&{% endif %}order_by=non_edible">Non-Edible Only</a></li>
+                <li><hr class="dropdown-divider"></li>
+                <li><a class="dropdown-item" href="?{% if query %}search={{ query }}&{% endif %}order_by=trees">Trees</a></li>
+                <li><a class="dropdown-item" href="?{% if query %}search={{ query }}&{% endif %}order_by=fruits">Fruits</a></li>
+                <li><a class="dropdown-item" href="?{% if query %}search={{ query }}&{% endif %}order_by=vegetables">Vegetables</a></li>
+                <li><a class="dropdown-item" href="?{% if query %}search={{ query }}&{% endif %}order_by=flowers">Flowers</a></li>
+                <li><a class="dropdown-item" href="?{% if query %}search={{ query }}&{% endif %}order_by=herbs">Herbs</a></li>
+                <li><a class="dropdown-item" href="?{% if query %}search={{ query }}&{% endif %}order_by=succulents">Succulents</a></li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-12">
+        <p class="text-muted mb-4">
+            Found {{ plants.count }} plant{{ plants.count|pluralize }}
+        </p>
+    </div>
+</div>
+
+<div class="row g-4">
+    {% for plant in plants %}
+    <div class="col-md-6 col-lg-4">
+        <div class="card">
+            {% if plant.image %}
+            <img src="{{ plant.image.url }}" class="card-img-top" alt="{{ plant.name }}" style="height: 200px; object-fit: cover;">
+            {% endif %}
+            <div class="card-body">
+                <h5 class="card-title">{{ plant.name }}</h5>
+                <p class="card-text">{{ plant.about|truncatewords:20 }}</p>
+                <span class="badge bg-success">{{ plant.get_category_display }}</span>
+                {% if plant.is_edible %}
+                <span class="badge bg-info">Edible</span>
+                {% else %}
+                <span class="badge bg-warning text-dark">Not Edible</span>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+    {% empty %}
+    <div class="col-12 text-center py-5">
+        <i class="fas fa-search fa-3x text-muted mb-3"></i>
+        <h4 class="text-muted">No plants found</h4>
+        <p class="text-muted">Try adjusting your search criteria</p>
+    </div>
+    {% endfor %}
+</div>
+
+{% endblock %}
