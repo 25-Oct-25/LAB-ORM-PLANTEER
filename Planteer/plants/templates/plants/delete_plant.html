@@ -1,0 +1,24 @@
+{% extends 'main/base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="container mt-5" style="min-height: 60vh; display: flex; align-items: center; justify-content: center;">
+    <div class="card border-danger mb-3 shadow" style="max-width: 500px; width: 100%;">
+        <div class="card-header bg-danger text-white">
+            <strong>Delete Confirmation</strong>
+        </div>
+        <div class="card-body text-center">
+            <h5 class="card-title mt-3">Are you sure you want to delete "{{ plant.name }}"?</h5>
+            <p class="card-text text-muted">This action cannot be undone.</p>
+            
+            <form method="post" class="mt-4 mb-2">
+                {% csrf_token %}
+                <!-- The Yes button submits the form to actually delete -->
+                <button type="submit" class="btn btn-danger">Yes, Delete</button>
+                <!-- The Cancel button takes them back to the detail page -->
+                <a href="{% url 'plant_detail' plant.id %}" class="btn btn-secondary">Cancel</a>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

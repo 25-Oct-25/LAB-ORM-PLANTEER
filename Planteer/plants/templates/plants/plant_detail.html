@@ -1,0 +1,40 @@
+{% extends 'main/base.html' %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-6">
+        <img src="{{ plant.image.url }}" class="img-fluid rounded" alt="{{ plant.name }}">
+    </div>
+    <div class="col-md-6">
+        <h2>{{ plant.name }}</h2>
+        <p class="text-muted">Category: {{ plant.category }} | Edible: {{ plant.is_edible|yesno:"Yes,No" }}</p>
+        <hr>
+        <h5>About:</h5>
+        <p>{{ plant.about }}</p>
+        <h5>Used For:</h5>
+        <p>{{ plant.used_for }}</p>
+        <div class="mt-4">
+            <a href="{% url 'update_plant' plant.id %}" class="btn btn-warning">Update</a>
+            <a href="{% url 'delete_plant' plant.id %}" class="btn btn-danger">Delete</a>
+        </div>
+    </div>
+</div>
+
+<hr class="my-5">
+<h3>Related Plants</h3>
+<div class="row">
+    {% for rel in related_plants %}
+    <div class="col-md-4">
+        <div class="card">
+            <img src="{{ rel.image.url }}" class="card-img-top" style="height:150px; object-fit:cover;">
+            <div class="card-body">
+                <h6>{{ rel.name }}</h6>
+                <a href="{% url 'plant_detail' rel.id %}" class="btn btn-sm btn-link">View</a>
+            </div>
+        </div>
+    </div>
+    {% empty %}
+    <p>No related plants found.</p>
+    {% endfor %}
+</div>
+{% endblock %}
