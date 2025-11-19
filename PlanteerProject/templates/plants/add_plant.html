@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+{% block content %}
+
+<h1>Add New Plant</h1>
+
+<form method="POST" enctype="multipart/form-data">
+    {% csrf_token %}
+    <input name="name" placeholder="Plant name" required>
+    <textarea name="about" placeholder="About plant"></textarea>
+    <textarea name="used_for" placeholder="Used for.."></textarea>
+
+    <select name="category">
+        <option value="Tree">Tree</option>
+        <option value="Fruit">Fruit</option>
+        <option value="Vegetable">Vegetable</option>
+        <option value="Flower">Flower</option>
+    </select>
+
+    <label>
+        <input type="checkbox" name="is_edible"> Is Edible
+    </label>
+
+    <input type="file" name="image" required>
+
+    <button type="submit">Add Plant</button>
+</form>
+
+{% endblock %}

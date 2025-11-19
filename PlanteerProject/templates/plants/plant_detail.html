@@ -1,0 +1,68 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="detail-wrapper">
+
+    <img src="{{ plant.image.url }}" class="detail-img">
+
+    <div class="plant-info">
+        <h1>{{ plant.name }}</h1>
+
+        <p class='info'><strong>Category:</strong> {{ plant.category }}</p>
+        <p class='info'><strong>About:</strong> {{ plant.about }}</p>
+        <p class='info'><strong>Used For:</strong> {{ plant.used_for }}</p>
+        <p class="info">
+            <strong>Edible:</strong> 
+            {% if plant.is_edible %}
+                <span class="yes">Yes</span>
+            {% else %}
+                <span class="no">No</span>
+            {% endif %}
+        </p>
+
+        <div class="buttons">
+            <a href="/plants/{{ plant.id }}/update/" class="btn update">Update</a>
+            <a href="/plants/{{ plant.id }}/delete/" class="btn delete">Delete</a>
+        </div>
+        
+    </div>
+</div>
+
+<hr>
+
+<h2>Related Plants</h2>
+<div class="grid">
+    {% for p in related %}
+    <a class="card" href="/plants/{{ p.id }}/detail/">
+        <img src="{{ p.image.url }}" alt="">
+        <h3>{{ p.name }}</h3>
+    </a>
+    {% empty %}
+        <p>No related plants.</p>
+    {% endfor %}
+</div>
+
+<hr>
+
+<h2>Comments</h2>
+
+<form method="POST">
+    {% csrf_token %}
+    <input type="text" name="full_name" placeholder="Your name" required>
+    <textarea name="content" placeholder="Write a comment..." required></textarea>
+    <button type="submit">Add Comment</button>
+</form>
+
+<div class="comments">
+    {% for c in comments %}
+        <div class="comment-card">
+            <strong>{{ c.full_name }}</strong>
+            <p>{{ c.content }}</p>
+            <span>{{ c.created_at }}</span>
+        </div>
+    {% empty %}
+        <p>No comments yet.</p>
+    {% endfor %}
+</div>
+
+{% endblock %}

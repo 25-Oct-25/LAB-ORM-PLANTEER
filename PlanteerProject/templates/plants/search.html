@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% block content %}
+
+<h1>Search Results</h1>
+
+<form action="" method="GET">
+    <input type="text" name="q" value="{{ q }}" placeholder="Search plants...">
+    <button type="submit">Search</button>
+</form>
+
+<div class="grid">
+    {% for plant in plants %}
+    <a class="card" href="/plants/{{ plant.id }}/detail/">
+        <img src="{{ plant.image.url }}" alt="">
+        <h3>{{ plant.name }}</h3>
+        <p>{{ plant.category }}</p>
+    </a>
+    {% empty %}
+        <p>No results found.</p>
+    {% endfor %}
+</div>
+
+{% endblock %}

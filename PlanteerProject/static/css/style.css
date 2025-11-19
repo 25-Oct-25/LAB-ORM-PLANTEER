@@ -1,0 +1,339 @@
+/* =======================
+   GLOBAL
+======================= */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Poppins", sans-serif;
+}
+
+body {
+    background: #fff;
+    color: #111;
+    line-height: 1.6;
+}
+
+main {
+    width: 90%;
+    max-width: 1200px;
+    margin: auto;
+}
+
+/* =======================
+   NAVBAR
+======================= */
+.nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 25px 40px;
+    border-bottom: 1px solid #eee;
+}
+
+.nav a {
+    text-decoration: none;
+    margin-left: 25px;
+    color: #111;
+    font-weight: 500;
+}
+
+.nav .add-btn {
+    background: black;
+    color: white;
+    padding: 8px 18px;
+    border-radius: 6px;
+}
+
+.logo a {
+    font-size: 22px;
+    font-weight: 600;
+}
+
+/* =======================
+   HERO SECTION
+======================= */
+.hero {
+    text-align: center;
+    padding: 60px 0;
+}
+
+.hero h1 {
+    font-size: 45px;
+    font-weight: 700;
+}
+
+.hero p {
+    font-size: 18px;
+    margin-top: 12px;
+    opacity: .8;
+}
+
+.hero form {
+    margin: 25px auto;
+    display: flex;
+    justify-content: center;
+    width: 60%;
+}
+
+.hero input {
+    flex: 1;
+    padding: 12px;
+    border: 1px solid #ccc;
+    border-right: none;
+    border-radius: 6px 0 0 6px;
+}
+
+.hero button {
+    padding: 12px 25px;
+    background: black;
+    border: none;
+    color: white;
+    cursor: pointer;
+    border-radius: 0 6px 6px 0;
+}
+
+.hero-img {
+    width: 100%;
+    margin-top: 30px;
+    border-radius: 10px;
+}
+
+/* =======================
+   GRID & CARDS
+======================= */
+.grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+    gap: 25px;
+    margin-top: 40px;
+}
+
+.card {
+    display: block;
+    background: #fafafa;
+    padding: 15px;
+    border-radius: 10px;
+    text-decoration: none;
+    color: #111;
+    transition: .2s;
+}
+
+.card:hover {
+    transform: translateY(-4px);
+}
+
+.card img {
+    width: 100%;
+    height: 170px;
+    object-fit: cover;
+    border-radius: 8px;
+}
+
+.card h3 {
+    margin-top: 10px;
+    font-size: 18px;
+}
+
+/* =======================
+   FORMS (ADD / UPDATE)
+======================= */
+form input,
+form textarea,
+form select {
+    width: 100%;
+    padding: 12px;
+    margin-bottom: 15px;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+}
+
+button {
+    background: black;
+    color: white;
+    padding: 10px 18px;
+    border-radius: 6px;
+    cursor: pointer;
+    border: none;
+}
+
+/* =======================
+   DETAIL PAGE
+======================= */
+.detail-wrapper {
+    display: flex;
+    gap: 40px;
+    margin-top: 40px;
+}
+
+.detail-img {
+    width: 45%;
+    border-radius: 10px;
+}
+
+.plant-detail-container {
+    display: flex;
+    gap: 50px;
+    padding: 40px 80px;
+    align-items: flex-start;
+}
+
+.plant-detail-container img {
+    width: 500px;
+    border-radius: 15px;
+    object-fit: cover;
+}
+
+.plant-info {
+    max-width: 500px;
+}
+
+.plant-info h1 {
+    font-size: 40px;
+    font-weight: 700;
+    margin-bottom: 20px;
+}
+
+.plant-info .info {
+    font-size: 18px;
+    line-height: 1.6;
+    margin-bottom: 12px;
+}
+
+.plant-info .yes {
+    color: #2ecc71;
+    font-weight: bold;
+}
+
+.plant-info .no {
+    color: #e74c3c;
+    font-weight: bold;
+}
+
+/* Buttons */
+.buttons {
+    margin-top: 25px;
+    display: flex;
+    gap: 15px;
+}
+
+.btn {
+    padding: 10px 22px;
+    border-radius: 8px;
+    font-size: 16px;
+    text-decoration: none;
+    color: white;
+    transition: 0.3s;
+}
+
+.btn.update {
+    background: black;
+}
+
+.btn.update:hover {
+    background: #333;
+}
+
+.btn.delete {
+    background: #e53935;
+}
+
+.btn.delete:hover {
+    background: #b71c1c;
+}
+
+
+/* =======================
+   COMMENTS
+======================= */
+.comments {
+    margin-top: 30px;
+}
+
+.comment-card {
+    padding: 15px;
+    border-radius: 8px;
+    background: #f5f5f5;
+    margin-bottom: 12px;
+}
+
+/* =======================
+   CONTACT PAGE
+======================= */
+.contact-box {
+    display: grid;
+    grid-template-columns: 1fr 350px;
+    gap: 40px;
+    margin-top: 40px;
+}
+
+.contact-img {
+    width: 100%;
+    border-radius: 10px;
+    height: 350px;
+    object-fit: cover;
+}
+
+/* =======================
+   FOOTER
+======================= */
+.footer {
+    background: #fafafa;
+    padding: 40px 80px;
+    margin-top: 80px;
+    border-top: 1px solid #e5e5e5;
+}
+
+.footer-content {
+    text-align: center;
+}
+
+.footer-title {
+    font-size: 14px;
+    color: #777;
+    margin-bottom: 30px;
+}
+
+.footer-columns {
+    display: flex;
+    justify-content: center;
+    gap: 80px;
+    margin-bottom: 30px;
+}
+
+.footer-columns h4 {
+    font-size: 16px;
+    font-weight: 600;
+    margin-bottom: 10px;
+}
+
+.footer-columns a {
+    display: block;
+    font-size: 14px;
+    color: #666;
+    text-decoration: none;
+    margin-bottom: 5px;
+}
+
+.footer-columns a:hover {
+    color: black;
+}
+
+.footer-icons {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    margin-top: 15px;
+}
+
+.footer-icons i {
+    font-size: 18px;
+    color: #555;
+    transition: 0.3s;
+    cursor: pointer;
+}
+
+.footer-icons i:hover {
+    color: black;
+    transform: translateY(-2px);
+}

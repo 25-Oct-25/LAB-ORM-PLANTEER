@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+{% block content %}
+
+<h1>Messages from Users</h1>
+
+<div class="grid">
+    {% for msg in messages %}
+    <div class="msg-card">
+        <h3>{{ msg.first_name }} {{ msg.last_name }}</h3>
+        <p><strong>{{ msg.email }}</strong></p>
+        <p>{{ msg.message }}</p>
+        <small>{{ msg.created_at }}</small>
+    </div>
+    {% empty %}
+        <p>No messages yet.</p>
+    {% endfor %}
+</div>
+
+{% endblock %}

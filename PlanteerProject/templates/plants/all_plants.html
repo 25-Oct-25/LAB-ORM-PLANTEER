@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+{% block content %}
+
+<h1>All Plants</h1>
+
+<!-- Filters -->
+<form method="GET" class="filters">
+    <select name="category">
+        <option value="">Category</option>
+        <option value="Tree">Tree</option>
+        <option value="Fruit">Fruit</option>
+        <option value="Vegetable">Vegetable</option>
+        <option value="Flower">Flower</option>
+    </select>
+
+    <select name="edible">
+        <option value="">Edible?</option>
+        <option value="true">Yes</option>
+    </select>
+
+    <button type="submit">Filter</button>
+</form>
+
+<div class="grid">
+    {% for plant in plants %}
+    <a class="card" href="/plants/{{ plant.id }}/detail/">
+        <img src="{{ plant.image.url }}" alt="">
+        <h3>{{ plant.name }}</h3>
+        <p>{{ plant.category }}</p>
+    </a>
+    {% empty %}
+        <p>No plants found.</p>
+    {% endfor %}
+</div>
+
+{% endblock %}

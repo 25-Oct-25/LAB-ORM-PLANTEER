@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+{% block content %}
+
+<h1>Update Plant</h1>
+
+<form method="POST" enctype="multipart/form-data">
+    {% csrf_token %}
+    <input name="name" value="{{ plant.name }}" required>
+    <textarea name="about">{{ plant.about }}</textarea>
+    <textarea name="used_for">{{ plant.used_for }}</textarea>
+
+    <select name="category">
+        <option value="Tree" {% if plant.category == "Tree" %}selected{% endif %}>Tree</option>
+        <option value="Fruit" {% if plant.category == "Fruit" %}selected{% endif %}>Fruit</option>
+        <option value="Vegetable" {% if plant.category == "Vegetable" %}selected{% endif %}>Vegetable</option>
+        <option value="Flower" {% if plant.category == "Flower" %}selected{% endif %}>Flower</option>
+    </select>
+
+    <label>
+        <input type="checkbox" name="is_edible" {% if plant.is_edible %}checked{% endif %}> Is Edible
+    </label>
+
+    <p>Current Image:</p>
+    <img src="{{ plant.image.url }}" width="150">
+
+    <input type="file" name="image">
+
+    <button type="submit">Update Plant</button>
+</form>
+
+{% endblock %}
