@@ -1,0 +1,63 @@
+{% extends 'main/base.html' %}
+{% load static %}
+
+{% block title %}All Plants - Planteer{% endblock %}
+
+{% block extra_css %}
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="container my-5 fade-in">
+    
+    {% with img1='beauty.png' img2='decoration.png' img3='eat.png' img4='flower.png' %} 
+    
+    <div class="header-section mb-5">
+        <h1 class="display-4 fw-bold mb-2">All Plants</h1>
+        <p class="lead text-muted">Browse our complete database and learn more about plants.</p>
+        
+        <form action="{% url 'plants:plant_search' %}" method="get" class="d-flex mt-4" style="max-width: 600px;">
+            <input class="form-control me-2 search-input shadow-sm" type="search" name="q" placeholder="Search For Plant Name, Category..." aria-label="Search">
+            <button class="btn btn-dark" type="submit">Search</button>
+        </form>
+    </div>
+    
+    <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+        {% for plant in plants %} 
+        <div class="col">
+            <div class="card h-100 plant-card border-0 shadow-sm rounded-3">
+                
+                {% if forloop.counter == 1 %}
+                    <img src="{% static 'main/images/' %}{{ img1 }}" class="card-img-top rounded-top-3 plant-card-img" alt="{{ plant.name }}">
+                {% elif forloop.counter == 2 %}
+                    <img src="{% static 'main/images/' %}{{ img2 }}" class="card-img-top rounded-top-3 plant-card-img" alt="{{ plant.name }}">
+                {% elif forloop.counter == 3 %}
+                    <img src="{% static 'main/images/' %}{{ img3 }}" class="card-img-top rounded-top-3 plant-card-img" alt="{{ plant.name }}">
+                {% elif forloop.counter == 4 %}
+                    <img src="{% static 'main/images/' %}{{ img4 }}" class="card-img-top rounded-top-3 plant-card-img" alt="{{ plant.name }}">
+                {% elif plant.image %}
+                    <img src="{{ plant.image.url }}" class="card-img-top rounded-top-3 plant-card-img" alt="{{ plant.name }}">
+                {% else %}
+                    <img src="{% static 'main/images/placeholder.jpg' %}" class="card-img-top rounded-top-3 plant-card-img" alt="Image not available">
+                {% endif %}
+                
+                <div class="card-body d-flex flex-column">
+                    <h5 class="card-title fw-bold text-dark mb-1">{{ plant.name }}</h5>
+                    <p class="card-subtitle mb-2 text-muted small">{{ plant.get_category_display }}</p> 
+                    <p class="card-text text-muted mb-3">{{ plant.about|slice:":70" }}...</p>
+                    
+                    <a href="{% url 'plants:plant_detail' plant.pk %}" class="btn btn-outline-dark btn-sm mt-auto stretched-link">View Details</a>
+                </div>
+            </div>
+        </div>
+        {% empty %}
+        <div class="col-12">
+            <p class="text-center p-5 text-muted border rounded-3">No plants found in the database.</p>
+        </div>
+        {% endfor %}
+    </div>
+    
+    {% endwith %} 
+</div>
+
+{% endblock %}

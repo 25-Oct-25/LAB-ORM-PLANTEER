@@ -1,0 +1,15 @@
+/* main/static/css/plant_form_styles.css
+   تنسيقات خاصة لصفحة إضافة/تعديل النبات (plant_form.html)
+*/
+
+.form-container {
+    padding: 30px;
+    border-radius: 12px;
+    background-color: white;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+}
+
+.form-container h1 {
+    color: #008000; /* لون أخضر للعناوين */
+    font-weight: 600;
+}
