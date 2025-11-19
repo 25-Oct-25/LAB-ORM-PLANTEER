@@ -1,0 +1,74 @@
+{% extends 'main/base.html' %}
+{% load static %}
+
+<!-- Page title -->
+{% block title %} {% endblock %}
+
+<!-- Page content -->
+{% block content %}
+
+<!---
+<div class="content">
+    <img src="{{ plant.image.url}}" alt="plant image" class="w-100">
+    <div class="content-detail">
+        <h5> {{plant.about}}</h5>
+        <h6>{{plant.category}}</h6>
+    </div>
+
+</div>
+-->
+
+<div class="row d-flex justify-content-center">
+
+    <div class="col">
+        <div class="d-flex flex-row gap-2">
+            <div class="d-flex justify-content-center align-items-center">
+                <img src="{{ plant.image.url}}" alt="plant image" class="w-300 h-300">
+            </div>
+            <div class="d-flex flex-column justify-content-center ">
+                <h2>{{ plant.name }}</h2>
+                <h6>{{plant.category}}</h6> 
+                <p>{{ plant.about }}</p>
+                <p>{{ plant.created_at}}</p>
+                <p>  {{plant.is_edible}}</p>
+                <h5> {{plant.used_for}}</h5>
+                               
+            </div>
+
+        </div>
+        <div class="d-flex justify-content-end gap-2">
+
+            <a href="{% url 'plants:plant_update_view' plant.id %}" class="btn btn-primary">update</a>
+            <a  class="btn btn-danger" href="{% url 'plants:plant_delete_view' plant.id %}"  data-bs-toggle="modal" data-bs-target="#exampleModal">delete</a>
+        </div>
+    </div>
+
+</div>
+
+
+    <ul>
+        <div class="row mt-5 row-cols-1 row-cols-md-3 g-4">
+        {% for similar in filter_plant %}
+            <li>
+                <div class="col">
+                    
+                        <div class="d-flex flex-column justify-content-start align-items-start h-100 p-4 shadow gap-2">
+
+                            <img src="{{similar.image.url}}" class="w-100 poster-thumb object-fit-cover"/>
+                            <a href="{% url 'plants:plant_detail_view' similar.id %}"><h3>{{similar.name}}</h3></a>
+                            <p> Click on the title to know more about it </p>
+                            <h5>{{similar.category}}</h5>
+                        </div>
+                </div>
+            
+            </li>
+            {% empty %}
+            <li>
+                there is no other plant the same
+            </li>
+        {% endfor %}
+</div>   
+ </ul>
+
+
+{% endblock %}

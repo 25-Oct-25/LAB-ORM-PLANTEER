@@ -1,0 +1,60 @@
+{% extends 'main/base.html' %}
+
+
+{% block title %}Show all plant post{% endblock %}
+
+{% block content %}
+<h1>
+    All Plants
+</h1>
+
+<h3>
+    Filter by Category
+</h3>
+    <div class="d-flex gap-2 align-items-center">
+        <h5 class="m-0 p-0">Category: </h5>
+        <form method="GET">
+            <select class="form-select" name="category">
+                            
+                <option selected>Category</option>
+                <option value="fruits">Fruits</option>
+                <option value="vegetables">Vegetables</option>
+                <option value="leafy_greens">Leafy Greens</option>
+                <option value="ornamental">Ornamental</option>
+                <option value="other">Other</option>
+            </select>   
+
+            <button type="submit">Category Filter</button>         
+        </form>
+        <form method="GET">
+  
+            <select name="is_edible">
+                <option value="">Any</option>
+                <option value="True">Edible</option>
+                <option value="False">Not Edible</option>
+            </select>
+            
+            <button type="submit">Edible Filter</button>         
+        </form>
+  
+    </div>
+
+
+<div class="row mt-2 row-cols-1 row-cols-md-3 g-4 d-flex justify-content-center">
+
+    {% for plant in plants %}
+      <div class="col">
+          
+            <div class="d-flex flex-column justify-content-start align-items-start h-100 p-4 shadow gap-2">
+
+                <img src="{{plant.image.url}}" class="w-100 poster-thumb object-fit-cover"/>
+                <a href="{% url 'plants:plant_detail_view' plant.id %}"><h3>{{plant.name}}</h3></a>
+                <p> Click on the title to know more about it </p>
+                <h5>{{plant.category}}</h5>
+            </div>
+      </div>
+    {% endfor %}
+  
+  
+</div>
+{% endblock %}

@@ -1,0 +1,74 @@
+{% extends 'main/base.html' %}
+{% load static %}
+
+<!-- Page title -->
+{% block title %} {% endblock %}
+
+<!-- Page content -->
+{% block content %}
+    <h1>
+        Create New Plant Post
+    </h1>
+
+    <div class="row d-flex justify-content-center">
+        <div class="col-6">
+
+            <form  class="d-flex flex-column gap-2" action="{% url 'plants:create_plant_view' %}" method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+
+                <h3>
+                    Enter the name of plant
+                </h3>
+                <input type="text" placeholder="Plant Name" name="name" class="form-control" required minlength="5" maxlength="512"/>
+                
+                <h3>
+                    Write down a short description about plant
+                </h3>
+                <textarea placeholder="Short description about plant" name="about" class="form-control" required></textarea>
+                
+                <h3>
+                    Write down what the plant used for?
+                </h3>
+                <textarea placeholder="The plant used for ..." name="used_for" class="form-control" required></textarea>
+                
+                <h3>
+                    Upload the image of plant
+                </h3>
+                <input type="file" name="image" class="form-control" required accept="image/*"/>
+
+                <h3>
+                    Select the category of the plant 
+                </h3>
+                <div class="d-flex gap-2 align-items-center">
+                    <h5 class="m-0 p-0">Category: </h5>
+                    <select class="form-select" name="category">
+                        
+                        <option selected>Category</option>
+                        <option value="fruits">Fruits</option>
+                        <option value="vegetables">Vegetables</option>
+                        <option value="leafy_greens">Leafy Greens</option>
+                        <option value="ornamental">Ornamental</option>
+                        <option value="other">Other</option>
+                    </select>   
+                </div>
+
+                <h3>
+                    Is edible
+                </h3>
+                <select class="form-select" name="is_edible">
+                        <option selected> Is edible </option>
+                        <option value= "True"> Yes </option>
+                        <option value="False" > No </option>
+                </select> 
+                <h3>
+                    Created at
+                </h3>
+                <input type="date" name="created_at" class="form-control"/>
+
+                <input type="submit" value="Create Plant Post" class="btn btn-primary" />
+                
+            </form>
+
+        </div>
+    </div>
+{% endblock %}
