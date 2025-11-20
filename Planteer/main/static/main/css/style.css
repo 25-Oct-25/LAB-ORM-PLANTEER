@@ -1,5 +1,4 @@
 /* =========================
-   إعدادات عامة
 ========================= */
 * {
     margin: 0;
@@ -15,6 +14,9 @@ body {
     background-color: #ffffff;
     min-height: 100vh;
 }
+
+
+
 
 .main-content {
     flex: 1;
@@ -78,41 +80,41 @@ body {
 /* =========================
    قسم Hero
 ========================= */
-/* Hero Section */
 .hero-section {
-    position: relative;
-    width: 100%;
-    height: 90vh; /* تقريبا نفس الحجم الكامل للشاشة */
+    height: 100vh;
     background: linear-gradient(rgba(0,0,0,0.2), rgba(0,0,0,0.3)),
-                url('https://images.unsplash.com/photo-1542273917363-3b1817f69a2d?w=1600') center/cover no-repeat;
+                url('https://images.unsplash.com/photo-1542273917363-3b1817f69a2d?w=1600') center/cover;
     display: flex;
     align-items: center;
-    justify-content: flex-start; /* خلي النص على اليسار */
-    padding: 0 40px; /* بدّل padding-right:700px */
-    box-sizing: border-box;
+    justify-content: flex-start;
+    padding-left: 10px;
+    padding-right: 700px;
+    position: relative;
 }
 
 .hero-text {
-    max-width: 600px;
+    max-width: 650px;
     color: #fff;
     text-align: left;
-    z-index: 2;
 }
 
 .hero-text h2 {
-    font-size: 50px;
+    font-size: 56px;
     font-weight: 400;
     line-height: 1.2;
     margin-bottom: 20px;
+    margin-top: 200px;
+    text-shadow: 0 2px 10px rgba(0,0,0,0.3);
 }
 
 .hero-text p {
     font-size: 16px;
-    margin-bottom: 30px;
+    line-height: 1.8;
+    margin-bottom: 40px;
     opacity: 0.95;
+    text-shadow: 0 1px 5px rgba(0,0,0,0.5);
 }
 
-/* Search Bar */
 .hero-search {
     display: flex;
     width: 100%;
@@ -128,6 +130,7 @@ body {
     border: none;
     font-size: 15px;
     outline: none;
+    background: transparent;
     text-align: right;
 }
 
@@ -143,7 +146,6 @@ body {
 .hero-search button:hover {
     background: #4a6a4a;
 }
-
 /* -------------------------- */
 /* Responsive Hero Section */
 /* -------------------------- */
@@ -216,6 +218,17 @@ body {
     background: none;
     border-radius: 5px;
     display: inline-block;
+}
+
+
+/* نمط مخصص لمحاذاة عنوان "Related Plants" إلى اليسار */
+.related-plants-title {
+    text-align: left !important; /* محاذاة لليسار */
+    direction: ltr !important;   /* تغيير اتجاه النص إلى اليسار لضمان التناسق */
+    margin-left: 0 !important;   /* إزالة أي هامش يسار قديم */
+    margin-right: auto;          /* دفع العنوان نحو اليسار */
+    padding-left: 20px;          /* للحفاظ على مسافة من حافة الشاشة */
+    margin-top: 40px;            /* مسافة علوية مناسبة */
 }
 
 /* =========================
@@ -1052,4 +1065,156 @@ body {
         padding: 8px 14px;
         font-size: 14px;
     }
+}
+
+
+
+
+
+/* ===== Comment Form (محاذاة يسار) ===== */
+.comment-form {
+    width: 45%;
+    margin-left: 0;
+    margin-right: auto;
+    margin-top: 40px;
+    direction: ltr;         
+    text-align: left;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.comment-form input,
+.comment-form textarea,
+.comment-form select {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-size: 15px;
+}
+
+.comment-form textarea {
+    height: 120px;
+}
+
+.comment-form .submit-btn {
+    background: #3c8f3c;
+    color: white;
+    padding: 8px 25px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    align-self: flex-start;
+}
+
+.comment-form .submit-btn:hover {
+    background: #2e6e2e;
+}
+
+
+/* ===== Reviews Section (Slider Design) ===== */
+.reviews-container.slider-wrapper {
+    width: 45%;
+    margin-left: 0;
+    margin-right: auto;
+    margin-top: 60px; 
+    direction: ltr;
+    display: flex;
+    flex-direction: column;
+    position: relative; /* مهم لتموضع الأزرار المطلق */
+    overflow: hidden; 
+}
+
+/* حاوية الشرائح نفسها */
+.review-slides {
+    display: flex;
+    transition: transform 0.5s ease-in-out; 
+    /* لا نحتاج هامش علوي هنا لأن الأزرار خرجت من التدفق الطبيعي */
+}
+
+/* تصميم الكارد المحدث */
+.review-card {
+    background: #ffffff; 
+    padding: 25px;       
+    border-radius: 12px; 
+    border: none;        
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05); 
+    min-width: 100%; 
+    box-sizing: border-box; 
+    /* هامش لضمان عدم تداخل الأسهم مع محتوى الكارد إذا كانت الأسهم قريبة جداً */
+    padding-left: 40px; 
+    padding-right: 40px;
+}
+
+.review-card:hover {
+    transform: translateY(-2px); 
+}
+
+.review-header {
+    display: flex;
+    justify-content: space-between;
+    font-weight: bold;
+    margin-bottom: 10px;
+    align-items: center;
+}
+
+.review-header strong {
+    color: #333;
+    font-size: 1.1em;
+}
+
+.review-rating {
+    color: #c2b963; 
+    font-size: 1em;
+}
+
+.review-card p {
+    margin: 15px 0; 
+    color: #555;
+    line-height: 1.4;
+}
+
+.review-card small {
+    color: #999; 
+    font-size: 0.8em;
+}
+
+/* أنماط أزرار التنقل (شفافة وموضوعة على الجوانب) */
+.prev-btn, .next-btn {
+    position: absolute; /* وضع مطلق */
+    top: 40%;           /* في منتصف الارتفاع */
+    transform: translateY(-50%); /* ضبط التوسيط العمودي بدقة */
+    background: none;   /* خلفية شفافة */
+    border: none;       /* بدون حدود */
+    color: #484848;     /* لون السهم (أخضر) */
+    cursor: pointer;
+    font-size: 1em;     /* حجم كبير للسهم */
+    padding: 5px;
+    z-index: 10;        /* للتأكد من أنها فوق الكارد */
+    opacity: 0.7;       /* جعلها شفافة قليلاً */
+}
+
+.prev-btn:hover, .next-btn:hover {
+    opacity: 1;         /* تصبح واضحة عند المرور عليها */
+    background: none;
+}
+
+.prev-btn {
+    left: 0px; /* على الحافة اليسرى للحاوية */
+}
+
+.next-btn {
+    right: 0px; /* على الحافة اليمنى للحاوية */
+}
+
+
+/* ===== Wrapper for Form and Reviews (لجعلهم متقابلين) ===== */
+.form-reviews-wrapper {
+    display: flex;
+    justify-content: space-between;
+    gap: 5%;
+    direction: ltr; 
+    margin-top: 20px;
+    margin-bottom: 80px; 
 }

@@ -40,18 +40,68 @@
                         <a href="{% url 'plant_delete' plant.pk %}" class="btn-del">Delete</a>
                     </div>
                 </div>
-
             </div>
         </div>
-
     </div>
 </div>
 
-<!-- Related Plants -->
+<!-- Start of the updated section for comments and reviews side-by-side -->
+<div class="container">
+    <div class="form-reviews-wrapper">
+        
+        <!-- Comment Form Section (Left Side) -->
+        <form action="{% url 'add_review' plant.pk %}" method="post" class="comment-form">
+            {% csrf_token %}
+            <h2>Leave a Comment</h2> 
+            <input type="text" name="name" placeholder="Your Name" required>
+            <textarea name="comment" placeholder="Your Comment" required></textarea>
+            <select name="rating" required>
+                <option value="">--Choose Rating--</option>
+                <option value="1">1 - Poor</option>
+                <option value="2">2 - Fair</option>
+                <option value="3">3 - Good</option>
+                <option value="4">4 - Very Good</option>
+                <option value="5">5 - Excellent</option>
+            </select>
+            <button type="submit" class="submit-btn">Submit</button>
+        </form>
+
+        <!-- Reviews Section (Slider) -->
+        <div class="reviews-container slider-wrapper">
+            <h2>Reviews</h2> 
+            
+            <!-- Reviews Slides (Hidden by default, controlled by JS) -->
+            <div class="review-slides">
+                {% if reviews %}
+                    {% for review in reviews %}
+                    <div class="review-card">
+                        <div class="review-header">
+                            <strong>{{ review.name }}</strong>
+                            <span class="review-rating">Rating: {{ review.rating }}/5</span>
+                        </div>
+                        <p>{{ review.comment }}</p>
+                        <small>{{ review.created_at|date:"d M Y H:i" }}</small>
+                    </div>
+                    {% endfor %}
+                {% else %}
+                <p>No reviews yet.</p>
+                {% endif %}
+            </div>
+
+            <!-- Navigation Buttons (Absolute Positioned) -->
+            <button class="prev-btn">←</button>
+            <button class="next-btn">→</button>
+        </div>
+    </div>
+</div>
+<!-- End of the updated section -->
+
+
+<!-- Related Plants (This section remains unchanged) -->
 {% if related_plants %}
 <div class="related-section">
     <div class="container">
-        <h2>Related Plants</h2>
+        <h2 class="related-plants-title">Related Plants</h2> <!-- تم إضافة هذا الكلاس -->
         <div class="plants-grid">
             {% for related in related_plants %}
             <div class="plant-card">
@@ -69,5 +119,48 @@
     </div>
 </div>
 {% endif %}
+
+<!-- JavaScript goes here -->
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+    const slidesContainer = document.querySelector('.review-slides');
+    const cards = document.querySelectorAll('.review-card');
+    const prevBtn = document.querySelector('.prev-btn');
+    const nextBtn = document.querySelector('.next-btn');
+
+    if (cards.length > 0 && slidesContainer && prevBtn && nextBtn) {
+        let currentIndex = 0;
+
+        function updateSliderPosition() {
+            const offset = -currentIndex * 100;
+            slidesContainer.style.transform = `translateX(${offset}%)`;
+        }
+
+        function showNextReview() {
+            if (currentIndex < cards.length - 1) {
+                currentIndex++;
+            } else {
+                currentIndex = 0; 
+            }
+            updateSliderPosition();
+        }
+
+        function showPrevReview() {
+            if (currentIndex > 0) {
+                currentIndex--;
+            } else {
+                currentIndex = cards.length - 1;
+            }
+            updateSliderPosition();
+        }
+
+        nextBtn.addEventListener('click', showNextReview);
+        prevBtn.addEventListener('click', showPrevReview);
+    } else {
+        if (prevBtn) prevBtn.style.display = 'none';
+        if (nextBtn) nextBtn.style.display = 'none';
+    }
+});
+</script>
 
 {% endblock %}

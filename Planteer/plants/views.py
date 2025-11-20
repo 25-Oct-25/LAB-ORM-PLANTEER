@@ -1,5 +1,7 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from .models import Plant
+from django.http import HttpRequest, HttpResponse
+
+from .models import Plant , Review
 from .forms import PlantForm
 from .models import Plant, CATEGORY_CHOICES
 
@@ -27,6 +29,8 @@ def plants_list(request):
     }
     return render(request, 'plants/plants_list.html', context)
 
+
+
 # تفاصيل النبتة مع Related Plants
 def plant_detail(request, pk):
     plant = get_object_or_404(Plant, pk=pk)
@@ -34,11 +38,17 @@ def plant_detail(request, pk):
     # Related Plants: نفس الفئة، غير النبتة الحالية
     related_plants = Plant.objects.filter(category=plant.category).exclude(id=plant.id)[:4]
 
+    # جلب التعليقات المرتبطة بالنبتة
+    reviews = plant.reviews.all().order_by('-created_at')
+
     context = {
         'plant': plant,
         'related_plants': related_plants,
+        'reviews': reviews,  # إضافة التعليقات للـ template
     }
     return render(request, 'plants/plant_detail.html', context)
+
+
 
 # إضافة نبتة جديدة
 def plant_create(request):
@@ -74,3 +84,25 @@ def plant_search(request):
         'query': query
     }
     return render(request, 'plants/plant_search.html', context)
+
+
+
+
+
+
+
+def add_review_view(request, pk):
+    plant = get_object_or_404(Plant, pk=pk)
+
+    if request.method == "POST":
+        name = request.POST.get("name")
+        comment = request.POST.get("comment")
+        rating = request.POST.get("rating")
+
+        Review.objects.create(
+            plant=plant,
+            name=name,
+            comment=comment,
+            rating=rating
+        )
+        return redirect("plant_detail", pk=pk)

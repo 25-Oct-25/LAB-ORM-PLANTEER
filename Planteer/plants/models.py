@@ -25,3 +25,14 @@ class Plant(models.Model):
 
 
 
+
+class Review(models.Model):
+    plant = models.ForeignKey(Plant, on_delete=models.CASCADE, related_name='reviews')
+    name = models.CharField(max_length=100)
+    comment = models.TextField()
+    rating = models.PositiveSmallIntegerField()  # من 1 إلى 5
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"{self.name} - {self.plant.name}"
+

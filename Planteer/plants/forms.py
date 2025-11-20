@@ -1,5 +1,7 @@
 from django import forms
 from .models import Plant
+from .models import Review
+
 
 class PlantForm(forms.ModelForm):
     class Meta:
@@ -16,4 +18,10 @@ class PlantForm(forms.ModelForm):
 
 
 
-
+class ReviewForm(forms.ModelForm):
+    class Meta:
+        model = Review
+        fields = ['name', 'comment', 'rating']
+        widgets = {
+            'rating': forms.Select(choices=[(i,i) for i in range(1,6)])
+        }
