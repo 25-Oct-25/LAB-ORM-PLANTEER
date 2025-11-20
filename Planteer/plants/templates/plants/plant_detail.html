@@ -1,0 +1,43 @@
+{% extends 'main/base.html' %}
+{% block content %}
+
+<div class="row mb-5">
+    <div class="col-md-6">
+        <img src="{{ plant.image.url }}" class="img-fluid rounded">
+    </div>
+
+    <div class="col-md-6">
+        <h2>{{ plant.name }}</h2>
+        <p class="fw-bold">{{ plant.category }}</p>
+
+        <p>{{ plant.about }}</p>
+
+        <p class="mt-3"><strong>Used For:</strong><br>{{ plant.used_for }}</p>
+
+        <p class="mt-3"><strong>Is Edible:</strong> {{ plant.is_edible|yesno:"Yes,No" }}</p>
+
+        <div class="mt-4">
+            <a href="{% url 'plants:update_plant_view' plant.id %}" class="btn btn-warning">Update</a>
+            <a href="{% url 'plants:delete_plant' plant.id %}" class="btn btn-danger">Delete</a>
+        </div>
+    </div>
+</div>
+
+<h4 class="mb-3">Related Plants</h4>
+
+<div class="row g-4">
+    {% for item in related %}
+    <div class="col-md-4">
+        <div class="card">
+            <img src="{{ item.image.url }}" class="card-img-top" style="height:200px; object-fit:cover;">
+            <div class="card-body">
+                <h5>{{ item.name }}</h5>
+                <p class="text-muted">{{ item.about|truncatechars:40 }}</p>
+                <p class="fw-bold">{{ item.category }}</p>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+
+{% endblock %}
