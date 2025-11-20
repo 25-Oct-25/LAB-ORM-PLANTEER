@@ -20,6 +20,15 @@ class Plant(models.Model):
     created_at = models.DateTimeField(auto_now=True)
 
 
+class Review (models.Model):
+
+    plant = models.ForeignKey( Plant, on_delete=models.CASCADE )
+
+    name = models.CharField(max_length=1024)
+    rating = models.SmallIntegerField()
+    comment = models.TextField()
+    create_at = models.DateTimeField( auto_now_add=True )
+
 class Contact(models.Model):
 
     first_name = models.CharField(max_length=1024)

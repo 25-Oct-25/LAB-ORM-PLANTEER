@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from django.http import HttpRequest, HttpResponse
 
-from .models import Plant
+from .models import Plant, Review
 from .models import Contact
 
 # Create your views here.
@@ -44,7 +44,8 @@ def plant_detail_view(request:HttpRequest, plant_id:int):
     plant = Plant.objects.get(pk=plant_id)
     filter_plant = Plant.objects.all().filter(category = plant.category).exclude(pk=plant.pk)
 
-    return render(request, 'plants/plant-detail.html', {"plant":plant, "filter_plant":filter_plant})
+    reviews = Review.objects.filter( plant = plant)
+    return render(request, 'plants/plant-detail.html', {"plant":plant, "filter_plant":filter_plant, "reviews":reviews})
 
 #delete plant
 def plant_delete_view(request:HttpRequest, plant_id:int):
@@ -98,3 +99,14 @@ def contact_message_view(request:HttpRequest):
     msg = Contact.objects.all()
     
     return render(request, "plants/message.html",{"msg":msg})
+
+def add_review_view( request:HttpRequest, plant_id:int ):
+
+    if request.method == "POST":
+        
+        plant_object = Plant.objects.get( pk = plant_id )
+
+        new_review = Review( plant = plant_object,name = request.POST["name"], rating = request.POST["rating"], comment = request.POST["comment"])
+        new_review.save()
+
+    return redirect("plants:plant_detail_view", plant_id = plant_id)

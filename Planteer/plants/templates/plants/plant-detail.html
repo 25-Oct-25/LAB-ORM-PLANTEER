@@ -70,5 +70,37 @@
 </div>   
  </ul>
 
+<hr>
+
+<h2>
+    Comments {{ reviews.count }}
+</h2>
+
+<div class="d-flex flex-column gap-3">
+  {% for review in reviews %}
+    <div class="d-flex flex-column p-3 shadow">
+        <h4>{{ review.name }}</h4>
+        <p>{{ review.comment }}</p>
+        <p class="text-muted">{{ review.create_at}}</p>
+    </div>
+  {% endfor %}
+</div>
+
+<h2 class="mt-5">Add Comment</h2>
+<form class="d-flex flex-column gap-2" action="{% url 'plants:add_review_view' plant.id %}" method="post">
+  {% csrf_token %}
+  <input type="text" name="name" id="" class="form-control" required minlength="3" placeholder="name">
+  <textarea type="text" name="comment" id="" class="form-control" required minlength="3" placeholder="Comment ..." name="" id=""></textarea>
+  <select class="form-select" name="rating" required>
+    <option value="">Rating</option>
+    <option value="1">1</option>
+    <option value="2">2</option>
+    <option value="3">3</option>
+    <option value="4">4</option>
+    <option value="5">5</option>
+  </select>
+
+  <input type="submit" class="btn btn-primary" value="Add Review">
+</form>
 
 {% endblock %}
