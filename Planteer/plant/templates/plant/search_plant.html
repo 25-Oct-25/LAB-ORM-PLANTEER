@@ -1,0 +1,52 @@
+{% extends "main/base.html" %}
+{% load static %}
+
+{% block title %}Search Page{% endblock %}
+
+{% block content %}
+
+<div class="container mt-5">
+
+    <!-- عنوان الصفحة -->
+    <h2 class="fw-bold mb-3">Search Results</h2>
+
+    <!-- نموذج البحث -->
+    <form action="{% url 'plant:search_plant_view' %}" method="GET" 
+          class="d-flex mb-4" style="max-width: 500px;">
+        <input 
+            class="form-control me-2" 
+            type="search" 
+            placeholder="Search For Plant..." 
+            name="search"
+            value="{{ search_query }}"
+        >
+        <button class="btn btn-dark">Search</button>
+    </form>
+
+    <!-- عرض النتائج -->
+    <div class="row row-cols-1 row-cols-md-3 g-4">
+        {% for plant in plant %}
+        <div class="col">
+            <div class="card" style="width: 18rem;">
+                <img src="{{ plant.image.url }}" class="card-img-top" style="height: 200px; object-fit: cover;">
+                
+                <div class="card-body text-start">
+                    <a href="{% url 'plant:plant_detail_view' plant.id %}" 
+                       class="text-decoration-none fw-bold" style="color: #333;">
+                        <h5>{{ plant.name }}</h5>
+                    </a>
+
+                    <p>{{ plant.category }}</p>
+                    <p>{{ plant.used_for }}</p>
+                    <p><strong>Edible:</strong> {{ plant.is_edible }}</p>
+                </div>
+            </div>
+        </div>
+        {% empty %}
+        <p>No plants found.</p>
+        {% endfor %}
+    </div>
+
+</div>
+
+{% endblock %}
