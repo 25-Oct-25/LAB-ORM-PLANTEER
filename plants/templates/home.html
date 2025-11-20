@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<h1>Plant Database For Plants Lovers</h1>
+
+<form action="/plants/search/" method="GET">
+    <input type="text" name="q" placeholder="Search for plant...">
+    <button type="submit">Search</button>
+</form>
+
+<h2>Plants</h2>
+
+<div class="grid grid-3">
+    {% for plant in plants %}
+    <div>
+        <img src="{{ plant.image.url }}">
+        <h3>{{ plant.name }}</h3>
+        <p>{{ plant.category }}</p>
+    </div>
+    {% endfor %}
+</div>
+
+{% endblock %}

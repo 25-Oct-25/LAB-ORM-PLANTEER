@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Planteer</title>
+
+    <style>
+        body { margin:0; font-family:Arial, sans-serif; }
+        header, nav { padding:20px; display:flex; justify-content:space-between; align-items:center; }
+        a { text-decoration:none; margin-left:20px; }
+        .container { width:90%; margin:auto; padding:20px 0; }
+        img { max-width:100%; border-radius:8px; }
+        .grid { display:grid; gap:20px; }
+        @media (min-width: 768px) {
+            .grid-3 { grid-template-columns: repeat(3, 1fr); }
+            .grid-4 { grid-template-columns: repeat(4, 1fr); }
+        }
+    </style>
+</head>
+
+<body>
+
+<header>
+    <h2>Planteer</h2>
+    <nav>
+        <a href="/">Home</a>
+        <a href="/plants/all/">All Plants</a>
+        <a href="/plants/new/">Add Plant</a>
+    </nav>
+</header>
+
+<div class="container">
+    {% block content %}
+    {% endblock %}
+</div>
+
+</body>
+</html>

@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div>
+    <img src="{{ plant.image.url }}">
+    <h1>{{ plant.name }}</h1>
+    <h3>Category: {{ plant.category }}</h3>
+    <p>{{ plant.about }}</p>
+
+    <p><strong>Used For:</strong> {{ plant.used_for }}</p>
+
+    <p><strong>Is Edible:</strong> 
+        {% if plant.is_edible %} Yes {% else %} No {% endif %}
+    </p>
+
+    <a href="/plants/{{ plant.id }}/update/">Update</a> |
+    <a href="/plants/{{ plant.id }}/delete/">Delete</a>
+</div>
+
+<hr>
+
+<h2>Related Plants</h2>
+
+<div class="grid grid-3">
+    {% for item in related_plants %}
+    <div>
+        <a href="/plants/{{ item.id }}/detail/">
+            <img src="{{ item.image.url }}">
+        </a>
+        <h3>{{ item.name }}</h3>
+        <p>{{ item.category }}</p>
+    </div>
+    {% endfor %}
+</div>
+
+{% endblock %}
