@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+{% block title %}All Plants{% endblock %}
+{% block content %}
+
+<section class="section-header">
+  <div>
+    <h1 class="section-title">All plants</h1>
+    <p class="section-sub">Filter by category and edible type</p>
+  </div>
+</section>
+
+<section class="form-card" style="margin-bottom:1.5rem;">
+  <form method="get">
+    {{ form.as_p }}
+    <button type="submit" class="btn btn-primary">Apply filters</button>
+  </form>
+</section>
+
+<section>
+  <div class="plant-grid">
+    {% for plant in plants %}
+      <article class="plant-card">
+        {% if plant.image %}
+          <img src="{{ plant.image.url }}" alt="{{ plant.name }}">
+        {% endif %}
+        <div class="plant-card-body">
+          <h3 class="plant-card-name">{{ plant.name }}</h3>
+          <p class="plant-card-meta">
+            {{ plant.category|title }} ·
+            {% if plant.is_edible %}Edible{% else %}Not edible{% endif %}
+          </p>
+          <a href="{% url 'plants:detail' plant.id %}" class="plant-card-link">
+            Details →
+          </a>
+        </div>
+      </article>
+    {% empty %}
+      <p>No plants found.</p>
+    {% endfor %}
+  </div>
+</section>
+
+{% endblock %}

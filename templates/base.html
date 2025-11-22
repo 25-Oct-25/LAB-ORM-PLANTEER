@@ -1,0 +1,113 @@
+{% load static %}
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>{% block title %}Planeteer{% endblock %}</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+<body>
+
+  <!-- Navbar  -->
+  <header class="navbar">
+    <div class="navbar-inner">
+     
+      <a href="{% url 'main:home' %}" class="navbar-logo">
+        <span class="logo-icon">🌿</span>
+        <span class="logo-text">Planeteer</span>
+      </a>
+
+     
+      <nav class="nav-links">
+        <a href="{% url 'main:home' %}" class="nav-link">Home</a>
+        <a href="{% url 'plants:all' %}" class="nav-link">All Plants</a>
+        <a href="{% url 'plants:new' %}" class="nav-link nav-link-primary">Add Plant</a>
+        <a href="{% url 'plants:search' %}" class="nav-link">Search</a>
+        <a href="{% url 'main:contact' %}" class="nav-link">Contact</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="page-container">
+    {% block content %}{% endblock %}
+  </main>
+
+  
+   <footer class="footer">
+  <div class="footer-inner">
+    <div class="footer-columns">
+      <!-- Help -->
+      <div class="footer-col">
+        <h4 class="footer-title">Help</h4>
+        <span class="footer-underline"></span>
+        <ul class="footer-list">
+          <li><a href="#">Plant care</a></li>
+          <li><a href="#">Help center</a></li>
+          <li><a href="#">Privacy policy</a></li>
+          <li><a href="#">Terms &amp; conditions</a></li>
+        </ul>
+      </div>
+
+      <!-- Quick Links -->
+      <div class="footer-col">
+        <h4 class="footer-title">Quick Links</h4>
+        <span class="footer-underline"></span>
+        <ul class="footer-list">
+          <li><a href="{% url 'plants:all' %}">All plants</a></li>
+          <li><a href="{% url 'plants:new' %}">Add plant</a></li>
+          <li><a href="{% url 'plants:search' %}">Search plants</a></li>
+          <li><a href="{% url 'main:contact' %}">Contact us</a></li>
+        </ul>
+      </div>
+
+      <!-- Top Categories -->
+      <div class="footer-col">
+        <h4 class="footer-title">Top Categories</h4>
+        <span class="footer-underline"></span>
+        <ul class="footer-list">
+          <li><a href="#">Indoor plants</a></li>
+          <li><a href="#">Outdoor plants</a></li>
+          <li><a href="#">Herbs</a></li>
+          <li><a href="#">Edible plants</a></li>
+        </ul>
+      </div>
+
+      <!-- Follow Us -->
+      <div class="footer-col">
+        <h4 class="footer-title">Follow Us</h4>
+        <span class="footer-underline"></span>
+
+        <div class="footer-badges">
+          <div class="store-badge">
+            <span class="store-badge-small">Available on</span>
+            <span class="store-badge-big">App Store</span>
+          </div>
+          <div class="store-badge">
+            <span class="store-badge-small">Available on</span>
+            <span class="store-badge-big">Google Play</span>
+          </div>
+        </div>
+
+        <div class="footer-socials">
+          <a href="#" class="footer-social">in</a>
+          <a href="#" class="footer-social">X</a>
+          <a href="#" class="footer-social">wa</a>
+          <a href="#" class="footer-social">ig</a>
+        </div>
+      </div>
+    </div>
+
+    <hr class="footer-divider">
+
+    <div class="footer-bottom">
+      <span>All rights reserved 2025 © Planeteer 🌱</span>
+    </div>
+  </div>
+</footer>
+
+</html>
+
+</body>
+</html>
+
