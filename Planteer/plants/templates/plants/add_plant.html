@@ -1,0 +1,47 @@
+{% extends 'main/base.html' %}
+{% load static %}
+
+{% block content %}
+
+<div class="form-container">
+
+    <h1 class="form-title">Add New Plant</h1>
+
+    <form method="POST" enctype="multipart/form-data" class="plant-form">
+        {% csrf_token %}
+
+        <label class="form-label">Name</label>
+        <input type="text" name="name" class="form-input" required>
+
+        <label class="form-label">About</label>
+        <textarea name="about" class="form-textarea" required></textarea>
+
+        <label class="form-label">Used For</label>
+        <textarea name="used_for" class="form-textarea" required></textarea>
+
+        <label class="form-label">Upload Plant Image</label>
+        <input type="file" name="image" class="form-input-file" required>
+
+        <label class="form-label">Category</label>
+        <select name="category" class="form-select" required>
+            <option value="">Choose Category</option>
+            <option value="MED">Medicinal</option>
+            <option value="ORN">Ornamental</option>
+            <option value="ARO">Aromatic</option>
+            <option value="FRT">Fruit Plants</option>
+            <option value="TOX">Toxic Plants</option>
+            <option value="IN">Indoor Plants</option>
+            <option value="OUT">Outdoor Plants</option>
+        </select>
+
+        <label class="checkbox-wrapper">
+            <input type="checkbox" name="is_edible">
+            <span>Edible?</span>
+        </label>
+
+        <button type="submit" class="submit-btn">Add Plant</button>
+    </form>
+
+</div>
+
+{% endblock %}

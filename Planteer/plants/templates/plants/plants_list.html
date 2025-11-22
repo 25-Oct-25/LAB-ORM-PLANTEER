@@ -1,0 +1,35 @@
+{% extends 'main/base.html' %}
+{% load static %}
+
+{% block content %}
+
+    <section class="all-plants-section">
+
+        <div class="plants-container">
+            
+            <h1 class="page-title">All Plants ({{ count }})</h1>
+            <p class="page-subtitle">Explore all available plants</p>
+
+            <div class="cards-grid">
+                {% for plant in plants %}
+                    <a href="{% url 'plants:plants_detail_view' plant.id %}" class="card-link">
+                        <article class="plant-card">
+                            <img src="{{ plant.image.url }}" alt="{{ plant.name }}" class="plant-img">
+
+                            <div class="plant-card-body">
+                                <h3 class="plant-name">{{ plant.name }}</h3>
+                                <p class="plant-category">{{ plant.category }}</p>
+                            </div>
+                        </article>
+                    </a>
+                {% empty %}
+                    <p>No plants found.</p>
+                {% endfor %}
+            </div>
+
+        </div>   
+
+    </section>
+
+
+{% endblock %}

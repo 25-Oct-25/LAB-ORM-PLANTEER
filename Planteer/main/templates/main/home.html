@@ -1,0 +1,53 @@
+{% extends 'main/base.html' %}
+{% load static %}
+
+{% block content %}
+
+<div class="page-wrapper">
+
+    <section class="hero-section">
+        <div class="hero-bg">
+            <img src="{% static 'images/hero.jpeg' %}" alt="Hero Image">
+        </div>
+
+        <div class="hero-content">
+            <h1>Planteer</h1>
+            <h2>Plant Database For Plants Lovers</h2>
+
+            <form method="get" action="{% url 'plants:plants_search_view' %}">
+                <div class="search-bar">
+                    <input type="text" name="search" placeholder="Search For Plant...">
+                    <button type="submit">Search</button>
+                </div>
+            </form>
+        </div>
+    </section>
+
+    <section class="plants-section">
+        <div class="plants-header">
+            <h2>Plants</h2>
+            <a href="{% url 'plants:plants_list_view' %}" class="more-link">More →</a>
+        </div>
+        <p class="plants-subtitle">Learn more about plants</p>
+
+        <div class="cards-grid">
+            {% for plant in plants %}
+                <a href="{% url 'plants:plants_detail_view' plant.id %}" class="card-link">
+                    <article class="plant-card">
+                        <img src="{{ plant.image.url }}" alt="{{ plant.name }}" class="plant-img">
+                        <div class="plant-card-body">
+                            <h3 class="plant-name">{{ plant.name }}</h3>
+                            <p class="plant-brief">Brief about plant</p>
+                            <p class="plant-category">{{ plant.category }}</p>
+                        </div>
+                    </article>
+                </a>
+            {% empty %}
+                <p>No plants added yet.</p>
+            {% endfor %}
+        </div>
+    </section>
+
+</div>
+
+{% endblock %}
