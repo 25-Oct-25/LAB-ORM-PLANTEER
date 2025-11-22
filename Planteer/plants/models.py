@@ -25,3 +25,17 @@ class Plant(models.Model):
     is_edible=models.BooleanField(default=True)
     created_at=models.DateTimeField(auto_now_add=True)
 
+    def __str__(self):
+        return self.name
+
+class Review(models.Model):
+    plant = models.ForeignKey(Plant,on_delete=models.CASCADE)
+    name=models.CharField(max_length=300)
+    comment=models.TextField()
+    created_at=models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"review name {self.name} for {self.plant.name}"
+
+
+    

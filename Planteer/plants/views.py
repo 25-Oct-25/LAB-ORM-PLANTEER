@@ -1,7 +1,7 @@
 from django.shortcuts import render ,redirect
-from .models import Plant
+from .models import Plant , Review
 
-from .forms import PlantForm
+from .forms import PlantForm 
 
 
 
@@ -23,10 +23,11 @@ def plants_detail_view(request, plant_id):
     plant = Plant.objects.get(id=plant_id)
 
     related_plants = Plant.objects.filter(category=plant.category).exclude(id=plant_id)[:3]
+    reviews=Review.objects.filter(plant=plant)
 
     return render(request, 'plants/detail.html', {
         'plant': plant,
-        'related_plants': related_plants
+        'related_plants': related_plants ,"reviews":reviews
     })
 
 def plants_update_view(request, plant_id):
@@ -80,3 +81,12 @@ def plants_list_view(request):
     plants = Plant.objects.all()
     count = plants.count()
     return render(request, 'plants/plants_list.html', {'plants': plants, 'count': count})
+
+
+def add_review_view(request,plant_id):
+    if request.method == "POST":
+        plant_odject=Plant.objects.get(pk=plant_id)
+        new_review=Review(plant=plant_odject,name=request.POST.get("name"),comment=request.POST.get("comment"))
+        new_review.save()
+
+    return redirect("plants:plants_detail_view",plant_id=plant_id)
