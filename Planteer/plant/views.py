@@ -1,6 +1,6 @@
 from django.shortcuts import render , redirect
 from django.http import HttpRequest
-from .models import Plant ,Contact
+from .models import Plant ,Contact, Review
 from .forms import PlantForm, ContactForm
 # Create your views here.
 
@@ -30,7 +30,8 @@ def add_plant_view(request:HttpRequest):
 def plant_detail_view(request:HttpRequest, plant_id:int):
     plant=Plant.objects.get(pk=plant_id)
     related_plants=Plant.objects.all().filter(category=plant.category).exclude(pk=plant_id)[0:3]
-    return render(request,"plant/details.html", {"plant":plant ,"related_plants":related_plants})
+    comments=Review.objects.filter(plant=plant)
+    return render(request,"plant/details.html", {"plant":plant ,"related_plants":related_plants, "comments":comments})
 
 
 def plant_update_view(request:HttpRequest, plant_id:int):
@@ -75,3 +76,11 @@ def search_plants_view(request:HttpRequest):
         plants=[]
 
     return render(request, "plant/search.html" ,{"plants":plants})
+
+
+def add_comment_view(requset:HttpRequest, plant_id):
+    if requset.method== "POST":
+        plant_object = Plant.objects.get(pk=plant_id)
+        new_comment = Review(plant=plant_object,name=requset.POST["name"],comment=requset.POST["comment"])
+        new_comment.save()
+    return redirect("plant:plant_detail_view",plant_id=plant_id)

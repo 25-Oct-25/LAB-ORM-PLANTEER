@@ -14,4 +14,5 @@ urlpatterns=[
    path('contact/',views.send_message_view ,name="send_message_view"),
    path('contact/messages',views.all_messages_view ,name="all_messages_view"),
    path('search/',views.search_plants_view ,name="search_plants_view"),
+   path('comment/add/<plant_id>/',views.add_comment_view ,name="add_comment_view"),
 ]

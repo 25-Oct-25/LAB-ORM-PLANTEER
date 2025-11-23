@@ -15,9 +15,21 @@ class Plant(models.Model):
     is_edible = models.BooleanField(default=True)
     created_at= models.DateTimeField(auto_now_add=True)
 
+    def __str__(self):
+        return self.name
+
 class Contact(models.Model):
     first_name =models.CharField(max_length=2048)
     last_name =models.CharField(max_length=2048)
     email =models.EmailField()
     message= models.TextField()
     created_at= models.DateTimeField(auto_now_add=True)
+
+class Review(models.Model):
+    plant=models.ForeignKey(Plant, on_delete=models.CASCADE)
+    name=models.CharField(max_length=1024)
+    comment= models.TextField()
+    created_at= models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"{self.name} on {self.plant.name}"

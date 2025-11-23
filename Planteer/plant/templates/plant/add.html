@@ -4,11 +4,11 @@
 
 
 {% block content %}
-<h1>Add New Plant</h1>
-
-<div class="row">
-    <div class="col-6">
-        <form action="{% url 'plant:add_plant_view'%}" class="d-flex flex-column gap-2" method="post" enctype="multipart/form-data" >
+<div class="container my-4">
+    <div class="row justify-content-center">
+        <div class="col-12 col-mdd-8 col-lg-6">
+        <h1 class="display-4 display-md-3 display-lg-2 ">Add New Plant</h1>
+        <form action="{% url 'plant:add_plant_view'%}" class="d-flex flex-column gap-3" method="post" enctype="multipart/form-data" >
             {%csrf_token %}
             <label for="name">Name</label>
             <input type="text" placeholder="Name" name="name" class="form-control" minlength="3" maxlength="200" required/>
@@ -44,9 +44,9 @@
 
             <input type="file" name="image" class="form-control" accept="image/*" required>
             
-            <input type="submit" value="Add Post" class="btn btn-primary "/>
+            <input type="submit" value="Add Post" class="btn btn-primary w-100 "/>
         </form>
-
+        </div>
     </div>
 </div>
 {% endblock %}
