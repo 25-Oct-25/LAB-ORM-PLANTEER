@@ -12,7 +12,7 @@
             <img src="{{ plant.image.url }}" alt="{{ plant.name }}" class="detail-image">
         </div>
 
-       
+        <!-- معلومات النبات -->
         <div class="detail-info">
 
             <h1 class="detail-title">{{ plant.name }}</h1>
@@ -29,6 +29,17 @@
 
             <p><strong>Added On:</strong> {{ plant.created_at|date:"Y-m-d" }}</p>
 
+            <!-- ⭐ عرض الدول -->
+            <p><strong>Native Countries:</strong></p>
+
+            <div class="country-list">
+                {% for c in plant.countries.all %}
+                    <span class="country-tag">{{ c.name }}</span>
+                {% empty %}
+                    <span class="country-tag none">No countries</span>
+                {% endfor %}
+            </div>
+
         </div>
 
     </div>
@@ -40,7 +51,7 @@
 
         {% for p in related %}
         <div class="related-card">
-            
+
             <img src="{{ p.image.url }}" class="related-img" alt="{{ p.name }}">
 
             <h3 class="related-name">{{ p.name }}</h3>

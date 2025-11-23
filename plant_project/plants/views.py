@@ -1,15 +1,20 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from .models import Plant
-from .forms import PlantForm   
 from django.db.models import Q
 
+from .models import Plant, Comment, Country
+from .forms import PlantForm, CommentForm
 
-# صفحة عرض جميع النباتات + الفلترة
+
+
+# 🌿 ALL PLANTS PAGE (List + Filters + Add Comment)
 def all_plants(request):
-    plants = Plant.objects.all().order_by("-id")# سويت ذا الامر هنا عشان يكون بصفحة ال ALL  يفلتر 
 
+    plants = Plant.objects.all().order_by("-id")
+
+    # -------- Filters --------
     category = request.GET.get("category")
     is_edible = request.GET.get("is_edible")
+    country_id = request.GET.get("country")
 
     if category:
         plants = plants.filter(category=category)
@@ -17,27 +22,48 @@ def all_plants(request):
     if is_edible == "on":
         plants = plants.filter(is_edible=True)
 
-    return render(request, 'plants/all_plants.html', {"plants": plants})
+    # ⭐ فلترة حسب الدولة (ManyToMany)
+    if country_id:
+        plants = plants.filter(countries__id=country_id)
 
+    # -------- Add Comment --------
+    if request.method == "POST":
+        plant_id = request.POST.get("plant_id")
+        plant = get_object_or_404(Plant, id=plant_id)
 
-# صفحة التفاصيل
+        form = CommentForm(request.POST)
+        if form.is_valid():
+            comment = form.save(commit=False)
+            comment.plant = plant
+            comment.save()
+        return redirect("plants:all_plants")
+
+    return render(request, "plants/all_plants.html", {
+        "plants": plants,
+        "countries": Country.objects.all(),  # ⭐ لإظهارها في الفلتر
+    })
+
+#DETAILS PAGE
+
 def plant_detail(request, plant_id):
+
     plant = get_object_or_404(Plant, id=plant_id)
 
     related = Plant.objects.filter(
         category=plant.category
     ).exclude(id=plant.id)[:3]
 
-    return render(request, 'plants/plant_detail.html', {
+    return render(request, "plants/plant_detail.html", {
         "plant": plant,
         "related": related
     })
 
 
-# صفحة إضافة النباتات والخ 
+#ADD PLANT PAGE
 def add_plant(request):
 
     if request.method == "POST":
+
         name = request.POST.get("name")
         about = request.POST.get("about")
         used_for = request.POST.get("used_for")
@@ -45,7 +71,7 @@ def add_plant(request):
         is_edible = True if request.POST.get("is_edible") == "on" else False
         image = request.FILES.get("image")
 
-        Plant.objects.create(
+        plant = Plant.objects.create(
             name=name,
             about=about,
             used_for=used_for,
@@ -54,13 +80,22 @@ def add_plant(request):
             image=image
         )
 
+        # ⭐ إضافة الدول (ManyToMany)
+        country_ids = request.POST.getlist("countries")  # ← يستقبل أكثر من دولة
+        plant.countries.set(country_ids)
+
         return redirect("plants:all_plants")
 
-    return render(request, "plants/add_plant.html")
+    return render(request, "plants/add_plant.html", {
+        "countries": Country.objects.all()  # لعرضها في صفحة إضافة النبات
+    })
 
 
-# صفحة التحديث (ModelForm)
+
+#UPDATE PLANT PAGE
+
 def update_plant(request, plant_id):
+
     plant = get_object_or_404(Plant, id=plant_id)
 
     if request.method == "POST":
@@ -68,22 +103,26 @@ def update_plant(request, plant_id):
         if form.is_valid():
             form.save()
             return redirect("plants:plant_detail", plant_id=plant.id)
+
     else:
         form = PlantForm(instance=plant)
 
-    return render(request, 'plants/update_plant.html', {"form": form, "plant": plant})
+    return render(request, "plants/update_plant.html", {
+        "form": form,
+        "plant": plant
+    })
 
+# DELETE PLANT
 
-# حذف النبات
 def delete_plant(request, plant_id):
     plant = get_object_or_404(Plant, id=plant_id)
     plant.delete()
     return redirect("plants:all_plants")
 
-
-
+#SEARCH PAGE
 def search(request):
-    query = request.GET.get("q")  # الكلمة اللي كتبها المستخدم
+
+    query = request.GET.get("q")
     results = []
 
     if query:
@@ -94,7 +133,7 @@ def search(request):
             Q(category__icontains=query)
         )
 
-    return render(request, 'plants/search.html', {
+    return render(request, "plants/search.html", {
         "results": results,
         "query": query
     })

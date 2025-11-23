@@ -38,6 +38,15 @@
             Edible?
         </label>
 
+        <!-- 🔹 اختيار الدول (ManyToMany) -->
+        <label class="add-label">Native Countries:</label>
+        <select name="countries" class="add-select" multiple style="height: 120px;">
+            {% for country in countries %}
+                <option value="{{ country.id }}">{{ country.name }}</option>
+            {% endfor %}
+        </select>
+        <p class="small-note">Hold CTRL (Windows) or CMD (Mac) to select multiple.</p>
+
         <!-- رفع صورة -->
         <label class="add-label">Plant Image:</label>
         <input type="file" name="image" class="add-input" required>

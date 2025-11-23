@@ -7,10 +7,9 @@
 
     <h2 class="allplants-title">All Plants</h2>
 
-    <!-- 🔹 Filter Box -->
+    <!-- Filter Box -->
     <form method="GET" class="filter-box">
 
-        <!-- فلترة الفئة -->
         <select name="category" class="filter-select">
             <option value="">All Categories</option>
             <option value="Tree">Tree</option>
@@ -20,7 +19,13 @@
             <option value="Other">Other</option>
         </select>
 
-        <!-- فلترة صالح للأكل -->
+        <select name="country" class="filter-select">
+            <option value="">All Countries</option>
+            {% for c in countries %}
+                <option value="{{ c.id }}">{{ c.name }}</option>
+            {% endfor %}
+        </select>
+
         <label class="filter-check">
             <input type="checkbox" name="is_edible">
             Edible Only
@@ -28,9 +33,8 @@
 
         <button class="filter-btn">Filter</button>
     </form>
-    <!-- 🔹 End Filter Box -->
 
-
+    <!-- All Plants Cards -->
     <div class="allplants-container">
 
         {% for plant in plants %}
@@ -40,9 +44,20 @@
 
             <h3 class="allplants-name">{{ plant.name }}</h3>
 
-            <p class="allplants-about">{{ plant.about|slice:":80" }}...</p>
+            <p class="allplants-about">
+                {{ plant.about|slice:":90" }}{% if plant.about|length > 90 %}...{% endif %}
+            </p>
 
             <p class="allplants-date">Added: {{ plant.created_at|date:"Y-m-d" }}</p>
+
+            <!-- ⭐ Countries Tags -->
+            <p class="allplants-country">
+                {% for country in plant.countries.all %}
+                    <span class="country-tag">{{ country.name }}</span>
+                {% empty %}
+                    <span class="country-tag none">No Country</span>
+                {% endfor %}
+            </p>
 
             <div class="allplants-buttons">
                 <a href="{% url 'plants:plant_detail' plant.id %}" class="btn-detail">Detail</a>
@@ -50,10 +65,46 @@
                 <a href="{% url 'plants:delete_plant' plant.id %}" class="btn-delete">Delete</a>
             </div>
 
+            <div class="comments-box">
+                <h4 class="comments-title">Comments:</h4>
+
+                {% for c in plant.comments.all %}
+                    <div class="comment-item">
+                        <p class="comment-user">{{ c.username }}</p>
+                        <p class="comment-text">{{ c.text }}</p>
+                        <span class="comment-date">{{ c.created_at|date:"Y-m-d H:i" }}</span>
+                    </div>
+                {% empty %}
+                    <p class="no-comments">No comments yet.</p>
+                {% endfor %}
+            </div>
+
         </div>
-        {% empty %}
-        <p class="no-data">No plants available.</p>
         {% endfor %}
+
+    </div>
+
+    <!-- GLOBAL COMMENT FORM -->
+    <div class="global-comment-box">
+
+        <h3>Add a Comment</h3>
+
+        <form method="POST" class="global-comment-form">
+            {% csrf_token %}
+
+            <select name="plant_id" class="comment-select" required>
+                <option value="">Select a plant</option>
+                {% for p in plants %}
+                    <option value="{{ p.id }}">{{ p.name }}</option>
+                {% endfor %}
+            </select>
+
+            <input type="text" name="username" placeholder="Your name" class="comment-input" required>
+
+            <textarea name="text" placeholder="Write a comment..." class="comment-textarea" required></textarea>
+
+            <button class="comment-btn">Add Comment</button>
+        </form>
 
     </div>
 
