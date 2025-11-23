@@ -1,0 +1,14 @@
+<a href="{% url 'plant:plant_detail' plant.id %}" class="plant-card">
+    <div class="card-img-box">
+        <img src="{{ plant.image.url }}" alt="{{ plant.name }}" class="card-img">
+    </div>
+    <div class="card-info">
+        <h3>{{ plant.name }}</h3>
+        <p class="card-brief">{{ plant.about|truncatechars:50 }}</p>
+        <span class="card-meta">{{ plant.category }}</span>
+        
+        <div style="margin-top: 8px; font-size: 0.75rem; color: #666;">
+            Native to {{ plant.native_countries.count }} countries
+        </div>
+    </div>
+</a>

@@ -10,13 +10,27 @@
 
 <form method="GET" action="." class="filter-bar">
     
-    <select name="category" class="filter-select" onchange="this.form.submit()">
-        <option value="">All Categories</option>
-        <option value="Fruit" {% if request.GET.category == 'Fruit' %}selected{% endif %}>Fruit</option>
-        <option value="Vegetable" {% if request.GET.category == 'Vegetable' %}selected{% endif %}>Vegetable</option>
-        <option value="Herb" {% if request.GET.category == 'Herb' %}selected{% endif %}>Herb</option>
-        <option value="Flower" {% if request.GET.category == 'Flower' %}selected{% endif %}>Flower</option>
-    </select>
+ <select name="category" class="filter-select" onchange="this.form.submit()">
+    <option value="">All Categories</option>
+    
+    {% for cat in categories %}
+        <option value="{{ cat.id }}" {% if request.GET.category == cat.id|stringformat:"s" %}selected{% endif %}>
+            {{ cat.name }}
+        </option>
+    {% endfor %}
+    
+</select>
+
+
+<select name="country" class="filter-select" onchange="this.form.submit()">
+    <option value="">All Countries</option>
+    {% for country in countries %}
+        <option value="{{ country.id }}" {% if request.GET.country == country.id|stringformat:"s" %}selected{% endif %}>
+            {{ country.name }}
+        </option>
+    {% endfor %}
+</select>
+
 
     <select name="is_edible" class="filter-select" onchange="this.form.submit()">
         <option value="">All Types</option>
@@ -28,23 +42,11 @@
 </form>
 
 
+
 <div class="plants-grid">
-    {% for plant in plants %}
-    <a href="{% url 'plant:plant_detail' plant.id %}" class="plant-card">
-        <div class="card-img-box">
-            <img src="{{ plant.image.url }}" alt="{{ plant.name }}" class="card-img">
-        </div>
-        <div class="card-info">
-            <h3>{{ plant.name }}</h3>
-            <p class="card-brief">{{ plant.about|truncatechars:50 }}</p>
-            <span class="card-meta">{{ plant.category }}</span>
-        </div>
-    </a>
-    {% empty %}
-    <div style="grid-column: 1/-1; padding: 40px; text-align: center; background: #f9f9f9; border-radius: 8px;">
-        <p>No plants match your filter.</p>
-    </div>
-    {% endfor %}
+{% for plant in plants %}
+    {% include 'plant/plant_card.html' %}
+{% endfor %}
 </div>
 
 {% endblock %}

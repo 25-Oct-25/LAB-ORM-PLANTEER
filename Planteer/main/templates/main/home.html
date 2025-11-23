@@ -11,7 +11,7 @@
         
         <form action="{% url 'plant:plant_search' %}" class="hero-search-form">
             <input type="text" name="q" class="hero-search-input" placeholder="Search For Plant...">
-            <button type="submit" class="btn-black">Search</button>
+            <button type="submit" class="btn-black">Search</button> 
         </form>
     </div>
     
@@ -28,20 +28,9 @@
 </div>
 
 <div class="plants-grid">
-    {% for plant in plants %}
-    <a href="{% url 'plant:plant_detail' plant.id %}" class="plant-card">
-        <div class="card-img-box">
-            <img src="{{ plant.image.url }}" alt="{{ plant.name }}" class="card-img">
-        </div>
-        <div class="card-info">
-            <h3>{{ plant.name }}</h3>
-            <p class="card-brief">{{ plant.about|truncatechars:40 }}</p>
-            <span class="card-meta">{{ plant.category }}</span>
-        </div>
-    </a>
-    {% empty %}
-    <p>No plants available.</p>
-    {% endfor %}
+  {% for plant in plants %}
+    {% include 'plant/plant_card.html' %}
+  {% endfor %}
 </div>
 
 {% endblock %}
