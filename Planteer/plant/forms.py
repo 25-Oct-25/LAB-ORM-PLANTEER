@@ -5,6 +5,7 @@ class PlantForm(forms.ModelForm):
     class Meta:
         model=Plant
         fields="__all__"
+        
 
 class ContactForm(forms.ModelForm):
     class Meta:

@@ -1,6 +1,13 @@
 from django.db import models
 
 # Create your models here.
+class Country(models.Model):
+    name =models.CharField(max_length=2048)
+    image =models.ImageField(upload_to="images/", default="images/flags.png")
+    
+    def __str__(self):
+        return self.name
+
 class Plant(models.Model):
     class CategoryChoices(models.TextChoices):
         cat="flowering", "Flowering"
@@ -11,9 +18,10 @@ class Plant(models.Model):
     about= models.TextField()
     used_for= models.TextField()
     image =models.ImageField(upload_to="images/", default="images/default.png")
-    category =models.CharField(choices=CategoryChoices.choices)
+    category =models.CharField(max_length=50,choices=CategoryChoices.choices, default=CategoryChoices.cat)
     is_edible = models.BooleanField(default=True)
     created_at= models.DateTimeField(auto_now_add=True)
+    countries= models.ManyToManyField(Country)
 
     def __str__(self):
         return self.name

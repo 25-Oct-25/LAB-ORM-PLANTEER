@@ -8,19 +8,35 @@
 
 <div class="row">
     <div class="col-6">
-        <form action="{% url 'plant:plant_update_view' plant.id %}" class="d-flex flex-column gap-2" method="post" enctype="multipart/form-data" >
+        <form action="{% url 'plant:plant_update_view' plant.id %}" class="d-flex flex-column gap-2" method="post"
+            enctype="multipart/form-data">
             {%csrf_token %}
             <label for="name">Name</label>
-            <input type="text" placeholder="Name" name="name" class="form-control" minlength="3" maxlength="200" value="{{plant.name}}" required/>
+            <input type="text" placeholder="Name" name="name" class="form-control" minlength="3" maxlength="200"
+                value="{{plant.name}}" required />
 
             <label for="name">About The Plant</label>
-            <textarea name="about" placeholder="write the content of your post here" class="form-control" required minlength="2" required>{{plant.name}}</textarea>
+            <textarea name="about" placeholder="write the content of your post here" class="form-control" required
+                minlength="2" required>{{plant.about}}</textarea>
 
             <label for="used_for">Used for</label>
-            <input type="text" placeholder="used for" name="used_for" class="form-control" required minlength="3" maxlength="200" value="{{plant.name}}" required/>
+            <input type="text" placeholder="used for" name="used_for" class="form-control" required minlength="3"
+                maxlength="200" value="{{plant.used_for}}" required />
+
+
+            <label for="used_for">Native to</label>
+
+            <div class="d-flex align-items-center gap-2">
+                {% for c in countries %}
+                <input type="checkbox" class="form-check-input" name="countries" id="check-{{c.id}}" value="{{c.id}}" />
+                <label for="check-{{c.id}}">{{c.name}}</label>
+                {% endfor %}
+            </div>
+
+
 
             <label for="used_for">Category</label>
-             <select name="category" class="form-control" >
+            <select name="category" class="form-control" value="{{plant.categories}}">
                 <option value="">Category</option>
                 <option value="flowering">Flowering</option>
                 <option value="succulents">Succulents</option>
@@ -41,7 +57,7 @@
                     No
                 </label>
             </div>
-                <div class="row">
+            <div class="row">
                 <div class="col-3">
                     <img src="{{plant.image.url}}" class="w-100">
                 </div>
@@ -49,8 +65,8 @@
                     <input type="file" name="image" class="form-control" accept="image/*">
                 </div>
             </div>
-            
-            <input type="submit" value="Add Post" class="btn btn-primary "/>
+
+            <input type="submit" value="Add Post" class="btn btn-primary " />
         </form>
 
     </div>
