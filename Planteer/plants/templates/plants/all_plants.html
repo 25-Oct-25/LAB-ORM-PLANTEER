@@ -7,9 +7,47 @@
 
 <h2 class="mb-4">All Plants</h2>
 
-{% if plant %}
+<div class="row mb-4">
+    <div class="col-md-6">
+        <form method="get" class="d-flex gap-2" action="{% url 'plants:all_view' %}">
+            <select name="country" class="form-select">
+                <option value="">All Countries</option>
+                {% for country in countries %}
+                <option value="{{country.id}}">
+                    {% if country_filter == country.id|stringformat:"i" %}selected{% endif %}>
+                    {{ country.name }}
+                </option>
+                {% endfor%}
+            </select>
+
+            <button type="submit" class="btn btn-success">Filter</button>
+            {% if country_filter %}
+            <a href="{% url 'plants:all_view' %}" class="btn btn-outline-secondary">Clear</a>
+            {% endif %}
+            
+        </form>
+    </div>
+</div>
+
+{% if country_filter %}
+    {% for country in countries %}
+        {% if country.id == country_filter|add:0 %}
+            <div class="alert alert-info mb-4">
+                <div class="d-flex justify-content-between align-items-center">
+                    <div class="d-flex align-items-center gap-2">
+                        <strong>Filtered by:</strong>{{country.name}}
+                        <img src="{{ country.flag.url }}" alt="{{ country.name }} flag" class="flag-icon" style="height: 16px; width: auto;">
+                    </div>
+                    <a href="{% url 'plants:all_view' %}" class="btn btn-sm btn-outline-info">Show All</a>
+                </div>
+            </div>
+        {% endif %}
+    {% endfor %}
+{% endif %}
+
+{% if plants %}
         <div class="row">
-            {% for plant in plant %} 
+            {% for plant in plants %} 
             <div class="col-md-6 col-lg-4 mb-4">
                 <div class="plant-card">
                     {% if plant.image %}
@@ -24,6 +62,12 @@
                     <a href="{% url 'plants:plant_detail_view' plant.id %}"><h5 class="fw-bold mb-2">{{ plant.name }}</h5></a>
                     <p class="text-muted mb-2">{{ plant.about|truncatewords:15 }}</p>
                     <span class="fw-bold mb-2">{{ plant.get_category_display }}</span>
+
+                    <div class="mt-2">
+                        <small class="text-muted">
+                            Native to: {{ plant.countries.all|join:", " }}
+                        </small>
+                    </div>
                 </div>
             </div>
             {% endfor %}

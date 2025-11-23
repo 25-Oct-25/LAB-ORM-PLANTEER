@@ -133,8 +133,24 @@
                 {% endif %}
             </div>
 
+            <h3>The plant is native to:</h3>
+            <div class="border rounded p-3 bg-light">
+                <div class="row g-2">
+                    {% for country in countries %}
+                    <div class="col-6 col-md-4 col-lg-3">
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" name="countries" value="{{ country.id }}"
+                                id="check-{{ country.id }}">
+                            <label class="form-check-label small" for="check-{{ country.id }}">
+                                {{ country.name }}
+                            </label>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
             <div class="text-center">
-                <button type="submit" class="btn btn-success btn-lg">
+                <button type="submit" class="btn btn-success btn-lg mt-3">
                     <i class="fas fa-seedling me-2"></i>Plant
                 </button>
             </div>

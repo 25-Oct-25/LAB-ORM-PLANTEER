@@ -23,6 +23,7 @@
             </div>
 
             <div class="plant-info">
+                <p><strong>Native to:</strong><br>{{plant.countries.all|join:", "}}</p>
                 <p><strong>Is Edible:</strong> {{ plant.is_edible|yesno:"Yes,No" }}</p>
                 <p><strong>Used For:</strong><br>{{ plant.used_for|linebreaks }}</p>
             </div>

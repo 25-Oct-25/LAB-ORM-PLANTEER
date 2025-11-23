@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
 from django.http import HttpRequest, HttpResponse
-from .models import Plant, Comment
+from .models import Plant, Comment, Country
 from .forms import PlantForm
 
 # Create your views here.
@@ -9,6 +9,9 @@ from .forms import PlantForm
 def add_view(request:HttpRequest):
     plant_form = PlantForm()
 
+    countries = Country.objects.all().order_by('name')
+
+
     if request.method == "POST":
         plant_form = PlantForm(request.POST, request.FILES)
         if plant_form.is_valid():
@@ -16,12 +19,13 @@ def add_view(request:HttpRequest):
             return redirect('main:home_view')
         return render(request, 'plants/add_plant.html', {'form':plant_form})
     
-    return render(request, 'plants/add_plant.html')
+    return render(request, 'plants/add_plant.html', {"countries":countries})
 
 def plant_detail_view(request:HttpRequest, plant_id:int):
     
     plant = Plant.objects.get(pk=plant_id)
     comments = Comment.objects.filter(plant=plant)
+
 
     related_plants = Plant.objects.filter(
         category=plant.category
@@ -31,22 +35,28 @@ def plant_detail_view(request:HttpRequest, plant_id:int):
         'plant': plant,
         'related_plants': related_plants,
         'comments': comments
+
     }
     
     return render(request, 'plants/plant_details.html', context)
 
 def update_view(request: HttpRequest, plant_id: int):
     plant = Plant.objects.get(pk=plant_id)
+    countries = Country.objects.all().order_by('name')
+
 
     if request.method == "POST":
         plant_form = PlantForm(request.POST, request.FILES, instance=plant)
         if plant_form.is_valid():
-            plant_form.save()
+            plant_instance = plant_form.save()
+
+            selected_countries = request.POST.getlist('countries')
+            plant_instance.countries.set(selected_countries)
             return redirect('plants:plant_detail_view', plant_id=plant.id)
-        return render(request, 'plants/update_plant.html', {'form': plant_form, 'plant': plant})
+        return render(request, 'plants/update_plant.html', {'form': plant_form, 'plant': plant, 'countries': countries})
     
     plant_form = PlantForm(instance=plant)
-    return render(request, 'plants/update_plant.html', {'form': plant_form, 'plant': plant})
+    return render(request, 'plants/update_plant.html', {'form': plant_form, 'plant': plant, 'countries': countries})
 
 def search_view(request: HttpRequest):
     query = request.GET.get('search', '')
@@ -82,8 +92,15 @@ def search_view(request: HttpRequest):
     return render(request, 'plants/search_plant.html', context)
 
 def all_view(request:HttpRequest):
-    plant = Plant.objects.all().order_by("-created_at")
-    return render(request, 'plants/all_plants.html', {'plant':plant})
+    plants = Plant.objects.all().order_by("-created_at")
+    countries = Country.objects.all()
+    
+    country_filter = request.GET.get('country', '')
+    if country_filter:
+        plants = plants.filter(countries__id=country_filter)
+
+
+    return render(request, 'plants/all_plants.html', {'plants':plants, 'countries':countries, 'country_filter':country_filter })
 
 def delete_view(request:HttpRequest, plant_id):
     plant = Plant.objects.get(pk=plant_id)
@@ -99,3 +116,5 @@ def add_comment_view(request:HttpRequest, plant_id):
         new_comment.save()
 
     return redirect("plants:plant_detail_view", plant_id=plant_id)
+
+
