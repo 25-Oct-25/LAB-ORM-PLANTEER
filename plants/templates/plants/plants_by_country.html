@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container my-4">
+  <h2 class="mb-3">Plants native to: {{ country.name }}</h2>
+  <div class="row g-3">
+    {% for plant in plants %}
+      <div class="col-md-4">
+        {% include "plants/_plant_card.html" with plant=plant %}
+      </div>
+    {% empty %}
+      <p class="text-muted">No plants for this country.</p>
+    {% endfor %}
+  </div>
+</div>
+{% endblock %}

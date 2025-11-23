@@ -1,0 +1,22 @@
+<div class="card h-100 shadow-sm">
+  {% if plant.image %}
+    <img src="{{ plant.image.url }}" class="card-img-top" alt="{{ plant.name }}">
+  {% endif %}
+  <div class="card-body">
+    <h5 class="card-title m-0">{{ plant.name }}</h5>
+    <p class="text-muted mb-2">{{ plant.about|default_if_none:""|truncatewords:20 }}</p>
+
+    <div class="d-flex flex-wrap gap-2 mb-2">
+      {% for c in plant.countries.all %}
+        <a class="badge bg-secondary text-decoration-none"
+           href="{% url 'plants_by_country' c.name %}">
+          {{ c.name }}
+        </a>
+      {% empty %}
+        <span class="text-muted small">No countries</span>
+      {% endfor %}
+    </div>
+
+    <a href="{% url 'plant_detail' plant.id %}" class="btn btn-dark btn-sm">Details</a>
+  </div>
+</div>

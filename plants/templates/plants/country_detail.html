@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container my-4">
+  <div class="d-flex align-items-center gap-3 mb-3">
+    {% if country.flag %}<img src="{{ country.flag.url }}" style="height:36px">{% endif %}
+    <h2 class="m-0">{{ country.name }}</h2>
+  </div>
+  <div class="row g-3">
+    {% for plant in country.plants.all %}
+      <div class="col-md-4">
+        {% include "plants/_plant_card.html" with plant=plant %}
+      </div>
+    {% empty %}
+      <p class="text-muted">No plants for this country.</p>
+    {% endfor %}
+  </div>
+</div>
+<div class="mt-3">
+  <strong>Native countries:</strong>
+  {% for c in plant.countries.all %}
+    <a class="badge bg-secondary text-decoration-none"
+       href="{% url 'plants_by_country' c.name %}">
+       {{ c.name }}
+    </a>
+  {% empty %}
+    <span class="text-muted">—</span>
+  {% endfor %}
+</div>
+
+{% endblock %}
