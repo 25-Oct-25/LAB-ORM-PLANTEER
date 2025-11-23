@@ -12,7 +12,7 @@
     <header>
         <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm fixed-top py-3">
             <div class="container">
-                <a class="navbar-brand fw-bold text-dark fs-4" href="{% url 'main:home' %}">Planteer</a>
+                <a class="navbar-brand fw-bold text-dark fs-4" href="{% url 'main:home_view' %}">Planteer</a>
 
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
@@ -27,7 +27,7 @@
             <a class="nav-link text-dark me-3" href="{% url 'main:contact' %}">Contact Us</a>
         </li>
     </ul>
-    <a href="{% url 'plants:plant_create' %}" class="btn btn-dark shadow-sm px-4 py-2">
+    <a href="{% url 'plants:plants_add_view' %}" class="btn btn-dark shadow-sm px-4 py-2">
         Add Plant
     </a>
 </div>

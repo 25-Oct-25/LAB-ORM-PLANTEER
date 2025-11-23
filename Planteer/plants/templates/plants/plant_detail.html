@@ -38,7 +38,26 @@
                     {% endif %}
                 </p>
                 
-                <h3 class="text-dark fw-bold mb-4">Price: {{ plant.price }} SAR</h3>
+              <div class="mt-4 border-top pt-3">
+    <h5 class="fw-bold">Native Countries:</h5>
+    <p>
+        {% for country in plant.countries.all %}
+            <a href="{% url 'plants:plant_list' %}?country={{ country.name }}" 
+               class="badge bg-secondary me-2 d-inline-flex align-items-center">
+                
+                {% if country.flag %}
+                    <img src="{{ country.flag.url }}" 
+                         alt="{{ country.name }} flag" 
+                         style="width: 20px; height: 14px; margin-right: 5px; border: 1px solid #ccc; border-radius: 2px; object-fit: cover;">
+                {% endif %}
+                {{ country.name }}
+            </a>
+        {% empty %}
+            <span class="text-muted">No native country specified for this plant.</span>
+        {% endfor %}
+    </p>
+</div>
+               
                 
                 <h4 class="fw-bold mt-4 border-bottom pb-2">Description:</h4>
                 <p class="text-muted">{{ plant.about }}</p>
@@ -51,55 +70,41 @@
             </div>
         </div>
     </div>
-    
-    <div class="row comments-section">
-        <div class="col-lg-12">
-            
-            <h2 class="fw-bold mb-4 pb-2 border-bottom">Comments ({{ plant.comments.count }})</h2>
-            
-            <div class="mb-5 p-4 border rounded-3 bg-light">
-                <h4 class="mb-3">Add Your Comment:</h4>
-                <form method="POST">
-                    {% csrf_token %}
-                    
-                    {% if comment_form.non_field_errors %}
-                        <div class="alert alert-danger">{{ comment_form.non_field_errors }}</div>
-                    {% endif %}
+    <div class="reviews-section">
 
-                    <div class="mb-3">
-                        <label for="{{ comment_form.full_name.id_for_label }}" class="form-label">Name:</label>
-                        {{ comment_form.full_name|add_class:"form-control" }}
-                        {% for error in comment_form.full_name.errors %}
-                            <div class="form-text text-danger">{{ error }}</div>
-                        {% endfor %}
-                    </div>
-                    
-                    <div class="mb-3">
-                        <label for="{{ comment_form.content.id_for_label }}" class="form-label">Message:</label>
-                        {{ comment_form.content|add_class:"form-control" }}
-                        {% for error in comment_form.content.errors %}
-                            <div class="form-text text-danger">{{ error }}</div>
-                        {% endfor %}
-                    </div>
-                    
-                    <button type="submit" class="btn btn-success">Submit Comment</button>
-                </form>
-            </div>
+    <h2 class="related-title">Reviews</h2>
 
-            {% for comment in comments %}
-                <div class="comment-box shadow-sm">
-                    <p class="mb-1">
-                        <span class="comment-author">{{ comment.full_name }}</span>
-                        <span class="comment-date text-muted float-end">{{ comment.created_at|date:"Y/m/d H:i" }}</span>
-                    </p>
-                    <p class="mb-0">{{ comment.content }}</p>
+    <div class="reviews-wrapper">
+        {% if reviews %}
+            {% for r in reviews %}
+                <div class="review-card">
+                    <strong>{{ r.full_name }}</strong>
+                    <p>{{ r.content }}</p>
+                    <small>{{ r.created_at|date:"Y-m-d H:i" }}</small>
                 </div>
-            {% empty %}
-                <p class="text-info text-center">No comments yet. Be the first to comment!</p>
             {% endfor %}
-
-        </div>
+        {% else %}
+            <p class="no-related">No reviews yet.</p>
+        {% endif %}
     </div>
+
+    <h3 class="related-title">Add a Review</h3>
+
+    <form method="POST" action="{% url 'plants:add_review_view' plant.id %}" class="review-form">
+        {% csrf_token %}
+
+        <div class="form-group">
+            <label>Your Name</label>
+            <input type="text" name="full_name" required>
+        </div>
+
+        <div class="form-group">
+            <label>Comment</label>
+            <textarea name="content" rows="4" required></textarea>
+        </div>
+
+        <button type="submit" class="btn-edit">Submit</button>
+    </form>
 
 </div>
 {% endblock content %}

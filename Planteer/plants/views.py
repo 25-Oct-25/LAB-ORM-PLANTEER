@@ -5,7 +5,7 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 from django.urls import reverse_lazy
 from django.db.models import Q
-from .models import Plant, Comment
+from .models import Plant, Comment,Country
 from .forms import PlantForm, CommentForm
 
 
@@ -24,19 +24,26 @@ class PlantListView(ListView):
         
         if edible_filter in ['True', 'False']:
             queryset = queryset.filter(is_edible=(edible_filter == 'True'))
-            
+        
+        country_name = self.request.GET.get('country')
+        if country_name:
+            queryset = queryset.filter(countries__name=country_name)
+        
         return queryset
-
+    
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['category_choices'] = Plant.CategoryChoices.choices 
         context['selected_category'] = self.request.GET.get('category', '')
         context['selected_edible'] = self.request.GET.get('is_edible', '')
-        context['page_title'] = 'all plantes'
-        return context
-        
-plant_list_view = PlantListView.as_view()
+        context['page_title'] = 'all plants'
+        context['all_countries'] = Country.objects.all() 
+        context['selected_country'] = self.request.GET.get('country')
 
+        return context
+
+    
+plant_list_view = PlantListView.as_view()
 
 def plant_detail_view(request, pk):
     plant = get_object_or_404(Plant, pk=pk)
@@ -54,6 +61,7 @@ def plant_detail_view(request, pk):
     related_plants = Plant.objects.filter(
         category=plant.category
     ).exclude(pk=plant.pk).order_by('?')[:4] 
+    reviews=Comment.objects.filter(plant=plant)
 
     context = {
         'plant': plant,
@@ -61,25 +69,27 @@ def plant_detail_view(request, pk):
         'comments': plant.comments.all().order_by('-created_at'),
         'related_plants': related_plants,
         'page_title': plant.name,
+        'reviews':reviews
     }
     return render(request, 'plants/plant_detail.html', context)
 
+def plants_add_view(request):
+    if request.method == 'POST':
+        form = PlantForm(request.POST, request.FILES)
+        if form.is_valid():
+            form.save()
+            return redirect('main:home_view')
+    else:
+        form = PlantForm()
 
-class PlantCreateView(CreateView):
-    model = Plant
-    form_class = PlantForm
-    template_name = 'plants/plant_form.html'
-    
-    def get_success_url(self):
-        return reverse_lazy('plants:plant_detail', kwargs={'pk': self.object.pk})
+    return render(request, 'plants/add_plant.html')
 
-plant_create_view = PlantCreateView.as_view()
 
 
 class PlantUpdateView(UpdateView):
     model = Plant
     form_class = PlantForm
-    template_name = 'plants/plant_form.html'
+    template_name = 'plants/add_plant.html'
     
     def get_success_url(self):
         return reverse_lazy('plants:plant_detail', kwargs={'pk': self.object.pk})
@@ -112,3 +122,12 @@ def plant_search_view(request):
         'page_title': f'نتائج البحث لـ "{query}"',
     }
     return render(request, 'plants/plant_search.html', context)
+
+
+def add_review_view(request,plant_id):
+    if request.method == "POST":
+        plant_odject=Plant.objects.get(pk=plant_id)
+        new_review=Comment(plant=plant_odject,full_name=request.POST.get("full_name"),content=request.POST.get("content"))
+        new_review.save()
+
+    return redirect("plants:plants_detail_view",plant_id=plant_id)
