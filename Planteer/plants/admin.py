@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Plant,Comment
+from .models import Plant,Comment,Country
 
 class PlantAdmin(admin.ModelAdmin):
     list_display= ("name", "category")
@@ -12,3 +12,4 @@ class CommentAdmin(admin.ModelAdmin):
 
 admin.site.register(Plant, PlantAdmin)
 admin.site.register(Comment,CommentAdmin)
+admin.site.register(Country)

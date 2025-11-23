@@ -39,6 +39,18 @@
         <label>Change Image</label>
         <input type="file" name="image">
 
+        <h3>Countries</h3>
+        <div class="checkboxes">
+            {% for country in countries %}
+                <label>
+                    <input type="checkbox" name="countries" value="{{ country.id }}"
+                        {% if country in plant.Countries.all %}checked{% endif %}>
+                    {{ country.name }}
+                </label><br>
+            {% endfor %}
+        </div>
+
+
         <button type="submit" class="submit-btn">Update</button>
     </form>
 </div>

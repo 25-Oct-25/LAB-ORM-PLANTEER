@@ -405,6 +405,19 @@ main {
     background: #d43c3c;
     color: white;
 }
+
+.country-link {
+    text-decoration: none;    
+    color: #0f0f0f;             
+    font-weight: 500;
+    transition: color 0.3s ease;
+    cursor: pointer;            
+}
+
+.country-link:hover {
+    color: #ffcc00;           
+}
+
 .related-title {
     font-size: 24px;
     margin-bottom: 20px;
@@ -735,4 +748,32 @@ main {
     .submit-btn {
         width: 100%;
     }
+}
+.plant-card {
+    position: relative;
+    overflow: hidden;
+}
+
+.plant-img-wrapper {
+    position: relative;
+}
+
+.plant-tags {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    z-index: 2;
+}
+
+.plant-tag {
+    background: #4CAF50;
+    color: white;
+    padding: 4px 10px;
+    border-radius: 8px;
+    font-size: 13px;
+    font-weight: 600;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
 }

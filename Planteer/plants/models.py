@@ -1,7 +1,14 @@
 from django.db import models
 from django.utils import timezone
 
-    
+
+class Country(models.Model):
+    name = models.CharField(max_length=128, unique=True)
+    flag = models.ImageField(upload_to='plants/images/', default='images/default_flag.jpeg')
+
+    def __str__(self):
+        return self.name
+
 
 class Plant(models.Model):
 
@@ -21,6 +28,8 @@ class Plant(models.Model):
     category=models.CharField(max_length=150, choices=CategoryChoices.choices)
     is_edible= models.BooleanField(default=True)
     created_at = models.DateTimeField(auto_now_add=True)
+    Countries=models.ManyToManyField(Country)
+
 
 
 class Comment(models.Model):

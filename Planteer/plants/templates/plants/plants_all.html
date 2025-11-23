@@ -24,29 +24,23 @@
         <option value="yes" {% if selected_edible == 'yes' %}selected{% endif %}>Yes</option>
         <option value="no" {% if selected_edible == 'no' %}selected{% endif %}>No</option>
     </select>
-
+    <select name="country">
+    <option value="all">All Countries</option>
+    {% for country in countries %}
+        <option value="{{ country.id }}" {% if selected_country == country.id|stringformat:"s" %}selected{% endif %}>
+            {{ country.name }}
+        </option>
+    {% endfor %}
+    </select>
     <button type="submit">Filter</button>
 </form>
 
 <div class="plants-grid">
     {% for plant in plants %}
-        <div class="plant-card">
-
-            {% if plant.image %}
-                <img src="{{ plant.image.url }}" class="plant-img" />
-            {% else %}
-                <img src="/media/images/default.jpeg" class="plant-img" />
-            {% endif %}
-
-            <a href="{% url 'plants:plants_detail' plant.id %}" class="plant-title">
-                {{ plant.name }}
-            </a>
-
-            <p class="brief">{{ plant.about|truncatechars:30 }}</p>
-            <p class="category">{{ plant.get_category_display }}</p>
-
-        </div>
+        {% include 'plants/plants_list.html' %}
     {% endfor %}
 </div>
+
+
 
 {% endblock %}

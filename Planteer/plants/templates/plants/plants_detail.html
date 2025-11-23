@@ -15,7 +15,20 @@
         </div>
 
         <div class="detail-right">
-            <h1 class="detail-title">{{ plant.name }}</h1>
+            <h1 class="detail-title">{{ plant.name }}</h1>ٍ
+            <div class="d-flex align-items-center gap-2 mt-2">
+                {% for country in plant.Countries.all %}
+                    <div class="d-flex align-items-center gap-1">
+                        <img src="{{ country.flag.url }}" alt="{{ country.name }}" width="30" height="20" style="border-radius:4px;">
+                        <a href="{% url 'plants:country_plants' country.id %}" 
+                        class="country-link fw-bold">
+                            {{ country.name }}
+                        </a>
+                    </div>
+
+                {% endfor %}
+            </div>
+
 
             <p class="detail-category">{{ plant.get_category_display }}</p>
 
