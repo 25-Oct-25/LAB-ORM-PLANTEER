@@ -23,3 +23,8 @@ class Plant(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
 
 
+class Comment(models.Model):
+    plant=models.ForeignKey(Plant, on_delete=models.CASCADE)
+    name=models.CharField(max_length=1024)
+    content=models.TextField()
+    created_at=models.DateTimeField(auto_now_add=True)

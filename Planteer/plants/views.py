@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-from .models import Plant
+from .models import Plant, Comment
 
 def plants_all_view(request):
 
@@ -98,4 +98,11 @@ def plants_search_view(request):
         "results": results,
         "count": results.count(),
     })
-   
+
+def add_comment_view(request,plant_id):
+
+    if request.method == "POST":
+        plant_object=Plant.objects.get(pk=plant_id)
+        new_comment=Comment(plant=plant_object,name=request.POST["name"], content=request.POST["content"])
+        new_comment.save()
+        return redirect("plants:plants_detail", plant_id=plant_id)  
