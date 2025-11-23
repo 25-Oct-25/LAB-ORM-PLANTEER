@@ -33,6 +33,7 @@ def plant_detail(request, plant_id):
         )
         return redirect("plant_detail", plant_id=plant_id)
 
+
     return render(request, "plants/plant_detail.html", {
         "plant": plant,
         "related": related,
