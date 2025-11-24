@@ -19,6 +19,8 @@ class Plant(models.Model):
     is_edible = models.BooleanField(default=False)
     created_at = models.DateTimeField(auto_now_add=True)
     is_published = models.BooleanField(default=True)
+    countries = models.ManyToManyField("Country", related_name="plants")
+
 
     def __str__(self):
         return self.name
@@ -36,3 +38,13 @@ class Review(models.Model):
     def __str__(self):
         return f"{self.name} - {self.plant.name}"
 
+
+
+# Create your models here.
+
+class Country(models.Model):
+    name = models.CharField(max_length=100)
+    flag = models.ImageField(upload_to='flags/')
+
+    def __str__(self):
+        return self.name

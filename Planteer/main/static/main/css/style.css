@@ -479,12 +479,15 @@ body {
 
 .back-btn {
     display: inline-block;
+    text-align: left !important;
+    margin-left: 10px;
     margin-bottom: 20px;
-    color: #5a7c5a;
+    color: #5a7c5a !important;
     text-decoration: none;
     font-weight: 500;
     font-size: 14px;
 }
+
 
 .plant-box {
     background: #fff;
@@ -666,6 +669,7 @@ body {
     cursor: pointer;
     margin-top: 10px;
     transition: 0.3s;
+    
 }
 
 .plant-form-container .book-btn:hover {
@@ -695,7 +699,8 @@ body {
     padding: 35px 40px;
     border-radius: 18px;
     box-shadow: 0 8px 25px rgba(0,0,0,0.08);
-    text-align: left;
+        text-align: left;      /* محاذاة النصوص لليسار */
+    direction: ltr;  
 }
 
 .contact-title {
@@ -712,6 +717,8 @@ body {
     font-size: 14px;
     color: #444;
     font-weight: 500;
+    text-align: left;      /* نصوص الحقول والليبل على اليسار */
+    direction: ltr; 
 }
 
 .contact-form input,
@@ -745,6 +752,15 @@ body {
 .send-btn:hover {
     background: #4a6a4a;
 }
+
+
+.contact-form label,
+.contact-form input,
+.contact-form textarea {
+    text-align: left;      /* نصوص الحقول والليبل على اليسار */
+    direction: ltr;        /* ترتيب الكتابة من اليسار لليمين */
+}
+
 
 /* =========================
    صفحة الرسائل
@@ -1218,3 +1234,79 @@ body {
     margin-top: 20px;
     margin-bottom: 80px; 
 }
+
+
+
+
+.plant-countries {
+    text-align: left !important;
+    margin-bottom: 20px;
+    margin-left: 50px; /* يكبر المسافة حسب رغبتك */
+    margin-top: 80px;
+}
+
+.countries-title {
+    font-size: 18px;
+    font-weight: bold;
+    margin-bottom: 8px;
+}
+
+.countries-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.countries-list li {
+    margin-bottom: 4px;
+}
+
+.countries-list a {
+    color: #2c5e39;
+    text-decoration: none;
+    font-weight: 600;
+}
+
+.countries-list a:hover {
+    text-decoration: underline;
+}
+
+
+.back-btn {
+    display: block;
+    text-align: left !important;
+    margin-left: 10px;
+    margin-top: 20px;
+    font-size: 16px;
+    color: #2d2d2d;
+}
+
+
+
+.country-plants-container {
+    text-align: left;  /* النصوص على اليسار */
+    direction: ltr;    /* ترتيب الكتابة من اليسار لليمين */
+    margin-top: 90px;
+}
+
+.plant-info h3,
+.plant-info p,
+.read-more-btn {
+    text-align: left;
+}
+
+
+
+.plant-form-container {
+    max-width: 650px;
+    margin: 130px auto 60px;
+    background: #fff;
+    padding: 35px 40px;
+    border-radius: 18px;
+    box-shadow: 0 8px 25px rgba(0,0,0,0.08);
+    text-align: left;      /* محاذاة النصوص لليسار */
+    direction: ltr;        /* ترتيب الكتابة من اليسار لليمين */
+}
+
+
+

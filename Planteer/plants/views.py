@@ -1,31 +1,38 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpRequest, HttpResponse
 
-from .models import Plant , Review
+from .models import Plant, Review, Country, CATEGORY_CHOICES
 from .forms import PlantForm
 from .models import Plant, CATEGORY_CHOICES
 
 
 # عرض قائمة النباتات مع فلتر
+from django.shortcuts import render, get_object_or_404
+from .models import Plant, Country, CATEGORY_CHOICES
 
 def plants_list(request):
-    plants = Plant.objects.all()
-    
-    # فلترة حسب الفئة أو صلاحية الأكل
     category = request.GET.get('category')
     is_edible = request.GET.get('is_edible')
+    country_id = request.GET.get('country')
+
+    plants = Plant.objects.filter(is_published=True)
 
     if category:
         plants = plants.filter(category=category)
-    if is_edible in ['true', 'false']:
+    if is_edible in ['true','false']:
         plants = plants.filter(is_edible=(is_edible=='true'))
+    if country_id:
+        plants = plants.filter(countries__id=country_id)
+
+    countries = Country.objects.all()
 
     context = {
         'plants': plants,
+        'categories': CATEGORY_CHOICES,
         'category': category,
         'is_edible': is_edible,
-        'categories': CATEGORY_CHOICES,
-        'Plant': Plant,  # تمرير الكلاس للـ template
+        'countries': countries,
+        'selected_country': country_id,
     }
     return render(request, 'plants/plants_list.html', context)
 
@@ -106,3 +113,13 @@ def add_review_view(request, pk):
             rating=rating
         )
         return redirect("plant_detail", pk=pk)
+
+
+
+def country_plants(request, pk):
+    country = get_object_or_404(Country, pk=pk)
+    plants = country.plants.filter(is_published=True)  # جلب كل النباتات المنشورة فقط
+    return render(request, 'plants/country_plants.html', {
+        'country': country,
+        'plants': plants
+    })

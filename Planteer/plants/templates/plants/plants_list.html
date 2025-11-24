@@ -10,7 +10,7 @@
 <form method="get" style="display: flex; justify-content: flex-end; gap: 10px; padding: 20px 30px; flex-wrap: wrap; align-items: center;">
 
     <!-- زر Add New Plant -->
-    
+    <!-- يمكن إضافة زر هنا إذا أردت -->
 
     <!-- فلتر الكاتيجوري -->
     <select name="category" style="padding: 10px 15px; border: 1px solid #ddd; border-radius: 5px; cursor: pointer; font-size: 13px;">
@@ -25,6 +25,16 @@
         <option value="">All Plants</option>
         <option value="true" {% if is_edible == 'true' %}selected{% endif %}>Edible</option>
         <option value="false" {% if is_edible == 'false' %}selected{% endif %}>Non-Edible</option>
+    </select>
+
+    <!-- فلتر الدولة -->
+    <select name="country" style="padding: 10px 15px; border: 1px solid #ddd; border-radius: 5px; cursor: pointer; font-size: 13px;">
+        <option value="">All Countries</option>
+        {% for country in countries %}
+            <option value="{{ country.id }}" {% if selected_country == country.id|stringformat:'s' %}selected{% endif %}>
+                {{ country.name }}
+            </option>
+        {% endfor %}
     </select>
 
     <!-- زر Filter -->

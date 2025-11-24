@@ -3,9 +3,17 @@
 
 {% block content %}
 
-<div class="plant-detail-container">
-    <div class="container">
-        
+<div class="plant-countries" dir="ltr">
+    <p class="countries-title"><strong>Native Countries:</strong></p>
+    <ul class="countries-list">
+        {% for country in plant.countries.all %}
+            <li>
+                <a href="{% url 'country_plants' country.id %}">{{ country.name }}</a>
+            </li>
+        {% endfor %}
+    </ul>
+</div>
+
         <!-- Back button -->
         <a href="{% url 'plants_list' %}" class="back-btn">← Back</a>
 

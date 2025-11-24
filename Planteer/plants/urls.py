@@ -12,7 +12,9 @@ urlpatterns = [
     path('<int:pk>/delete/', views.plant_delete, name='plant_delete'),  # حذف نبتة
     path('<int:pk>/detail/', views.plant_detail, name='plant_detail'),  # تفاصيل نبتة
     path('search/', views.plant_search, name='plant_search'),  # صفحة البحث
-    path('<int:pk>/add-review/', views.add_review_view, name='add_review')
+    path('<int:pk>/add-review/', views.add_review_view, name='add_review'),
+    path('country/<int:pk>/plants/', views.country_plants, name='country_plants'),
+
     
 
 ]
