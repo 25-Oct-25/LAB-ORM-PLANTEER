@@ -1,0 +1,81 @@
+{% extends 'base.html' %}
+
+{% block title %}All Plants{% endblock %}
+
+{% block content %}
+<h1 class="h3 mb-3">All Plants</h1>
+
+<form method="get" class="row g-2 mb-4">
+  <div class="col-md-4">
+    <label class="form-label small text-muted">Search</label>
+    <input
+      type="search"
+      name="q"
+      class="form-control"
+      placeholder="Search by plant name..."
+      value="{{ query }}">
+  </div>
+
+  <div class="col-md-3">
+    <label class="form-label small text-muted">Category</label>
+    <select name="category" class="form-select">
+      <option value="ALL">All categories</option>
+      {% for value,label in categories %}
+        <option value="{{ value }}" {% if selected_category == value %}selected{% endif %}>
+          {{ label }}
+        </option>
+      {% endfor %}
+    </select>
+  </div>
+
+  <div class="col-md-3">
+    <label class="form-label small text-muted">Edible / Non-edible</label>
+    <select name="is_edible" class="form-select">
+      <option value="">All</option>
+      <option value="true" {% if selected_is_edible == 'true' %}selected{% endif %}>Edible only</option>
+      <option value="false" {% if selected_is_edible == 'false' %}selected{% endif %}>Non-edible only</option>
+    </select>
+  </div>
+
+  <!-- Country filter as checkboxes -->
+  <div class="col-12">
+    <label class="form-label small text-muted d-block mb-2">Countries</label>
+    <div class="d-flex flex-wrap gap-2" id="country-checkboxes">
+      {% for c in countries %}
+        <div class="form-check">
+          <input
+            class="form-check-input"
+            type="checkbox"
+            name="country"
+            id="country-{{ c.id }}"
+            value="{{ c.id }}"
+            {% if c.id|stringformat:"s" in selected_countries %}checked{% endif %}
+          >
+          <label class="form-check-label" for="country-{{ c.id }}">
+            {% if c.flag %}
+              <img src="{{ c.flag.url }}" alt="{{ c.name }} flag" style="height:18px; width:auto; margin-right:6px; vertical-align:middle;">
+            {% endif %}
+            {{ c.name }}
+          </label>
+        </div>
+      {% empty %}
+        <div class="text-muted">No countries available. Add them via <a href="{% url 'admin:plants_country_add' %}">admin</a>.</div>
+      {% endfor %}
+    </div>
+  </div>
+
+  <div class="col-md-2 d-flex align-items-end">
+    <button class="btn btn-dark w-100" type="submit">Apply</button>
+  </div>
+</form>
+
+<div class="row g-4">
+  {% for plant in plants %}
+    <div class="col-6 col-md-3">
+      {% include 'plants/_plant_card.html' with plant=plant %}
+    </div>
+  {% empty %}
+    <p>No plants found matching the criteria.</p>
+  {% endfor %}
+</div>
+{% endblock %}

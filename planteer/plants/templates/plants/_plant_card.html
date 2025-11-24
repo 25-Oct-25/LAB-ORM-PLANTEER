@@ -1,0 +1,35 @@
+<div class="plant-card h-100">
+    <a href="{% url 'plants:plant_detail' plant_id=plant.id %}" class="d-block text-decoration-none text-reset">
+        {% if plant.image %}
+            <img src="{{ plant.image.url }}" alt="{{ plant.name }}" class="img-fluid">
+        {% endif %}
+        <div class="p-2">
+            <h5 class="plant-title">{{ plant.name }}</h5>
+
+            <p class="plant-brief">
+                {{ plant.about|truncatewords:15 }}
+            </p>
+
+            <p class="plant-category">{{ plant.get_category_display }}</p>
+
+            <p>
+                {% if plant.is_edible %}
+                    Edible
+                {% else %}
+                    Non-edible
+                {% endif %}
+            </p>
+
+            <p>
+                Native to:
+                {% for country in plant.countries.all %}
+                    <a href="{% url 'plants:country_detail' country_id=country.id %}" class="country-link">
+                        {{ country.name }}
+                    </a>{% if not forloop.last %}, {% endif %}
+                {% empty %}
+                    Unknown
+                {% endfor %}
+            </p>
+        </div>
+    </a>
+</div>

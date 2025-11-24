@@ -1,0 +1,49 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Planteer{% endblock %}
+
+{% block content %}
+
+<div class="hero-container mb-5">
+    <img src="{% static 'main/img/hero-plants.jpg' %}" class="hero-bg-img" alt="Plants Background">
+    
+    <div class="hero-content-wrapper">
+        <div class="hero-overlay"></div>
+        
+        <div class="hero-content container"> <h1 class="hero-title">Planteer</h1>
+            <h2 class="hero-subtitle">Plant Database For Plants Lovers</h2>
+            
+            <form action="{% url 'plants:plant_search' %}" class="mt-4 mt-md-5" style="max-width: 550px;">
+                <div class="input-group search-input-group">
+                    <input type="text" class="form-control" name="q" placeholder="Search For Plant...">
+                    <button class="btn btn-dark" type="submit">Search</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div class="d-flex justify-content-between align-items-end mb-4 mt-5 pt-4">
+    <div>
+        <h3 class="fw-bold mb-1" style="font-size: 2rem;">Plants</h3>
+        <p class="text-muted mb-0" style="font-size: 1.1rem;">Learn more about plants</p>
+    </div>
+    <a href="{% url 'plants:plant_list' %}" class="fw-bold text-dark d-flex align-items-center gap-2" style="font-size: 1rem;">
+        More <span>&rarr;</span>
+    </a>
+</div>
+
+<div class="row g-4">
+  {% for plant in latest_plants %}
+    <div class="col-md-6 col-lg-4">
+      {% include 'plants/_plant_card.html' with plant=plant %}
+    </div>
+  {% endfor %}
+</div>
+    <div class="col-12 text-center py-5">
+        <p class="text-muted fs-5">No plants added yet.</p>
+    </div>
+</div>
+
+{% endblock %}
