@@ -1,14 +1,55 @@
 {% extends "base.html" %}
 {% block content %}
 
-<h1>Search Results</h1>
+<h1>Search Plants</h1>
 
-<form action="" method="GET">
-    <input type="text" name="q" value="{{ q }}" placeholder="Search plants...">
-    <button type="submit">Search</button>
+<form method="GET" class="filters">
+    
+    <div class="filters-controls">
+        <input 
+            type="text" 
+            name="q" 
+            placeholder="Search by name or country..." 
+            value="{{ request.GET.q|default:"" }}"
+        >
+
+        <select name="category">
+            <option value="">Category</option>
+            <option value="Tree" {% if request.GET.category == "Tree" %}selected{% endif %}>Tree</option>
+            <option value="Fruit" {% if request.GET.category == "Fruit" %}selected{% endif %}>Fruit</option>
+            <option value="Vegetable" {% if request.GET.category == "Vegetable" %}selected{% endif %}>Vegetable</option>
+            <option value="Flower" {% if request.GET.category == "Flower" %}selected{% endif %}>Flower</option>
+        </select>
+
+        <select name="edible">
+            <option value="">Edible?</option>
+            <option value="true" {% if request.GET.edible == "true" %}selected{% endif %}>Yes</option>
+            <option value="false" {% if request.GET.edible == "false" %}selected{% endif %}>No</option>
+        </select>
+        
+        <button type="submit">Search</button>
+    </div>
+
+    <label>Native Countries:</label>
+
+    <div class="checkbox-list">
+        {% for c in countries %}
+            <label class="checkbox-item"> 
+                <input type="checkbox" 
+                    name="countries" 
+                    value="{{ c.id }}"
+                    {% if c.id|stringformat:"s" in request.GET.getlist.countries %}
+                        checked
+                    {% endif %}
+                >
+                {{ c.name }}
+            </label>
+        {% endfor %}
+    </div>
+    
 </form>
 
-<div class="grid">
+<div class="grid" style="margin-top:40px;">
     {% for plant in plants %}
     <a class="card" href="/plants/{{ plant.id }}/detail/">
         <img src="{{ plant.image.url }}" alt="">
@@ -16,7 +57,7 @@
         <p>{{ plant.category }}</p>
     </a>
     {% empty %}
-        <p>No results found.</p>
+        <p>No plants found.</p>
     {% endfor %}
 </div>
 

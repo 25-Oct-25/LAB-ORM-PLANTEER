@@ -19,6 +19,18 @@
                 <span class="no">No</span>
             {% endif %}
         </p>
+        
+        <h3>Native Countries:</h3>
+
+        <div class="countries-container">
+            {% for c in plant.countries.all %}
+                <a class="country-item" href="{% url 'plants_by_country' c.id %}">
+                    <img class="country-flag" src="{{ c.flag.url }}" alt="">
+                    <span class="country-link">{{ c.name }}</span>
+                </a>
+            {% endfor %}
+        </div>
+
 
         <div class="buttons">
             <a href="/plants/{{ plant.id }}/update/" class="btn update">Update</a>
@@ -33,10 +45,7 @@
 <h2>Related Plants</h2>
 <div class="grid">
     {% for p in related %}
-    <a class="card" href="/plants/{{ p.id }}/detail/">
-        <img src="{{ p.image.url }}" alt="">
-        <h3>{{ p.name }}</h3>
-    </a>
+    {% include "parts/plant_card.html" with plant=p %} 
     {% empty %}
         <p>No related plants.</p>
     {% endfor %}

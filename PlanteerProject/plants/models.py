@@ -2,6 +2,13 @@ from django.db import models
 
 # Create your models here.
 
+class Country(models.Model):
+    name = models.CharField(max_length=100)
+    flag = models.ImageField(upload_to="flags/")
+
+    def __str__(self):
+        return self.name
+
 class Plant(models.Model):
 
     class CategoryChoices(models.TextChoices):
@@ -10,6 +17,7 @@ class Plant(models.Model):
         VEGETABLE = "Vegetable", "Vegetable"
         FLOWER = "Flower", "Flower"
 
+    countries = models.ManyToManyField(Country, related_name="plants")
     name = models.CharField(max_length=100)
     about = models.TextField()
     used_for = models.TextField()
@@ -27,3 +35,5 @@ class Comment(models.Model):
     full_name = models.CharField(max_length=100)
     content = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)
+
+
