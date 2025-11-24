@@ -1,0 +1,31 @@
+{% extends "main/base.html" %}
+{% load static %}
+
+{% block content %}
+
+<div class="country-plants-container">
+    <h1 class="country-title">Plants native to {{ country.name }}</h1>
+
+    <div class="plants-grid">
+        {% for plant in plants %}
+        <div class="plant-card">
+            <div class="plant-img">
+                {% if plant.image %}
+                    <img src="{{ plant.image.url }}" alt="{{ plant.name }}">
+                {% else %}
+                    <img src="{% static 'images/default_plant.jpg' %}" alt="No image">
+                {% endif %}
+            </div>
+            <div class="plant-info">
+                <h3>{{ plant.name }}</h3>
+                <p>{{ plant.description|truncatewords:20 }}</p>
+                <a href="{% url 'plant_detail' plant.pk %}" class="read-more-btn">Read More</a>
+            </div>
+        </div>
+        {% empty %}
+        <p class="no-plants">No plants found for this country.</p>
+        {% endfor %}
+    </div>
+</div>
+
+{% endblock %}

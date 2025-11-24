@@ -1,0 +1,125 @@
+from django.shortcuts import render, redirect, get_object_or_404
+from django.http import HttpRequest, HttpResponse
+
+from .models import Plant, Review, Country, CATEGORY_CHOICES
+from .forms import PlantForm
+from .models import Plant, CATEGORY_CHOICES
+
+
+# عرض قائمة النباتات مع فلتر
+from django.shortcuts import render, get_object_or_404
+from .models import Plant, Country, CATEGORY_CHOICES
+
+def plants_list(request):
+    category = request.GET.get('category')
+    is_edible = request.GET.get('is_edible')
+    country_id = request.GET.get('country')
+
+    plants = Plant.objects.filter(is_published=True)
+
+    if category:
+        plants = plants.filter(category=category)
+    if is_edible in ['true','false']:
+        plants = plants.filter(is_edible=(is_edible=='true'))
+    if country_id:
+        plants = plants.filter(countries__id=country_id)
+
+    countries = Country.objects.all()
+
+    context = {
+        'plants': plants,
+        'categories': CATEGORY_CHOICES,
+        'category': category,
+        'is_edible': is_edible,
+        'countries': countries,
+        'selected_country': country_id,
+    }
+    return render(request, 'plants/plants_list.html', context)
+
+
+
+# تفاصيل النبتة مع Related Plants
+def plant_detail(request, pk):
+    plant = get_object_or_404(Plant, pk=pk)
+
+    # Related Plants: نفس الفئة، غير النبتة الحالية
+    related_plants = Plant.objects.filter(category=plant.category).exclude(id=plant.id)[:4]
+
+    # جلب التعليقات المرتبطة بالنبتة
+    reviews = plant.reviews.all().order_by('-created_at')
+
+    context = {
+        'plant': plant,
+        'related_plants': related_plants,
+        'reviews': reviews,  # إضافة التعليقات للـ template
+    }
+    return render(request, 'plants/plant_detail.html', context)
+
+
+
+# إضافة نبتة جديدة
+def plant_create(request):
+    form = PlantForm(request.POST or None, request.FILES or None)
+    if form.is_valid():
+        form.save()
+        return redirect('plants_list')
+    return render(request, 'plants/plant_form.html', {'form': form})
+
+# تعديل نبتة موجودة
+def plant_update(request, pk):
+    plant = get_object_or_404(Plant, pk=pk)
+    form = PlantForm(request.POST or None, request.FILES or None, instance=plant)
+    if form.is_valid():
+        form.save()
+        return redirect('plant_detail', pk=plant.pk)
+    return render(request, 'plants/plant_form.html', {'form': form})
+
+# حذف نبتة
+def plant_delete(request, pk):
+    plant = get_object_or_404(Plant, pk=pk)
+    if request.method == 'POST':
+        plant.delete()
+        return redirect('plants_list')
+    return render(request, 'plants/plant_delete.html', {'plant': plant})
+
+# صفحة البحث
+def plant_search(request):
+    query = request.GET.get('q')
+    results = Plant.objects.filter(name__icontains=query) if query else []
+    context = {
+        'results': results,
+        'query': query
+    }
+    return render(request, 'plants/plant_search.html', context)
+
+
+
+
+
+
+
+def add_review_view(request, pk):
+    plant = get_object_or_404(Plant, pk=pk)
+
+    if request.method == "POST":
+        name = request.POST.get("name")
+        comment = request.POST.get("comment")
+        rating = request.POST.get("rating")
+
+        Review.objects.create(
+            plant=plant,
+            name=name,
+            comment=comment,
+            rating=rating
+        )
+        return redirect("plant_detail", pk=pk)
+
+
+
+def country_plants(request, pk):
+    country = get_object_or_404(Country, pk=pk)
+    plants = country.plants.filter(is_published=True)  # جلب كل النباتات المنشورة فقط
+    return render(request, 'plants/country_plants.html', {
+        'country': country,
+        'plants': plants
+    })
