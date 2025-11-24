@@ -6,7 +6,7 @@ class PlantAdmin(admin.ModelAdmin):
     list_display = ['name', 'category', 'is_edible', 'created_at']
     list_filter = ['category', 'is_edible']
     search_fields = ['name', 'description']
-    filter_horizontal = ('countries',)  # هذا يتيح اختيار أكثر من دولة بسهولة
+    filter_horizontal = ('countries',)  # هذا يتيح اختيار أكثر من دولة 
 
 @admin.register(Review)
 class ReviewAdmin(admin.ModelAdmin):
