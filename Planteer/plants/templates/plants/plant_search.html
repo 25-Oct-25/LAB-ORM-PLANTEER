@@ -1,0 +1,74 @@
+{% extends 'base.html' %} 
+{% load static %}
+
+{% block content %}
+<div class="container my-5">
+    
+    <div class="row">
+        <div class="col-12 mb-4">
+            {% if query %}
+                <h1 class="display-4">Search results for: <span class="text-primary">"{{ query }}"</span></h1>
+            {% else %}
+                <h1 class="display-4">Search Page</h1>
+            {% endif %}
+            
+            <div class="d-felx justify-contact-end">
+                <form action="{% url 'plants:plant_search_view'%}" method="GET">
+                    <select name="order_by" class="from-select">
+                        <option>Order By</option>
+                        <option>Rating</option>
+                        <option>Release Rate</option>
+                    </select>
+                </form>
+            </div>
+
+            <p class="lead text-muted">( {{ results|length }} ) matching plants found.</p>
+        </div>
+    </div>
+    
+    <div class="row mb-4">
+        <div class="col-md-12">
+            <form method="GET" action="{% url 'plants:plant_search' %}" class="input-group">
+                <input type="search" name="q" class="form-control form-control-lg" placeholder="Search for a plant by name, description, or uses" value="{{ query|default:'' }}" aria-label="Search">
+                <button class="btn btn-outline-success btn-lg" type="submit">Search</button>
+            </form>
+        </div>
+    </div>
+
+    <div class="row">
+        {% if results %}
+            {% for plant in results %}
+                <div class="col-lg-4 col-md-6 mb-4">
+                    <div class="card h-100 shadow-sm border-0">
+                        <img src="{% static plant.image.url %}" class="card-img-top" alt="{{ plant.name }}" style="height: 200px; object-fit: cover;">
+                        
+                        <div class="card-body">
+                            <h5 class="card-title text-success">{{ plant.name }}</h5>
+                            <p class="card-text text-muted mb-1">{{ plant.about|truncatechars:100 }}</p>
+                            
+                            <div class="d-flex justify-content-between align-items-center mt-2">
+                                <span class="badge bg-info text-dark">
+                                    {{ plant.get_category_display }}
+                                </span>
+                                {% if plant.is_edible %}
+                                    <span class="badge bg-warning">Edible</span>
+                                {% endif %}
+                            </div>
+                        </div>
+                        <div class="card-footer bg-white border-0 pt-0">
+                            <a href="{% url 'plants:plant_detail' pk=plant.pk %}" class="btn btn-sm btn-outline-success w-100">View Details</a>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        {% else %}
+            <div class="col-12">
+                <div class="alert alert-info text-center" role="alert">
+                    Sorry, no results found for **"{{ query }}"**. Try searching with different keywords.
+                </div>
+            </div>
+        {% endif %}
+    </div>
+</div>
+
+{% endblock content %}

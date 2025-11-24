@@ -1,0 +1,50 @@
+{% extends 'main/base.html' %}
+{% load static %}
+
+{% block title %}All Plants - Planteer{% endblock %}
+
+{% block extra_css %}
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="container my-5 fade-in">
+    
+    <div class="header-section mb-5">
+        <h1 class="display-4 fw-bold mb-2">All Plants</h1>
+        <p class="lead text-muted">Browse our complete database and learn more about plants.</p>
+        
+        <form action="{% url 'plants:plant_search' %}" method="get" class="d-flex mt-4" style="max-width: 600px;">
+            <input class="form-control me-2 search-input shadow-sm" type="search" name="q" placeholder="Search For Plant Name, Category..." aria-label="Search">
+            <button class="btn btn-dark" type="submit">Search</button>
+        </form>
+    </div>
+    
+    <div class="country-filter mb-4 p-3 border rounded shadow-sm bg-light">
+        <h4 class="fw-bold mb-3">Filter by Native Country:</h4>
+        
+        <a href="{% url 'plants:plant_list' %}" class="btn {% if not selected_country %}btn-success{% else %}btn-outline-success{% endif %} me-2 mb-2">
+            All Plants
+        </a>
+        
+        {% for country in all_countries %}
+            <a href="{% url 'plants:plant_list' %}?country={{ country.name }}" 
+               class="btn {% if selected_country == country.name %}btn-success{% else %}btn-outline-success{% endif %} me-2 mb-2">
+                {{ country.name }}
+            </a>
+        {% endfor %}
+    </div>
+    <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+    {% for plant in plants %} 
+    
+    {% include 'plants/_plant_card.html' with plant=plant %}
+    
+    {% empty %}
+    <div class="col-12">
+        <p class="text-center p-5 text-muted border rounded-3">No plants found in the database matching your criteria.</p>
+    </div>
+    {% endfor %}
+</div>
+    
+</div>
+{% endblock %}

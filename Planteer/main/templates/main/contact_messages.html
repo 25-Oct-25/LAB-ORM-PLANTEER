@@ -1,0 +1,31 @@
+{% extends "main/base.html" %}
+
+{% block title %}User Messages{% endblock %}
+
+{% block content %}
+<h1 class="mb-4 display-5 fw-bold">User Messages</h1>
+<p class="text-muted">All messages received via the "Contact Us" form.</p>
+
+<div class="row row-cols-1 row-cols-lg-2 g-4 mt-4">
+    {% for message in messages %}
+    <div class="col">
+        <div class="card h-100 shadow-sm border-start border-success border-4">
+            <div class="card-body">
+                <h5 class="card-title text-success">{{ message.first_name }} {{ message.last_name }}</h5>
+                <p class="card-subtitle mb-2 text-muted small">{{ message.email }}</p>
+                <p class="card-text border-top pt-3">{{ message.message }}</p>
+            </div>
+            <div class="card-footer bg-light">
+                <small class="text-muted float-start">{{ message.created_at|date:"Y/m/d H:i" }}</small>
+            </div>
+        </div>
+    </div>
+    {% empty %}
+    <div class="col-12">
+        <div class="alert alert-warning text-center" role="alert">
+            No contact messages available at the moment.
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}

@@ -1,0 +1,65 @@
+.form-container {
+    width: 50%;
+    margin: 60px auto;
+    padding: 40px;
+    background: #fff;
+    border-radius: 18px;
+    box-shadow: 0 4px 25px rgba(0, 0, 0, 0.06);
+}
+
+.form-title {
+    font-size: 32px;
+    font-weight: 700;
+    margin-bottom: 25px;
+}
+
+.plant-form {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+}
+
+.form-label {
+    font-size: 16px;
+    color: #333;
+}
+
+.form-input,
+.form-select,
+.form-textarea {
+    width: 100%;
+    padding: 12px;
+    border-radius: 10px;
+    border: 1px solid #ddd;
+    font-size: 15px;
+}
+
+.form-textarea {
+    height: 90px;
+    resize: none;
+}
+
+.form-input-file {
+    padding: 10px 0;
+}
+
+.checkbox-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.submit-btn {
+    background: #0d0f19;
+    color: white;
+    padding: 14px;
+    border-radius: 10px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: 0.2s;
+    border: none;
+}
+
+.submit-btn:hover {
+    background: #111525;
+}
