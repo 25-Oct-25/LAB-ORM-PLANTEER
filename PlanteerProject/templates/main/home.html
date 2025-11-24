@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+
+<section class="hero">
+    <h1>Planteer</h1>
+    <p>Plant Database For Plant Lovers</p>
+
+    <form action="/plants/search/" method="GET">
+        <input type="text" name="q" placeholder="Search for plant...">
+        <button type="submit">Search</button>
+    </form>
+
+    <img src="{% static 'img/hero.jpg' %}" class="hero-img" alt="">
+</section>
+
+<section class="section">
+    <h2>Plants</h2>
+
+    <div class="grid">
+        {% for plant in plants %}
+            {% include "parts/plant_card.html" %}
+        {% empty %}
+            <p>No plants yet.</p>
+        {% endfor %}
+    </div>
+</section>
+
+{% endblock %}

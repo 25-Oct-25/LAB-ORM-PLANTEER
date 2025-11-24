@@ -1,0 +1,64 @@
+{% extends "base.html" %}
+{% block content %}
+
+<h1>
+    {% if current_country %}
+        Plants Native to {{ current_country.name }}
+    {% else %}
+        All Plants
+    {% endif %}
+</h1>
+
+<form method="GET" class="filters">
+    
+    <div class="filters-controls">
+        <input 
+            type="text" 
+            name="q" 
+            placeholder="Search by name..." 
+            value="{{ request.GET.q|default:"" }}"
+        >
+
+        <select name="category">
+            <option value="">Category</option>
+            <option value="Tree" {% if request.GET.category == "Tree" %}selected{% endif %}>Tree</option>
+            <option value="Fruit" {% if request.GET.category == "Fruit" %}selected{% endif %}>Fruit</option>
+            <option value="Vegetable" {% if request.GET.category == "Vegetable" %}selected{% endif %}>Vegetable</option>
+            <option value="Flower" {% if request.GET.category == "Flower" %}selected{% endif %}>Flower</option>
+        </select>
+
+        <select name="edible">
+            <option value="">Edible?</option>
+            <option value="true" {% if request.GET.edible == "true" %}selected{% endif %}>Yes</option>
+        </select>
+
+        <button type="submit">Filter</button>
+    </div>
+
+
+    <label>Native Countries:</label>
+
+    <div class="checkbox-list">
+        {% for c in countries %}
+            <label class="checkbox-item"> 
+                <input 
+                    type="checkbox" 
+                    name="countries" 
+                    value="{{ c.id }}"
+                    {% if c.id|stringformat:"s" in request.GET.getlist.countries %}checked{% endif %}>
+                {{ c.name }}
+            </label>
+        {% endfor %}
+    </div>
+
+</form>
+
+<div class="grid">
+    {% for plant in plants %}
+        {% include "parts/plant_card.html" %}
+    {% empty %}
+        <p>No plants found.</p>
+    {% endfor %}
+</div>
+
+{% endblock %}

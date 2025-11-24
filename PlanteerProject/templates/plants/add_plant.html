@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+{% block content %}
+
+<h1>Add Plant</h1>
+
+<form method="POST" enctype="multipart/form-data">
+    {% csrf_token %}
+
+    <input type="text" name="name" placeholder="Plant Name" required>
+    <textarea name="about" placeholder="About" required></textarea>
+    <textarea name="used_for" placeholder="Used For" required></textarea>
+
+    <select name="category" required>
+        <option value="Tree">Tree</option>
+        <option value="Fruit">Fruit</option>
+        <option value="Vegetable">Vegetable</option>
+        <option value="Flower">Flower</option>
+    </select>
+
+    <label>Edible?</label>
+    <input type="checkbox" name="is_edible"> 
+
+    <label>Native Countries:</label>
+
+    <div class="checkbox-list">
+        {% for c in countries %}
+            <label class="checkbox-item">
+                <input type="checkbox" name="countries[]" value="{{ c.id }}">
+                {{ c.name }}
+            </label>
+        {% endfor %}
+    </div>
+
+
+    <input type="file" name="image" required>
+
+    <button type="submit">Add Plant</button>
+</form>
+
+{% endblock %}

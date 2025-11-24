@@ -1,0 +1,65 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Planteer</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+<body>
+
+<!-- NAVBAR -->
+<header class="nav">
+    <div class="logo"><a href="/">Planteer</a></div>
+
+    <nav>
+        <a href="/plants/all/">All Plants</a>
+        <a href="/contact/">Contact Us</a>
+        <a class="add-btn" href="/plants/new/">Add Plant</a>
+    </nav>
+</header>
+
+<!-- PAGE CONTENT -->
+<main>
+    {% block content %}{% endblock %}
+</main>
+
+<!-- FOOTER -->
+<footer class="footer">
+    <div class="footer-content">
+        <p class="footer-title">Abdulrahman Planteer — All rights reserved to Abdulrahman-dev</p>
+
+        <div class="footer-columns">
+            <div class="col">
+                <h4>Topic</h4>
+                <a href="#">Page</a>
+                <a href="#">Page</a>
+                <a href="#">Page</a>
+            </div>
+            <div class="col">
+                <h4>Topic</h4>
+                <a href="#">Page</a>
+                <a href="#">Page</a>
+                <a href="#">Page</a>
+            </div>
+            <div class="col">
+                <h4>Topic</h4>
+                <a href="#">Page</a>
+                <a href="#">Page</a>
+                <a href="#">Page</a>
+            </div>
+        </div>
+
+        <div class="footer-icons">
+            <i class="fa-brands fa-facebook"></i>
+            <i class="fa-brands fa-twitter"></i>
+            <i class="fa-brands fa-instagram"></i>
+            <i class="fa-brands fa-youtube"></i>
+        </div>
+    </div>
+</footer>
+
+</body>
+</html>
