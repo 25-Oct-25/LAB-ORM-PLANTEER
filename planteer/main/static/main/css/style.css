@@ -353,3 +353,26 @@ footer .fab {
 footer .fab:hover {
     color: var(--light-text);
 }
+
+#country-checkboxes .form-check {
+  margin-right: 12px;
+  margin-bottom: 8px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+#country-checkboxes img {
+  border-radius: 3px;
+  object-fit: cover;
+}
+
+.plant-card .country-link {
+    color: #000000; 
+    text-decoration: none;
+    transition: color 0.3s, transform 0.2s;
+}
+
+.plant-card .country-link:hover {
+    color: #5993d2; 
+    transform: scale(1.05); 
+}

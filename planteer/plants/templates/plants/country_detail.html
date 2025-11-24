@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+{% block title %}Plants native to {{ country.name }}{% endblock %}
+
+{% block content %}
+<h1 class="h3 mb-3">Plants native to {{ country.name }}</h1>
+
+{% if country.flag %}
+  <img src="{{ country.flag.url }}" alt="{{ country.name }} flag" style="max-height:60px; margin-bottom:1rem;">
+{% endif %}
+
+<div class="row g-4">
+  {% for plant in plants %}
+    <div class="col-6 col-md-3">
+      {% include 'plants/_plant_card.html' with plant=plant %}
+    </div>
+  {% empty %}
+    <p class="text-muted">No plants are registered as native to this country yet.</p>
+  {% endfor %}
+</div>
+{% endblock %}

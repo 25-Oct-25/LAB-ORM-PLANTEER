@@ -1,13 +1,15 @@
 from django.shortcuts import render, get_object_or_404, redirect
-from .models import Plant
-from .forms import PlantForm
+from .models import Plant,Comment,Country
+from .forms import PlantForm, CommentForm
 
 def plant_list_view(request):
     query = request.GET.get('q', '').strip()
     category = request.GET.get('category')
     is_edible = request.GET.get('is_edible')
 
-    plants = Plant.objects.all()
+    selected_countries = request.GET.getlist('country') 
+
+    plants = Plant.objects.all().prefetch_related('countries')
 
     if query:
         plants = plants.filter(name__icontains=query)
@@ -20,12 +22,18 @@ def plant_list_view(request):
     elif is_edible == 'false':
         plants = plants.filter(is_edible=False)
 
+    if selected_countries:
+        plants = plants.filter(countries__id__in=selected_countries)
+
     context = {
-        'plants': plants,
+        'plants': plants.distinct(),              
+        'countries': Country.objects.all(),
+        'selected_countries': selected_countries, 
         'categories': Plant.Category.choices,
         'selected_category': category or 'ALL',
         'selected_is_edible': is_edible or '',
-        'query': query,   
+        'query': query,
+ 
     }
     return render(request, 'plants/plant_list.html', context)
 
@@ -36,9 +44,26 @@ def plant_detail_view(request, plant_id):
         category=plant.category
     ).exclude(id=plant.id)[:3]
 
+    if request.method == 'POST':
+        comment_form = CommentForm(request.POST)
+        if comment_form.is_valid():
+            comment = comment_form.save(commit=False)
+            comment.plant = plant
+            comment.save()
+            return redirect('plants:plant_detail', plant_id=plant.id)
+    else:
+        comment_form = CommentForm()
+
+    context = {
+        'plant': plant,
+        'related_plants': related_plants,
+        'comment_form': comment_form,
+    }
+
     return render(request, 'plants/plant_detail.html', {
         'plant': plant,
         'related_plants': related_plants,
+        'comment_form':comment_form
     })
 
 
@@ -82,3 +107,8 @@ def plant_search_view(request):
         'query': query,
         'results': results,
     })
+
+def country_detail_view(request, country_id):
+    country = get_object_or_404(Country, id=country_id)
+    plants = country.plants.all().prefetch_related('countries')
+    return render(request, 'plants/country_detail.html', {'country': country, 'plants': plants})

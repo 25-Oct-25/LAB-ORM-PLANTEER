@@ -37,6 +37,33 @@
     </select>
   </div>
 
+  <!-- Country filter as checkboxes -->
+  <div class="col-12">
+    <label class="form-label small text-muted d-block mb-2">Countries</label>
+    <div class="d-flex flex-wrap gap-2" id="country-checkboxes">
+      {% for c in countries %}
+        <div class="form-check">
+          <input
+            class="form-check-input"
+            type="checkbox"
+            name="country"
+            id="country-{{ c.id }}"
+            value="{{ c.id }}"
+            {% if c.id|stringformat:"s" in selected_countries %}checked{% endif %}
+          >
+          <label class="form-check-label" for="country-{{ c.id }}">
+            {% if c.flag %}
+              <img src="{{ c.flag.url }}" alt="{{ c.name }} flag" style="height:18px; width:auto; margin-right:6px; vertical-align:middle;">
+            {% endif %}
+            {{ c.name }}
+          </label>
+        </div>
+      {% empty %}
+        <div class="text-muted">No countries available. Add them via <a href="{% url 'admin:plants_country_add' %}">admin</a>.</div>
+      {% endfor %}
+    </div>
+  </div>
+
   <div class="col-md-2 d-flex align-items-end">
     <button class="btn btn-dark w-100" type="submit">Apply</button>
   </div>
@@ -45,16 +72,7 @@
 <div class="row g-4">
   {% for plant in plants %}
     <div class="col-6 col-md-3">
-      <div class="plant-card h-100">
-        <a href="{% url 'plants:plant_detail' plant.id %}" class="d-block text-decoration-none text-reset">
-            <img src="{{ plant.image.url }}" alt="{{ plant.name }}">
-            <div>
-                <h5 class="plant-title">{{ plant.name }}</h5>
-                <p class="plant-brief">Brief about plant</p>
-                <p class="plant-category">{{ plant.get_category_display }}</p>
-            </div>
-        </a>
-      </div>
+      {% include 'plants/_plant_card.html' with plant=plant %}
     </div>
   {% empty %}
     <p>No plants found matching the criteria.</p>

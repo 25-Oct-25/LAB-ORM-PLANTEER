@@ -33,12 +33,20 @@
             <span class="detail-value text-secondary">{{ plant.used_for }}</span>
         </div>
 
-        <div>
-            <span class="detail-label">Native To:</span>
-            <span class="detail-value text-secondary">
-                {{ plant.native_to|default:"Unknown" }}
-            </span>
-        </div>
+<div>
+  <span class="detail-label">Native To:</span>
+  <span class="detail-value text-secondary">
+    {% if plant.countries.exists %}
+      {% for country in plant.countries.all %}
+        <a href="{% url 'plants:country_detail' country.id %}" class="text-decoration-none">
+          {{ country.name }}
+        </a>{% if not forloop.last %}, {% endif %}
+      {% endfor %}
+    {% else %}
+      Unknown
+    {% endif %}
+  </span>
+</div>
         
         <div>
             <span class="detail-label text-muted small">Added on:</span>
@@ -81,4 +89,50 @@
       {% endfor %}
     </div>
 </div>
+
+<div class="mt-5">
+  <h3 class="h5 mb-3">Comments</h3>
+
+  <div class="mb-4">
+    {% if plant.comments.exists %}
+      {% for comment in plant.comments.all %}
+        <div class="card mb-3 p-3">
+          <div class="d-flex justify-content-between align-items-start">
+            <div>
+              <strong>{{ comment.name }}</strong>
+              <div class="small text-muted">{{ comment.created_at|date:"F j, Y, g:i a" }}</div>
+            </div>
+          </div>
+          <p class="mt-2 mb-0">{{ comment.content|linebreaksbr }}</p>
+        </div>
+      {% endfor %}
+    {% else %}
+      <p class="text-muted">No comments yet. Be the first to comment!</p>
+    {% endif %}
+  </div>
+
+  <div class="card p-3">
+    <h5 class="mb-3">Add a comment</h5>
+    <form method="post" novalidate>
+      {% csrf_token %}
+      {{ comment_form.non_field_errors }}
+      <div class="mb-3">
+        {{ comment_form.name.label_tag }}
+        {{ comment_form.name }}
+        {% for err in comment_form.name.errors %}
+          <div class="text-danger small">{{ err }}</div>
+        {% endfor %}
+      </div>
+      <div class="mb-3">
+        {{ comment_form.content.label_tag }}
+        {{ comment_form.content }}
+        {% for err in comment_form.content.errors %}
+          <div class="text-danger small">{{ err }}</div>
+        {% endfor %}
+      </div>
+      <button type="submit" class="btn btn-dark">Submit</button>
+    </form>
+  </div>
+</div>
+
 {% endblock %}

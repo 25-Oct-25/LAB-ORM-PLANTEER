@@ -34,25 +34,16 @@
     </a>
 </div>
 
-<div class="row g-4 pb-5">
-    {% for plant in latest_plants %}
+<div class="row g-4">
+  {% for plant in latest_plants %}
     <div class="col-md-6 col-lg-4">
-        <div class="plant-card h-100">
-            <a href="{% url 'plants:plant_detail' plant.id %}" class="d-block text-decoration-none text-reset">
-                <img src="{{ plant.image.url }}" alt="{{ plant.name }}">
-                <div>
-                    <h5 class="plant-title">{{ plant.name }}</h5>
-                    <p class="plant-brief">Brief about plant</p>
-                    <p class="plant-category">{{ plant.get_category_display }}</p>
-                </div>
-            </a>
-        </div>
+      {% include 'plants/_plant_card.html' with plant=plant %}
     </div>
-    {% empty %}
+  {% endfor %}
+</div>
     <div class="col-12 text-center py-5">
         <p class="text-muted fs-5">No plants added yet.</p>
     </div>
-    {% endfor %}
 </div>
 
 {% endblock %}
