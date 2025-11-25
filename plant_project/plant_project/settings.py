@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'main',# ال app حقي 
     'plants', # ال app حقي 
+    'account',
 ]
 
 MIDDLEWARE = [

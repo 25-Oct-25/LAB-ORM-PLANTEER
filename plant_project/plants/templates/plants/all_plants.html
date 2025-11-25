@@ -40,7 +40,7 @@
         {% for plant in plants %}
         <div class="allplants-card">
 
-            <img src="{{ plant.image.url }}" class="allplants-img" alt="{{ plant.name }}">
+            <img src="{{ plant.image.url }}" class="allplants-img">
 
             <h3 class="allplants-name">{{ plant.name }}</h3>
 
@@ -50,7 +50,7 @@
 
             <p class="allplants-date">Added: {{ plant.created_at|date:"Y-m-d" }}</p>
 
-            <!-- ⭐ Countries Tags -->
+            <!-- Countries -->
             <p class="allplants-country">
                 {% for country in plant.countries.all %}
                     <span class="country-tag">{{ country.name }}</span>
@@ -65,26 +65,13 @@
                 <a href="{% url 'plants:delete_plant' plant.id %}" class="btn-delete">Delete</a>
             </div>
 
-            <div class="comments-box">
-                <h4 class="comments-title">Comments:</h4>
-
-                {% for c in plant.comments.all %}
-                    <div class="comment-item">
-                        <p class="comment-user">{{ c.username }}</p>
-                        <p class="comment-text">{{ c.text }}</p>
-                        <span class="comment-date">{{ c.created_at|date:"Y-m-d H:i" }}</span>
-                    </div>
-                {% empty %}
-                    <p class="no-comments">No comments yet.</p>
-                {% endfor %}
-            </div>
-
         </div>
         {% endfor %}
 
     </div>
 
-    <!-- GLOBAL COMMENT FORM -->
+    <!-- ===== COMMENT FORM (Only for logged in users) ===== -->
+    {% if request.user.is_authenticated %}
     <div class="global-comment-box">
 
         <h3>Add a Comment</h3>
@@ -99,12 +86,47 @@
                 {% endfor %}
             </select>
 
-            <input type="text" name="username" placeholder="Your name" class="comment-input" required>
+            <!-- username removed (we use request.user.username) -->
 
             <textarea name="text" placeholder="Write a comment..." class="comment-textarea" required></textarea>
 
             <button class="comment-btn">Add Comment</button>
         </form>
+    </div>
+
+    {% else %}
+    <div class="p-3 rounded bg-warning d-flex flex-column gap-2" style="margin-top: 30px;">
+        <p>Only registered users can add comments.</p>
+    </div>
+    {% endif %}
+
+    <!-- ===== ALL COMMENTS (Grid) ===== -->
+    <div class="comments-section">
+
+        <h3>All Comments</h3>
+
+        <div class="comments-grid">
+
+            {% for plant in plants %}
+                {% for c in plant.comments.all %}
+                
+                    {% if c.user %}
+                    <div class="comment-card">
+                        <h4 class="comment-card-title">{{ plant.name }}</h4>
+
+                        <!-- name from user model -->
+                        <p class="comment-card-user">{{ c.user.username }}</p>
+
+                        <p class="comment-card-text">{{ c.text }}</p>
+
+                        <span class="comment-card-date">{{ c.created_at|date:"Y-m-d H:i" }}</span>
+                    </div>
+                    {% endif %}
+
+                {% endfor %}
+            {% endfor %}
+
+        </div>
 
     </div>
 

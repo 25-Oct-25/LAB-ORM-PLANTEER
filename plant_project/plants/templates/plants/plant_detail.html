@@ -29,7 +29,6 @@
 
             <p><strong>Added On:</strong> {{ plant.created_at|date:"Y-m-d" }}</p>
 
-            <!-- ⭐ عرض الدول -->
             <p><strong>Native Countries:</strong></p>
 
             <div class="country-list">
@@ -40,11 +39,17 @@
                 {% endfor %}
             </div>
 
+            <!--  شارة عدد التعليقات الصغيرة -->
+            <div class="comments-mini">
+                <span class="mini-title">Comments:</span>
+                <span class="mini-count">{{ comments_count }}</span>
+            </div>
+
         </div>
 
     </div>
 
-    <!-- 🔹 Related Plants -->
+    <!-- Related Plants -->
     <h2 class="related-title">Related Plants</h2>
 
     <div class="related-container">

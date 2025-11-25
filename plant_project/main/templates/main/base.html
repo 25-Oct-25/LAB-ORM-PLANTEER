@@ -23,10 +23,19 @@
     <header class="top-nav">
         <a href="{% url 'main:index' %}" class="logo">🌿 Plants</a>
 
-
         <div class="nav-buttons">
+
+            <!-- 🔹 أزرار النباتات -->
             <a href="{% url 'plants:all_plants' %}" class="pill-btn">All Plants</a>
             <a href="{% url 'plants:add_plant' %}" class="pill-btn">Add Plant</a>
+
+            <!-- 🔹 تسجيل دخول / خروج تفاعلي -->
+            {% if user.is_authenticated %}
+                <a href="{% url 'account:logout' %}" class="pill-btn auth-btn">Logout</a>
+            {% else %}
+                <a href="{% url 'account:signin' %}" class="pill-btn auth-btn">Sign In</a>
+                <a href="{% url 'account:signup' %}" class="pill-btn auth-btn">Sign Up</a>
+            {% endif %}
 
             <div class="dropdown">
                 <button class="drop-btn">Menu ▼</button>
@@ -35,6 +44,13 @@
                     <a href="{% url 'plants:all_plants' %}">All Plants</a>
                     <a href="{% url 'plants:add_plant' %}">Add Plant</a>
                     <a href="{% url 'plants:search' %}">Search</a>
+
+                    {% if user.is_authenticated %}
+                        <a href="{% url 'account:logout' %}">Logout</a>
+                    {% else %}
+                        <a href="{% url 'account:signin' %}">Sign In</a>
+                        <a href="{% url 'account:signup' %}">Sign Up</a>
+                    {% endif %}
                 </div>
             </div>
         </div>

@@ -1,6 +1,5 @@
 from django import forms
-from .models import Plant
-from .models import Plant, Comment  # من اجل مودل التعليقات اضفت ذا السطر هنا 
+from .models import Plant, Comment  
 
 
 class PlantForm(forms.ModelForm):
@@ -12,5 +11,10 @@ class PlantForm(forms.ModelForm):
 class CommentForm(forms.ModelForm):
     class Meta:
         model = Comment
-        fields = ["username", "text"]
-
+        fields = ["text"]  
+        widgets = {
+            "text": forms.Textarea(attrs={
+                "placeholder": "Write your comment...",
+                "rows": 3
+            })
+        }

@@ -23,6 +23,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('main.urls')),  # توجيه الروت إلى تطبيق main
     path('plants/', include('plants.urls')),  # توجيه الروت إلى تطبيق   plants
+    path('account/',include('account.urls')),
 
 ]
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

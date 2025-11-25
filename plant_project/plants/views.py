@@ -1,17 +1,16 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from django.db.models import Q
-
+from django.db.models import Q, Count
+from django.contrib.auth.decorators import login_required
 from .models import Plant, Comment, Country
 from .forms import PlantForm, CommentForm
 
 
-
-# 🌿 ALL PLANTS PAGE (List + Filters + Add Comment)
+# ALL PLANTS PAGE (List + Filters + Add Comment)
 def all_plants(request):
 
     plants = Plant.objects.all().order_by("-id")
 
-    # -------- Filters --------
+    # Filters
     category = request.GET.get("category")
     is_edible = request.GET.get("is_edible")
     country_id = request.GET.get("country")
@@ -22,12 +21,16 @@ def all_plants(request):
     if is_edible == "on":
         plants = plants.filter(is_edible=True)
 
-    # ⭐ فلترة حسب الدولة (ManyToMany)
     if country_id:
         plants = plants.filter(countries__id=country_id)
 
-    # -------- Add Comment --------
+    # Add Comment
     if request.method == "POST":
+
+        #  منع غير المسجلين
+        if not request.user.is_authenticated:
+            return redirect("account:signin")
+
         plant_id = request.POST.get("plant_id")
         plant = get_object_or_404(Plant, id=plant_id)
 
@@ -35,19 +38,30 @@ def all_plants(request):
         if form.is_valid():
             comment = form.save(commit=False)
             comment.plant = plant
+
+            # ⭐ ربط التعليق بالمستخدم الحقيقي
+            comment.user = request.user  
+
             comment.save()
+
         return redirect("plants:all_plants")
 
     return render(request, "plants/all_plants.html", {
         "plants": plants,
-        "countries": Country.objects.all(),  # ⭐ لإظهارها في الفلتر
+        "countries": Country.objects.all(),
     })
 
-#DETAILS PAGE
 
+
+# DETAILS PAGE
 def plant_detail(request, plant_id):
 
-    plant = get_object_or_404(Plant, id=plant_id)
+    plant = get_object_or_404(
+        Plant.objects.annotate(
+            comments_count=Count('comments')
+        ),
+        id=plant_id
+    )
 
     related = Plant.objects.filter(
         category=plant.category
@@ -55,11 +69,13 @@ def plant_detail(request, plant_id):
 
     return render(request, "plants/plant_detail.html", {
         "plant": plant,
-        "related": related
+        "related": related,
+        "comments_count": plant.comments_count
     })
 
 
-#ADD PLANT PAGE
+
+# ADD PLANT PAGE
 def add_plant(request):
 
     if request.method == "POST":
@@ -80,20 +96,18 @@ def add_plant(request):
             image=image
         )
 
-        # ⭐ إضافة الدول (ManyToMany)
-        country_ids = request.POST.getlist("countries")  # ← يستقبل أكثر من دولة
+        country_ids = request.POST.getlist("countries")
         plant.countries.set(country_ids)
 
         return redirect("plants:all_plants")
 
     return render(request, "plants/add_plant.html", {
-        "countries": Country.objects.all()  # لعرضها في صفحة إضافة النبات
+        "countries": Country.objects.all()
     })
 
 
 
-#UPDATE PLANT PAGE
-
+# UPDATE PLANT PAGE
 def update_plant(request, plant_id):
 
     plant = get_object_or_404(Plant, id=plant_id)
@@ -112,14 +126,17 @@ def update_plant(request, plant_id):
         "plant": plant
     })
 
-# DELETE PLANT
 
+
+# DELETE PLANT
 def delete_plant(request, plant_id):
     plant = get_object_or_404(Plant, id=plant_id)
     plant.delete()
     return redirect("plants:all_plants")
 
-#SEARCH PAGE
+
+
+# SEARCH PAGE
 def search(request):
 
     query = request.GET.get("q")

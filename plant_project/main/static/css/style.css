@@ -1,4 +1,4 @@
-/* base.html*/
+/* base.html */
 body {
     margin: 0;
     font-family: "Poppins", sans-serif;
@@ -61,6 +61,21 @@ body {
 }
 
 
+.highlight-btn {
+    background: #588157 !important;
+}
+
+.highlight-btn:hover {
+    background: #74a37e !important;
+}
+
+/* نفس شكل الزر الأساسي */
+.auth-btn {
+    border-radius: 20px;
+}
+
+
+/* dropdown */
 .dropdown {
     position: relative;
 }
@@ -155,8 +170,9 @@ body {
     opacity: 1;
     transform: scale(1.15);
 }
-/* 📱 تنسيق الجوال - Responsive */
 
+
+/* 📱 تنسيق الجوال */
 @media (max-width: 600px) {
 
     .top-nav {
@@ -213,6 +229,7 @@ body {
         font-size: 22px;
     }
 }
+
 
 /* home.html */
 .home-page {
@@ -415,7 +432,8 @@ body {
     margin-bottom: 5px;
 }
  
-/* ALL PLANTS PAGE*/
+/* ALL PLANTS PAGE */
+
 .allplants-page {
     padding: 20px;
 }
@@ -427,6 +445,7 @@ body {
     color: #335533;
 }
 
+/* -------- FILTER BOX -------- */
 .filter-box {
     display: flex;
     align-items: center;
@@ -464,13 +483,12 @@ body {
     border-radius: 8px;
     cursor: pointer;
     font-size: 15px;
-    transition: 0.3s;
 }
 .filter-btn:hover {
     background: #2f4a34;
 }
 
-
+/* -------- PLANT CARDS -------- */
 .allplants-container {
     display: flex;
     flex-wrap: wrap;
@@ -479,7 +497,7 @@ body {
 
 .allplants-card {
     width: 260px;
-    min-height: 580px; /* رفع بسيط عشان البلد */
+    height: auto; 
     background: #ffffff;
     border-radius: 12px;
     overflow: hidden;
@@ -489,6 +507,7 @@ body {
     display: flex;
     flex-direction: column;
 }
+
 .allplants-card:hover {
     transform: translateY(-4px);
 }
@@ -509,8 +528,6 @@ body {
     font-size: 14px;
     color: #555;
     margin: 0 12px;
-    height: 60px;
-    overflow: hidden;
 }
 
 .allplants-date {
@@ -519,7 +536,7 @@ body {
     margin: 8px 12px 12px;
 }
 
-/* 🔥 إضافة بسيطة للبلدان */
+/* -------- COUNTRIES -------- */
 .allplants-country {
     margin: 0 12px;
     font-size: 13px;
@@ -527,6 +544,15 @@ body {
     font-weight: 600;
 }
 
+.country-tag {
+    background: #eaf3ea;
+    padding: 3px 8px;
+    border-radius: 8px;
+    font-size: 12px;
+    margin-right: 5px;
+}
+
+/* -------- BUTTONS -------- */
 .allplants-buttons {
     display: flex;
     justify-content: space-around;
@@ -545,60 +571,7 @@ body {
 .btn-update { background: #2b6bc0; }
 .btn-delete { background: #c63636; }
 
-.no-data {
-    font-size: 18px;
-    margin-top: 20px;
-    color: #555;
-}
-
-/*  COMMENTS INSIDE CARD */
-.comments-box {
-    margin: 10px 12px;
-    max-height: none;    
-    overflow: visible;     
-    padding-right: 0;
-}
-
-.comments-title {
-    font-size: 15px;
-    font-weight: 600;
-    color: #2d4d2d;
-    margin-bottom: 8px;
-}
-
-.comment-item {
-    background: #ffffff;
-    padding: 10px 12px;
-    border-radius: 12px;
-    margin-bottom: 10px;
-    box-shadow: 0 3px 8px rgba(0,0,0,0.08);
-    border: 1px solid #e3e3e3;
-}
-
-.comment-user {
-    font-size: 14px;
-    font-weight: 600;
-    color: #3a5a40;
-}
-
-.comment-text {
-    font-size: 14px;
-    color: #333;
-    margin: 5px 0;
-}
-
-.comment-date {
-    font-size: 11px;
-    color: #777;
-    text-align: right;
-}
-
-.no-comments {
-    font-size: 13px;
-    color: #666;
-}
-
-/* COMMENT FORM BOTTOM */
+/* -------- COMMENT FORM -------- */
 .global-comment-box {
     margin-top: 45px;
     background: #ffffff;
@@ -637,11 +610,6 @@ body {
     outline: none;
 }
 
-.comment-select,
-.comment-input {
-    width: 200px;
-}
-
 .comment-textarea {
     width: 320px;
     height: 70px;
@@ -655,97 +623,77 @@ body {
     border: none;
     border-radius: 10px;
     cursor: pointer;
-    font-size: 15px;
-    font-weight: 500;
 }
 .comment-btn:hover {
     background: #294131;
 }
 
-/* ---------------- RESPONSIVE ---------------- */
-@media (max-width: 650px) {
-    .global-comment-form {
-        flex-direction: column;
-    }
-
-    .comment-select,
-    .comment-input,
-    .comment-textarea,
-    .comment-btn {
-        width: 100%;
-    }
-
-    .allplants-card {
-        height: auto;
-    }
-}
-
-@media (max-width: 600px) {
-    .allplants-container {
-        justify-content: center;
-    }
-
-    .allplants-card {
-        width: 90%;
-        max-width: 350px;
-    }
-}
-
-/*   Plant Detail Page    */
-
-.detail-page {
-    max-width: 900px;
-    margin: auto;
-    padding: 20px;
-}
-
-.detail-container {
+/*COMMENT GRID SECTION (B)*/
+.comments-section {
+    margin-top: 50px;
     background: #ffffff;
-    border-radius: 12px;
-    padding: 20px;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
-    margin-bottom: 40px;
+    padding: 25px;
+    border-radius: 14px;
+    box-shadow: 0 4px 18px rgba(0,0,0,0.08);
+    max-width: 950px;
+    margin-left: auto;
+    margin-right: auto;
 }
 
-.detail-image-box {
-    width: 100%;
+.comments-section h3 {
     text-align: center;
-}
-
-.detail-image {
-    width: 100%;
-    max-width: 380px;
-    height: 300px;
-    object-fit: cover;
-    border-radius: 12px;
-    display: block;
-    margin: auto;
-}
-
-.detail-info {
-    margin-top: 20px;
-}
-
-.detail-title {
-    font-size: 28px;
     color: #2d4d2d;
+    font-size: 26px;
+    margin-bottom: 25px;
+}
+
+/* GRID */
+.comments-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 18px;
+}
+
+/* -------- COMMENT CARD -------- */
+.comment-card {
+    backdrop-filter: blur(8px);
+    background: rgba(155, 199, 155, 0.20);
+    border: 1px solid rgba(80, 120, 80, 0.3);
+    border-radius: 14px;
+    padding: 18px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    transition: 0.3s;
+}
+
+.comment-card:hover {
+    transform: translateY(-4px);
+}
+
+.comment-card-title {
+    font-size: 18px;
+    font-weight: 700;
+    color: #275c27;
+    margin-bottom: 8px;
+}
+
+.comment-card-user {
+    font-weight: 600;
+    margin-bottom: 5px;
+    color: #1f3d1f;
+}
+
+.comment-card-text {
+    color: #222;
     margin-bottom: 10px;
 }
 
-.detail-category {
-    font-size: 16px;
-    color: #588157;
-    margin-bottom: 15px;
-    font-weight: 600;
+.comment-card-date {
+    font-size: 12px;
+    color: #666;
 }
 
-.detail-about {
-    font-size: 16px;
-    color: #444;
-    line-height: 1.6;
-    margin-bottom: 20px;
-}
 
+/* PLANT DETAIL PAGE — FINAL STYLE*/
 
 .detail-page {
     max-width: 1200px;
@@ -753,106 +701,63 @@ body {
     padding: 20px;
 }
 
+/* 🔹 البطاقة الرئيسية */
 .detail-container {
     display: flex;
     gap: 30px;
     align-items: flex-start;
-    background: #fff;
+    background: #ffffff;
     padding: 25px;
     border-radius: 12px;
     box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+    margin-bottom: 40px;
 }
 
+/* 🔹 صورة النبات */
 .detail-image-box {
     flex: 1;
+    text-align: center;
 }
 
 .detail-image {
     width: 100%;
     height: auto;
     max-height: 420px;
-    object-fit: contain;   
+    object-fit: contain;
     border-radius: 12px;
-    background: white;    
+    background: white;
 }
 
-
+/* 🔹 معلومات النبات */
 .detail-info {
     flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
 }
 
 .detail-title {
     font-size: 32px;
     font-weight: 600;
     color: #1f1f1f;
-    margin-bottom: 15px;
 }
 
 .detail-category {
     font-size: 18px;
     font-weight: 600;
     color: #6a6a6a;
-    margin-bottom: 15px;
 }
 
 .detail-about {
     font-size: 16px;
     color: #444;
     line-height: 1.7;
-    margin-bottom: 20px;
+    margin-bottom: 10px;
 }
 
-.related-title {
-    margin-top: 40px;
-    font-size: 24px;
-    font-weight: 600;
-    color: #1f1f1f;
-}
-
-
-.related-container {
-    margin-top: 20px;
-    display: flex;
-    gap: 25px;
-    flex-wrap: wrap;
-}
-
-
-.related-card {
-    width: 260px;
-    background: #fff;
-    border-radius: 12px;
-    box-shadow: 0 3px 12px rgba(0,0,0,0.08);
-    overflow: hidden;
-    transition: 0.3s;
-}
-
-.related-card:hover {
-    transform: translateY(-5px);
-}
-
-
-.related-img {
-    width: 100%;
-    height: 160px;
-    object-fit: cover;
-}
-
-.related-name {
-    margin: 10px 12px 4px;
-    font-size: 18px;
-    font-weight: 600;
-    color: #1f1f1f;
-}
-
-.related-category {
-    margin: 0 12px 12px;
-    font-size: 14px;
-    color: #6a6a6a;
-}
-
+/* 🔹 الدول */
 .country-list {
-    margin: 10px 0 20px;
+    margin: 10px 0 10px;
     display: flex;
     gap: 8px;
     flex-wrap: wrap;
@@ -873,7 +778,85 @@ body {
     border-color: #ddd;
 }
 
-/*     Responsive Design    */
+/* COMMENT MINI BADGE — Small & Clean */
+
+.comments-mini {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: #e8f5e9;
+    padding: 6px 12px;
+    border-radius: 20px;
+    border: 1px solid #cfe9d1;
+    width: fit-content;
+    margin-top: 5px;
+}
+
+.mini-title {
+    font-size: 14px;
+    font-weight: 600;
+    color: #2d4d2d;
+}
+
+.mini-count {
+    background: #3a5a40;
+    color: white;
+    padding: 3px 10px;
+    border-radius: 14px;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+/* RELATED PLANTS */
+
+.related-title {
+    margin-top: 40px;
+    font-size: 24px;
+    font-weight: 600;
+    color: #1f1f1f;
+}
+
+.related-container {
+    margin-top: 20px;
+    display: flex;
+    gap: 25px;
+    flex-wrap: wrap;
+}
+
+.related-card {
+    width: 260px;
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 3px 12px rgba(0,0,0,0.08);
+    overflow: hidden;
+    transition: 0.3s;
+}
+
+.related-card:hover {
+    transform: translateY(-5px);
+}
+
+.related-img {
+    width: 100%;
+    height: 160px;
+    object-fit: cover;
+}
+
+.related-name {
+    margin: 10px 12px 4px;
+    font-size: 18px;
+    font-weight: 600;
+    color: #1f1f1f;
+}
+
+.related-category {
+    margin: 0 12px 12px;
+    font-size: 14px;
+    color: #6a6a6a;
+}
+
+/*RESPONSIVE */
+
 @media (max-width: 900px) {
     .detail-container {
         flex-direction: column;
@@ -882,7 +865,12 @@ body {
     .detail-image {
         height: 300px;
     }
+
+    .comments-mini {
+        margin: 5px auto;
+    }
 }
+
 /* search results page */
 
 .search-input-field {
