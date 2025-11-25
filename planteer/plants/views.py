@@ -48,6 +48,7 @@ def plant_detail_view(request, plant_id):
         comment_form = CommentForm(request.POST)
         if comment_form.is_valid():
             comment = comment_form.save(commit=False)
+            comment.user = request.user
             comment.plant = plant
             comment.save()
             return redirect('plants:plant_detail', plant_id=plant.id)

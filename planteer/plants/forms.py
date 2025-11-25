@@ -9,7 +9,7 @@ class PlantForm(forms.ModelForm):
 class CommentForm(forms.ModelForm):
     class Meta:
         model=Comment
-        fields=['name','content']
+        fields=['content']
         widgets = {
             'name': forms.TextInput(attrs={'placeholder': 'Your name', 'class': 'form-control'}),
             'content': forms.Textarea(attrs={'placeholder': 'Write your comment...', 'class': 'form-control', 'rows': 4}),

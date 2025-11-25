@@ -1,9 +1,8 @@
 from django.contrib import admin
 from .models import Plant, Comment, Country
 
-# Register your models here.
 class CommentAdmin(admin.ModelAdmin):
-    list_display=('name','plant','created_at')
+    list_display=('user','plant','created_at')
     list_filter=('created_at','plant')
     search_fields=('name','content','plant__name')
 
