@@ -1,0 +1,32 @@
+{% extends 'main/base.html' %}
+
+{% block title %}Sign In{% endblock %}
+
+{% block content %}
+
+<div class="contact-container">
+
+    <h2 class="contact-title text-center">Sign In</h2>
+
+
+
+    <form class="contact-form" action="{% url 'account:sign_in' %}{% if 'next' in request.GET %}?next={{ request.GET.next }}{% endif %}"
+          method="POST">
+        {% csrf_token %}
+
+        <label for="username">Username:</label>
+        <input type="text" name="username" id="username" required placeholder="Enter your username">
+
+        <label for="password">Password:</label>
+        <input type="password" name="password" id="password" required placeholder="Enter your password">
+
+        <button type="submit" class="send-btn">Sign In</button>
+
+        <p class="text-center mt-3">
+            Don't have an account? <a href="{% url 'account:sign_up' %}">Sign Up</a>
+        </p>
+    </form>
+
+</div>
+
+{% endblock %}

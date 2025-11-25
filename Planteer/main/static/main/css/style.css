@@ -1,5 +1,4 @@
-/* =========================
-========================= */
+
 * {
     margin: 0;
     padding: 0;
@@ -14,7 +13,6 @@ body {
     background-color: #ffffff;
     min-height: 100vh;
 }
-
 
 
 
@@ -61,7 +59,8 @@ body {
 
 .nav-links {
     display: flex;
-    gap: 90px;
+    
+    gap: 100px ;
     justify-content: center;
 }
 
@@ -1138,18 +1137,15 @@ body {
     direction: ltr;
     display: flex;
     flex-direction: column;
-    position: relative; /* مهم لتموضع الأزرار المطلق */
+    position: relative; 
     overflow: hidden; 
 }
 
-/* حاوية الشرائح نفسها */
 .review-slides {
     display: flex;
     transition: transform 0.5s ease-in-out; 
-    /* لا نحتاج هامش علوي هنا لأن الأزرار خرجت من التدفق الطبيعي */
 }
 
-/* تصميم الكارد المحدث */
 .review-card {
     background: #ffffff; 
     padding: 25px;       
@@ -1158,7 +1154,6 @@ body {
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05); 
     min-width: 100%; 
     box-sizing: border-box; 
-    /* هامش لضمان عدم تداخل الأسهم مع محتوى الكارد إذا كانت الأسهم قريبة جداً */
     padding-left: 40px; 
     padding-right: 40px;
 }
@@ -1200,9 +1195,9 @@ body {
     position: absolute; /* وضع مطلق */
     top: 40%;           /* في منتصف الارتفاع */
     transform: translateY(-50%); 
-    background: none;   /* خلفية شفافة */
+    background: none;  
     border: none;       /* بدون حدود */
-    color: #484848;     /* لون السهم (أخضر) */
+    color: #484848;     
     cursor: pointer;
     font-size: 1em;     /* حجم كبير للسهم */
     padding: 5px;
@@ -1211,7 +1206,7 @@ body {
 }
 
 .prev-btn:hover, .next-btn:hover {
-    opacity: 1;         /* تصبح واضحة عند المرور عليها */
+    opacity: 1;         
     background: none;
 }
 
@@ -1280,7 +1275,6 @@ body {
 }
 
 
-
 .country-plants-container {
     text-align: left;  /* النصوص على اليسار */
     direction: ltr;    /* ترتيب الكتابة من اليسار لليمين */
@@ -1293,8 +1287,6 @@ body {
     text-align: left;
 }
 
-
-
 .plant-form-container {
     max-width: 650px;
     margin: 130px auto 60px;
@@ -1303,8 +1295,141 @@ body {
     border-radius: 18px;
     box-shadow: 0 8px 25px rgba(0,0,0,0.08);
     text-align: left;      /* محاذاة النصوص لليسار */
-    direction: ltr;        /* ترتيب الكتابة من اليسار لليمين */
+    direction: ltr;        
+}
+.send-btn {
+    width: 100%;              
+    padding: 14px;            
+    background-color: #2575fc; /* اللون الأساسي */
+    color: white;            
+    border: none;              
+    border-radius: 8px;        /* زوايا مستديرة */
+    font-weight: bold;         
+    font-size: 1rem;           
+    cursor: pointer;          
+    transition: background-color 0.3s, transform 0.2s; 
+}
+
+.send-btn:hover {
+    background-color: #1a5ed1; 
+    transform: scale(1.02);   
 }
 
 
 
+.nav-links .dropdown .btn {
+    color: white;
+    border: 1px solid white;
+    background-color: transparent;
+    padding: 5px 12px;
+    border-radius: 6px;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.nav-links .dropdown .btn:hover {
+    background-color: white;
+    color: #2575fc;
+}
+
+.nav-links .dropdown-menu {
+    min-width: 160px;
+    border-radius: 8px;
+    padding: 5px 0;
+}
+
+.nav-links .dropdown-menu .dropdown-item {
+    font-size: 0.95rem;
+    color: #2575fc;
+    padding: 8px 15px;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+.nav-links .dropdown-menu .dropdown-item:hover {
+    background-color: #2575fc;
+    color: white;
+    border-radius: 6px;
+}
+
+
+
+
+
+
+
+
+.contact-container {
+    max-width: 500px;
+    margin: 50px auto;
+    padding: 30px;
+    background-color: #fff;
+    border-radius: 12px;
+    box-shadow: 0 8px 25px rgba(0,0,0,0.2);
+}
+
+.contact-title {
+    font-size: 28px;
+    margin-bottom: 25px;
+    font-weight: bold;
+    color: #333;
+}
+
+.contact-form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.contact-form input {
+    padding: 12px 15px;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    font-size: 1rem;
+}
+
+.contact-btn {
+    width: 100%;
+    padding: 14px;
+    background-color: #2575fc;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-weight: bold;
+    cursor: pointer;
+    font-size: 1rem;
+    transition: background-color 0.3s;
+}
+
+.contact-btn:hover {
+    background-color: #1a5ed1;
+}
+
+/* رسائل Django */
+.messages {
+    margin-bottom: 20px;
+}
+
+.message.success { background-color: #d4edda; color: #155724; padding:10px; border-radius:6px; }
+.message.error { background-color: #f8d7da; color: #721c24; padding:10px; border-radius:6px; }
+.message.warning { background-color: #fff3cd; color: #856404; padding:10px; border-radius:6px; }
+.message.info { background-color: #cce5ff; color: #004085; padding:10px; border-radius:6px; }
+
+
+
+
+
+.review-banner {
+    background-color: #ffc445ad;      
+    border-radius: 8px;             
+    font-size: 16px;
+    width: 30%;                    
+    max-width: 600px;              
+    margin: 100px auto;            
+    display: flex;
+    justify-content: center;   /* أفقياً */
+    align-items: center;       /* عمودياً */
+    height: 50px;             
+    box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+    text-align: center;
+}

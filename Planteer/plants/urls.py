@@ -14,6 +14,7 @@ urlpatterns = [
     path('search/', views.plant_search, name='plant_search'),  # صفحة البحث
     path('<int:pk>/add-review/', views.add_review_view, name='add_review'),
     path('country/<int:pk>/plants/', views.country_plants, name='country_plants'),
+    
 
     
 

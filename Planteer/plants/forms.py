@@ -19,25 +19,21 @@ class PlantForm(forms.ModelForm):
             'category': forms.Select(attrs={'class': 'form-input'}),
             'is_edible': forms.CheckboxInput(attrs={'class': 'form-check'}),
             'is_published': forms.CheckboxInput(attrs={'class': 'form-check'}),
+
+
+            'is_edible': forms.CheckboxInput(attrs={'class': 'form-check-center'}),
+            'is_published': forms.CheckboxInput(attrs={'class': 'form-check-center'}),
+
         }
 
 
 class ReviewForm(forms.ModelForm):
     class Meta:
         model = Review
-        fields = ['name', 'comment', 'rating']
+        fields = ['comment', 'rating']
         widgets = {
-            'rating': forms.Select(choices=[(i,i) for i in range(1,6)])
+            'rating': forms.Select(choices=[(i, i) for i in range(1, 6)]),
+            'comment': forms.Textarea(attrs={'rows': 4, 'placeholder': 'Write your comment'}),
         }
 
 
-
-
-
-class PlantForm(forms.ModelForm):
-    class Meta:
-        model = Plant
-        fields = ['name', 'description', 'image', 'category', 'is_edible', 'is_published', 'countries']
-        widgets = {
-            'countries': forms.CheckboxSelectMultiple(attrs={'class': 'countries-checkbox'}),
-        }

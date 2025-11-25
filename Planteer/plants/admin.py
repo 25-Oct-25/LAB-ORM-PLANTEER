@@ -10,8 +10,6 @@ class PlantAdmin(admin.ModelAdmin):
 
 @admin.register(Review)
 class ReviewAdmin(admin.ModelAdmin):
-    list_display = ['plant', 'name', 'rating', 'created_at']
+    list_display = ['plant', 'user', 'rating', 'created_at']
     list_filter = ['rating', 'created_at']
-    search_fields = ['name', 'comment']
-
-admin.site.register(Country)
+    search_fields = ['user__username', 'comment']

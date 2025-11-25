@@ -4,56 +4,101 @@
 <head>
     <meta charset="UTF-8">
     <title>{% block title %}Planteer{% endblock %}</title>
-
-<link rel="stylesheet" href="{% static 'main/Css/style.css' %}">
+    <link rel="stylesheet" href="{% static 'main/Css/style.css' %}">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
-
 <body>
 
-    <!--  Header -->
+    <!-- Header -->
     <header class="main-header">
-        <div class="container">
+        <div class="container d-flex justify-content-center align-items-center position-relative">
             <h2 class="logo">Peony</h2>
 
-            <nav class="nav-links">
+<nav class="nav-links d-flex align-items-center">
+    <a class="btn btn-outline-light dropdown-toggle" href="#" role="button" id="accountDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+        {% if request.user.is_authenticated %}
+            {{ request.user.username }}
+        {% else %}
+            account
+        {% endif %}
+    </a>
+
                 <a href="{% url 'contact' %}">Contact Us</a>
-                <a href="{% url 'plant_add' %}">Add Plant</a>
+
+                {% if request.user.is_staff %}
+                    <a href="{% url 'plant_add' %}">Add Plant</a>
+                {% endif %}
+
                 <a href="{% url 'plants_list' %}">All Plants</a>
                 <a href="{% url 'home' %}">Home</a>
 
+                <div class="dropdown">
+                    <ul class="dropdown-menu" aria-labelledby="accountDropdown">
+                        {% if request.user.is_authenticated %}
+                            <li><a class="dropdown-item" href="{% url 'account:log_out' %}?next={{ request.path }}">Log Out</a></li>
+                        {% else %}
+                            <li><a class="dropdown-item" href="{% url 'account:sign_in' %}?next={{ request.path }}">Sign In</a></li>
+                            <li><a class="dropdown-item" href="{% url 'account:sign_up' %}?next={{ request.path }}">Sign Up</a></li>
+                        {% endif %}
+                    </ul>
+                </div>
             </nav>
         </div>
     </header>
 
+<!-- الرسائل  -->
+         <div class="messages-fixed-top" style="position: fixed; top: 80px; left: 50%; transform: translateX(-50%); z-index: 1050; width: 80%; max-width: 800px;">
+           {% if messages %}
+           {% for message in messages %}
+            {% if message.tags == 'error' %}
+                <div class="alert alert-danger alert-dismissible fade show text-center"
+                     role="alert"
+                     style="border-radius: 12px; padding: 0 10px; height: 50px; display: flex; justify-content: center; align-items: center; margin-bottom: 10px;">
+                    {{ message }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            {% else %}
+                <div class="alert alert-{{ message.tags }} alert-dismissible fade show text-center"
+                     role="alert"
+                     style="border-radius: 12px; padding: 0 10px; height: 50px; display: flex; justify-content: center; align-items: center; margin-bottom: 10px;">
+                    {{ message }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            {% endif %}
+        {% endfor %}
+    {% endif %}
+</div>
 
-    {% block content %}{% endblock %}
 
 
 
-
+    <main>
+        {% block content %}{% endblock %}
+    </main>
 
     <!-- Footer -->
-<footer class="site-footer">
-    <div class="footer-container">
-        <div class="footer-about">
-            <h3>Planteer</h3>
+    <footer class="site-footer mt-5">
+        <div class="footer-container">
+            <div class="footer-about">
+                <h3>Planteer</h3>
+            </div>
+            <div class="footer-links">
+                <h4>Quick Links</h4>
+                <ul>
+                    <li><a href="{% url 'home' %}">Home</a></li>
+                    <li><a href="/plants/">Plants</a></li>
+                </ul>
+            </div>
+            <div class="footer-contact">
+                <h4>Contact Us</h4>
+                <p>Email: info@planteer.com</p>
+                <p>Phone: 0045614700</p>
+            </div>
         </div>
-        <div class="footer-links">
-            <h4>Quick Links</h4>
-            <ul>
-                <li><a href="{% url 'home' %}">Home</a></li>
-                <li><a href="/plants/">Plants</a></li>
-            </ul>
-        </div>
-        <div class="footer-contact">
-            <h4>Contact Us</h4>
-            <p>Email: info@planteer.com</p>
-            <p>Phone: 0045614700</p>
-        </div>
-    </div>
-  
-</footer>
+    </footer>
 
+    <!-- Bootstrap JS لتفعيل Dropdown و إغلاق الرسائل -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 
 </body>
 </html>

@@ -27,6 +27,8 @@ urlpatterns = [
     path('', include('main.urls')),        # الصفحة الرئيسية من main
     path('plants/', include('plants.urls')),  # صفحات النباتات
     path('contact/', include('contact.urls')),
+    path("account/", include("account.urls")),
+
 
 ]
 if settings.DEBUG:

@@ -6,6 +6,8 @@
     All Plants
 </h1>
 
+
+
 <!-- Filter + Add New Plant Row -->
 <form method="get" style="display: flex; justify-content: flex-end; gap: 10px; padding: 20px 30px; flex-wrap: wrap; align-items: center;">
 
@@ -54,10 +56,13 @@
         <h3>{{ plant.name }}</h3>
         <p>{{ plant.description|truncatewords:20 }}</p>
 
-        <div class="plant-actions">
-            <a href="{% url 'plant_edit' plant.pk %}" class="edit-btn">Edit</a>
-            <a href="{% url 'plant_delete' plant.pk %}" class="delete-btn">Delete</a>
-            <a href="{% url 'plant_detail' plant.pk %}" class="read-more-btn">Read More</a>
+         <div class="plant-actions">
+            <!-- أزرار التعديل والحذف تظهر للستاف فقط -->
+            {% if request.user.is_staff %}
+                <a href="{% url 'plant_edit' plant.pk %}" class="edit-btn">Edit</a>
+                <a href="{% url 'plant_delete' plant.pk %}" class="delete-btn">Delete</a>
+            {% endif %}
+                <a href="{% url 'plant_detail' plant.pk %}" class="read-more-btn">Read More</a>
         </div>
     </div>
     {% empty %}

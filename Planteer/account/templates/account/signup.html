@@ -1,0 +1,48 @@
+{% extends 'main/base.html' %}
+
+{% block title %}Sign Up New User{% endblock %}
+
+{% block content %}
+
+<div class="contact-container">
+
+    <h2 class="contact-title text-center">Sign Up</h2>
+
+    {% if messages %}
+        <div class="messages">
+            {% for message in messages %}
+                <div class="message {{ message.tags }}">
+                    {{ message }}
+                </div>
+            {% endfor %}
+        </div>
+    {% endif %}
+
+    <form class="contact-form" action="{% url 'account:sign_up' %}" method="POST">
+        {% csrf_token %}
+
+        <label for="email">Email:</label>
+        <input type="email" id="email" name="email" required placeholder="name@example.com">
+
+        <label for="username">Username:</label>
+        <input type="text" id="username" name="username" required placeholder="Enter your username">
+
+        <label for="first_name">First Name:</label>
+        <input type="text" id="first_name" name="first_name" required placeholder="First name">
+
+        <label for="last_name">Last Name:</label>
+        <input type="text" id="last_name" name="last_name" required placeholder="Last name">
+
+        <label for="password">Password:</label>
+        <input type="password" id="password" name="password" required placeholder="Password">
+
+        <button type="submit" class="send-btn">Sign Up</button>
+
+        <p class="text-center mt-3">
+            Already have an account? <a href="{% url 'account:sign_in' %}">Sign In</a>
+        </p>
+    </form>
+
+</div>
+
+{% endblock %}
