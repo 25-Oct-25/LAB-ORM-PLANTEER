@@ -1,0 +1,29 @@
+{% extends 'main/base.html' %}
+{% load static %}
+{% block title %} Add plant{% endblock %}
+
+
+{% block content %}
+
+<div class="container plant-header text-center py-5">
+    
+    <h1>Planteer</h1>
+    <h2>Plant Database For Plants Lovers</h2>
+    <form role="search" method="get" class="search-box d-flex flex-nowrap justify-content-center gap-3" action="{%url 'plant:search_plants_view'%}">
+        <input type="search" class="form-control w-100 w-md-50" placeholder="Search For Plant..." name="search" aria-label="Search" value="{{request.GET.search}}" minlength="3" required>
+        <button class="btn btn-dark" type="submit">Search</button>
+    </form>
+</div>
+<section class="cards mt-5 container">
+    
+<div class="d-flex align-items-center justify-content-between flex-wrap">
+  <h2 class="m-0 p-0">Plants</h2>
+  <a href="{% url 'plant:all_plants_view' %}" class="d-flex align-items-center text-decoration-none mt-2 mt-md-0">
+ <p class="m-0">More</p>
+  <span class="material-symbols-outlined fs-6 ms-1">arrow_forward</span>
+</a>
+</div>
+    <p>Learn more about plants</p>
+    {% include 'plant/component/plants_list.html' %}
+</section>
+{%endblock%}

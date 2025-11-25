@@ -1,0 +1,38 @@
+{% extends 'main/base.html' %}
+{% load static %}
+{% block title %} Add plant{% endblock %}
+
+
+{% block content %}
+<h3> <strong>Search Results ({{plants.count}})</strong> </h3>
+
+    
+    
+    <form role="search" method="get" class=" d-flex gap-2 mt-3" style="max-width:100% ;" action="{%url 'plant:search_plants_view'%}">
+        <input type="search" class="form-control" placeholder="Search For Plant..." name="search" aria-label="Search" value="{{request.GET.search}}" minlength="3" required>
+        <button class="btn btn-dark" type="submit">Search</button>
+    </form>
+{% if plants %}
+<section class="cards mt-5">
+    <h5>result for: {{request.GET.search}}</h5>
+    <div class="row  row-cols-1 row-cols-md-3 row-cols-sm-2 row-cols-lg-3 g-4">
+        {% for p in plants %}
+        <div class="col">
+            <a href="{% url 'plant:plant_detail_view' p.id %}" class="text-decoration-none w-100">
+                <div class="card h-100 border-0 mt-2" style="width: 100%;">
+                    <img src="{{p.image.url}}" class="card-img-top" alt="{{p.name}}">
+                    <div class="card-body">
+                        <p class="card-text fw-bold">{{p.name}}</p>
+                        <p>{{p.used_for}}</p>
+                        <p class="card-text fw-bold">{{p.category}}</p>
+                    </div>
+                </div>
+            </a>
+        </div>
+        {% endfor %}
+    </div>
+</section>
+{% else %}
+<p class="">No results found for your search "{{request.GET.search}}"</p>
+{% endif %}
+{%endblock%}

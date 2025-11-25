@@ -1,0 +1,65 @@
+{% extends 'main/base.html' %}
+{% load static %}
+{% block title %} Add plant{% endblock %}
+
+
+{% block content %}
+<div class="container my-4">
+    <div class="row justify-content-center">
+        <div class="col-12 col-mdd-8 col-lg-6">
+            <h1 class="display-4 display-md-3 display-lg-2 ">Add New Plant</h1>
+            <form action="{% url 'plant:add_plant_view'%}" class="d-flex flex-column gap-3" method="post"
+                enctype="multipart/form-data">
+                {%csrf_token %}
+                <label for="name">Name</label>
+                <input type="text" placeholder="Name" name="name" class="form-control" minlength="3" maxlength="200"
+                    required />
+
+                <label for="name">About The Plant</label>
+                <textarea name="about" placeholder="write the content of your post here" class="form-control" required
+                    minlength="2" required></textarea>
+
+                <label for="used_for">Used for</label>
+                <input type="text" placeholder="used for" name="used_for" class="form-control" required minlength="3"
+                    maxlength="200" required />
+
+                <label for="used_for">Native to</label>
+
+                <div class="d-flex align-items-center gap-2">
+                    {% for c in countries %}
+                    <input type="checkbox" class="form-check-input" name="countries" id="check-{{c.id}}"
+                        value="{{c.id}}" />
+                    <label for="check-{{c.id}}">{{c.name}}</label>
+                    {% endfor %}
+                </div>
+
+                <label for="used_for">Categories</label>
+                <select name="category" class="form-control">
+                    <option value="">Category</option>
+                    <option value="flowering">Flowering</option>
+                    <option value="succulents">Succulents</option>
+                    <option value="trees">Trees</option>
+                </select>
+                <label for="is_published">Is edible?</label>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="is_edible" id="radioYes" value="True" checked>
+                    <label class="form-check-label" for="radioYes">
+                        Yes
+                    </label>
+                </div>
+
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="is_edible" id="radioNo" value="False">
+                    <label class="form-check-label" for="radioNo">
+                        No
+                    </label>
+                </div>
+
+                <input type="file" name="image" class="form-control" accept="image/*" required>
+
+                <input type="submit" value="Add Post" class="btn btn-primary w-100 " />
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}
