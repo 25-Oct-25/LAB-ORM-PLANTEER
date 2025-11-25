@@ -19,18 +19,50 @@
                 </button>
 
                 <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
-    <ul class="navbar-nav mb-2 mb-lg-0">
-        <li class="nav-item">
-            <a class="nav-link text-dark me-3" href="{% url 'plants:plant_list' %}">All Plants</a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link text-dark me-3" href="{% url 'main:contact' %}">Contact Us</a>
-        </li>
-    </ul>
-    <a href="{% url 'plants:plants_add_view' %}" class="btn btn-dark shadow-sm px-4 py-2">
-        Add Plant
-    </a>
-</div>
+                    <ul class="navbar-nav mb-2 mb-lg-0">
+                        <li class="nav-item">
+                            <a class="nav-link text-dark me-3" href="{% url 'plants:plant_list' %}">All Plants</a>
+                        </li>
+                        <li class="nav-item">
+                           <a class="nav-link text-dark me-3" href="{% url 'main:contact_us' %}">Contact Us</a>
+                        </li>
+                        
+                        {% if user.is_authenticated %}
+                            
+                            <li class="nav-item">
+                                <span class="nav-link text-dark me-3 fw-bold">Hello, {{ user.username }}</span>
+                            </li>
+                            
+                            <li class="nav-item me-2">
+                                <a href="{% url 'plants:plants_add_view' %}" class="btn btn-dark shadow-sm px-4 py-2">
+                                    Add Plant
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <form method="POST" action="{% url 'accounts:logout' %}" style="display: inline;">
+                                    {% csrf_token %}
+                                    <button type="submit" class="btn btn-outline-danger shadow-sm px-4 py-2">
+                                        Log Out
+                                    </button>
+                                </form>
+                            </li>
+                            
+                        {% else %}
+                            
+                            <li class="nav-item">
+                                <a href="{% url 'accounts:login' %}" class="btn btn-outline-primary shadow-sm px-4 py-2 me-2">
+                                    Sign In
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="{% url 'accounts:signup' %}" class="btn btn-success shadow-sm px-4 py-2">
+                                    Sign Up
+                                </a>
+                            </li>
+                            
+                        {% endif %}
+                    </ul>
+                </div>
             </div>
         </nav>
     </header>

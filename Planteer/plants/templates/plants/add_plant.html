@@ -38,7 +38,20 @@
             <option value="IN">Indoor Plants</option>
             <option value="OUT">Outdoor Plants</option>
         </select>
-
+        
+        {% if form.countries %}
+            <label class="form-label mt-3">Native Countries</label>
+            <div class="country-checkbox-group">
+                {% for choice in form.countries %}
+                    <div class="form-check form-check-inline">
+                        {{ choice.tag }}
+                        <label class="form-check-label" for="{{ choice.id_for_label }}">
+                            {{ choice.choice_label }}
+                        </label>
+                    </div>
+                {% endfor %}
+            </div>
+        {% endif %}
         <label class="checkbox-wrapper">
             <input type="checkbox" name="is_edible">
             <span>Edible?</span>

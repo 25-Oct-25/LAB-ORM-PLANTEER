@@ -1,12 +1,12 @@
-from django.shortcuts import render
-
-# Create your views here.
 from django.shortcuts import render, get_object_or_404, redirect
-from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
-from django.urls import reverse_lazy
+from django.views.generic import ListView
 from django.db.models import Q
-from .models import Plant, Comment,Country
+from django.contrib.auth.decorators import login_required 
+from django.contrib.auth.mixins import LoginRequiredMixin 
+from django.http import Http404
+from .models import Plant, Comment, Country
 from .forms import PlantForm, CommentForm
+from django.contrib import messages
 
 
 class PlantListView(ListView):
@@ -39,70 +39,71 @@ class PlantListView(ListView):
         context['page_title'] = 'all plants'
         context['all_countries'] = Country.objects.all() 
         context['selected_country'] = self.request.GET.get('country')
-
         return context
 
-    
 plant_list_view = PlantListView.as_view()
-
 def plant_detail_view(request, pk):
     plant = get_object_or_404(Plant, pk=pk)
-   
-    if request.method == 'POST':
-        comment_form = CommentForm(request.POST)
-        if comment_form.is_valid():
-            new_comment = comment_form.save(commit=False)
-            new_comment.plant = plant 
-            new_comment.save()
-            return redirect('plants:plant_detail', pk=plant.pk)
-    else:
-        comment_form = CommentForm()
-
     related_plants = Plant.objects.filter(
         category=plant.category
     ).exclude(pk=plant.pk).order_by('?')[:4] 
-    reviews=Comment.objects.filter(plant=plant)
-
+    reviews = Comment.objects.filter(plant=plant).order_by('-created_at') 
     context = {
         'plant': plant,
-        'comment_form': comment_form,
-        'comments': plant.comments.all().order_by('-created_at'),
+        'comment_form': CommentForm(),
+        'reviews': reviews,
         'related_plants': related_plants,
         'page_title': plant.name,
-        'reviews':reviews
     }
     return render(request, 'plants/plant_detail.html', context)
 
+
+@login_required(login_url='/accounts/login/') 
 def plants_add_view(request):
-    if request.method == 'POST':
+    if request.method == "POST":
         form = PlantForm(request.POST, request.FILES)
         if form.is_valid():
-            form.save()
-            return redirect('main:home_view')
+            new_plant = form.save(commit=False)
+            new_plant.save()
+            form.save_m2m() 
+            
+            return redirect('plants:plant_list') 
     else:
         form = PlantForm()
-
-    return render(request, 'plants/add_plant.html')
-
-
-
-class PlantUpdateView(UpdateView):
-    model = Plant
-    form_class = PlantForm
-    template_name = 'plants/add_plant.html'
     
-    def get_success_url(self):
-        return reverse_lazy('plants:plant_detail', kwargs={'pk': self.object.pk})
-        
-plant_update_view = PlantUpdateView.as_view()
+    context = {
+        'form': form,
+        'page_title': 'Add New Plant'
+    }
+    return render(request, 'plants/add_plant.html', context)
 
 
-class PlantDeleteView(DeleteView):
-    model = Plant
-    template_name = 'plants/plant_confirm_delete.html'
-    success_url = reverse_lazy('plants:plant_list') 
-    
-plant_delete_view = PlantDeleteView.as_view()
+@login_required(login_url='/accounts/login/') 
+def plant_update_view(request, pk):
+    plant = get_object_or_404(Plant, pk=pk)
+    if plant.creator != request.user and not request.user.is_superuser:
+        raise Http404("You are not authorized to edit this plant.") 
+    if request.method == 'POST':
+        form = PlantForm(request.POST, request.FILES, instance=plant)
+        if form.is_valid():
+            form.save()
+            return redirect('plants:plant_detail', pk=plant.pk)
+    else:
+        form = PlantForm(instance=plant)
+    context = {'form': form, 'plant': plant, 'page_title': f'Update {plant.name}'}
+    return render(request, 'plants/plant_update.html', context)
+
+
+@login_required(login_url='/accounts/login/') 
+def plant_delete_view(request, pk):
+    plant = get_object_or_404(Plant, pk=pk)
+    if plant.creator != request.user and not request.user.is_superuser:
+        raise Http404("You are not authorized to delete this plant.") 
+    if request.method == 'POST':
+        plant.delete()
+        return redirect('plants:plant_list')
+    context = {'plant': plant, 'page_title': f'Delete {plant.name}'}
+    return render(request, 'plants/plant_delete.html', context)
 
 
 def plant_search_view(request):
@@ -123,11 +124,27 @@ def plant_search_view(request):
     }
     return render(request, 'plants/plant_search.html', context)
 
-
-def add_review_view(request,plant_id):
+@login_required(login_url='/accounts/login/') 
+def add_review_view(request, plant_id):
+    plant_object = get_object_or_404(Plant, pk=plant_id)
+    
     if request.method == "POST":
-        plant_odject=Plant.objects.get(pk=plant_id)
-        new_review=Comment(plant=plant_odject,full_name=request.POST.get("full_name"),content=request.POST.get("content"))
-        new_review.save()
-
-    return redirect("plants:plants_detail_view",plant_id=plant_id)
+        form = CommentForm(request.POST) 
+        
+        if form.is_valid():
+            new_review = form.save(commit=False)
+            new_review.plant = plant_object 
+            
+            if request.user.is_authenticated:
+                new_review.user = request.user 
+                new_review.full_name = request.user.username
+                new_review.email = request.user.email
+            else:
+                pass 
+            new_review.save()
+            messages.success(request, 'Review added successfully!')
+            
+        return redirect("plants:plant_detail", pk=plant_id)
+    form = CommentForm()
+    context = {'plant': plant_object, 'form': form}
+    return render(request, 'plants/plant_detail.html', context)

@@ -15,6 +15,14 @@
             <h1 class="mb-2">Contact us</h1>
             <h4 class="fs-6 text-muted mb-4 border-bottom pb-3">Subheading for description or instructions</h4>
             
+            {% if messages %}
+                {% for message in messages %}
+                    <div class="alert alert-success alert-dismissible fade show" role="alert">
+                        {{ message }}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                {% endfor %}
+            {% endif %}
             <form method="POST">
                 {% csrf_token %}
 
@@ -66,7 +74,7 @@
     </div>
     
     <div class="col-lg-4 d-none d-lg-block">
-       
+        
     </div>
 
 </div>

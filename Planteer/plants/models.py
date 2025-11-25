@@ -1,5 +1,6 @@
 from django.db import models
 from django.utils import timezone
+from django.contrib.auth.models import User
 # Create your models here.
 
 class Country(models.Model):
@@ -40,16 +41,20 @@ class Plant(models.Model):
     
     def __str__(self):
         return self.name
-
+    
+    
 class Comment(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True)
+    
     plant = models.ForeignKey(
         Plant, 
         on_delete=models.CASCADE, 
         related_name='comments'
     )
-    full_name = models.CharField(max_length=150)
+    full_name = models.CharField(max_length=150) 
+    email = models.EmailField(max_length=254)
     content = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return f"Comment by {self.full_name} on {self.plant.name}"
+        return f"Comment by {self.user.username if self.user else self.full_name} on {self.plant.name}"
