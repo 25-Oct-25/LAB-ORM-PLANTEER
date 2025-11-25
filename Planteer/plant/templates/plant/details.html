@@ -17,16 +17,18 @@
       <p>Native to
       <div class="d-flex ">
         {%for c in plant.countries.all %}
-        <a href="{% url 'plant:country_view' c.id c.name %}"><img src="{{c.image.url}}" style="width: 8%; height: auto;" ></a> 
+        <a href="{% url 'plant:country_view' c.id c.name %}" ><img src="{{c.image.url}}" style="width: 8%; height: auto;" ></a> 
         {%endfor%}
       </div>
       </p>
       <p class="">Is Edible:{% if plant.is_edible %} Yes {% else%} No {% endif%}</p>
       <p class="">Used For: <br>{{plant.used_for}}</p>
       <p class="card-text"><small class="text-body-secondary">{{plant.created_at}}</small></p>
+      {% if request.user.is_staff%}
       <div class="d-flex justify-content-start justify-content-lg-end align-items-end gap-2 mt-3"> 
         <a href="{% url 'plant:plant_update_view' plant.id%}" class="btn btn-primary">update</a> 
         <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal">delete</button> </div>
+        {%endif%}
     </div>
   </div>
 
@@ -38,24 +40,27 @@
 <div class="d-flex flex-column gap-3">
   {% for c in comments%}
   <div class="d-flex flex-column p-3 shadow">
-    <h4>{{c.name}}</h4>
+    <h4>{{c.user.username}}</h4>
     <p>{{c.comment}}</p>
     <p class="text-muted">{{c.created_at}}</p>
   </div>
 
-
   {% endfor %}
 </div>
 
-
+{% if request.user.is_authenticated %}
 <h2 class="mt-5">Add Comment</h2>
 <form action="{% url 'plant:add_comment_view' plant.id %}" class="d-flex flex-column gap-2 mt-4" method="post">
   {%csrf_token %}
-  <input type="text" name="name" class="form-control" required minlength="3"/>
   <textarea name="comment" class="form-control" required minlength="3" placeholder="comment..."></textarea>
 
   <input type="submit" class="btn btn-dark" value="Add Comment">
 </form>
+{%else%}
+<div class="p-3 rounded bg-warning mt-4 d-flex flex-column gap-2">
+  <p>Only registerd users can add comments</p>
+</div>
+{%endif%}
 </section>
 
 
@@ -65,14 +70,6 @@
 {% endfor %}
 
 
-<section class="cards mt-5">
-  <h4>Related Plants</h4>
-  <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-3 g-4">
-    {% for p in related_plants %}
-      {% include 'plant/component/plants_list.html' with p=p %}
-    {% endfor %}
-  </div>
-</section>
 
 
 <!-- Modal -->

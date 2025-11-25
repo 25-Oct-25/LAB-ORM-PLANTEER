@@ -9,9 +9,7 @@
     <h3>{{country_name}} Plants</h3>
 
 </div>
-{% for plant in countries%}
+
 {% include 'plant/component/plants_list.html' with p=plant%}
-{% empty %}
-<p>No plants</p>
-{% endfor %}
+
 {%endblock%}

@@ -2,6 +2,10 @@ from django.shortcuts import render , redirect
 from django.http import HttpRequest
 from .models import Plant ,Contact, Review ,Country
 from .forms import PlantForm, ContactForm
+from django.core.mail import EmailMessage
+from django.conf import settings
+from django.template.loader import render_to_string
+from django.contrib import messages
 # Create your views here.
 
 def all_plants_view(request:HttpRequest):
@@ -22,6 +26,9 @@ def all_plants_view(request:HttpRequest):
     return render(request,"plant/plants.html",{"plants":plants, "countries":countries })
 
 def add_plant_view(request:HttpRequest):
+    if not request.user.is_staff:
+        messages.success(request,"Only staff can add plant","alert-warning")
+        return redirect("main:home_veiw")
     countries=Country.objects.all()
     if request.method=="POST":
         plant_form=PlantForm(request.POST , request.FILES)
@@ -37,11 +44,13 @@ def plant_detail_view(request:HttpRequest, plant_id:int):
     plant=Plant.objects.get(pk=plant_id)
     related_plants=Plant.objects.all().filter(category=plant.category).exclude(pk=plant_id)[0:3]
     comments=Review.objects.filter(plant=plant)
-    print(related_plants)
     return render(request,"plant/details.html", {"plant":plant ,"related_plants":related_plants, "comments":comments})
 
 
 def plant_update_view(request:HttpRequest, plant_id:int):
+    if not request.user.is_staff:
+        messages.success(request,"Only staff can add plant","alert-warning")
+        return redirect("main:home_veiw")
     plant=Plant.objects.get(pk=plant_id)
     countries=Country.objects.all()
     if request.method =="POST":
@@ -57,6 +66,9 @@ def plant_update_view(request:HttpRequest, plant_id:int):
     return render(request,"plant/update.html", {"plant":plant ,"countries":countries})
 
 def plant_delete_view(request:HttpRequest, plant_id:int):
+    if not request.user.is_staff:
+        messages.success(request,"Only staff can add plant","alert-warning")
+        return redirect("main:home_veiw")
     plant=Plant.objects.get(pk=plant_id)
     plant.delete()
 
@@ -70,6 +82,13 @@ def send_message_view(request:HttpRequest):
             return redirect('main:home_view')
         else:
             print("not valid form")
+
+    content_html=render_to_string("main/mail/confirmation.html")     
+    send_to= contact_form.email
+    email_message=EmailMessage("confiramation", content_html,settings.EMAIL_HOST_USER,[send_to] )
+    email_message.content_subtype="html"
+    email_message.send()
+    messages.success(request,"Your message is received. Thank You.", "alert-success")
 
     return render(request,"plant/contact.html")   
 
@@ -88,10 +107,15 @@ def search_plants_view(request:HttpRequest):
 
 
 def add_comment_view(request:HttpRequest, plant_id):
+    if not request.user.is_authenticated:
+        messages.error(request, "Only registered user can add comments", "alert-danger")
+        return redirect("accounts:signin_view")
     if request.method== "POST":
         plant_object = Plant.objects.get(pk=plant_id)
-        new_comment = Review(plant=plant_object,name=request.POST["name"],comment=request.POST["comment"])
+        new_comment = Review(plant=plant_object,user=request.user,comment=request.POST["comment"])
         new_comment.save()
+
+        messages.success(request, "Added Review Successfully","alert-success")
     return redirect("plant:plant_detail_view",plant_id=plant_id)
 
 def country_view(request:HttpRequest , country_id,country_name):
