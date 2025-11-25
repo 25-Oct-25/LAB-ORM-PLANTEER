@@ -17,3 +17,27 @@
     object-fit: cover;
     width: 100%;
 }
+
+/* الخلفية تاخذ الصفحة كاملة */
+body {
+  min-height: 100vh;
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+}
+
+/* النافبار ثابت وشفاف */
+.navbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  backdrop-filter: blur(12px); /* يعطي ضباب خفيف أنيق */
+  background: rgba(255, 255, 255, 0.09); /* شفاف جداً */
+  z-index: 999;
+}
+
+/* عشان المحتوى ما يجي تحت النافبار */
+.page-spacing {
+  padding-top: 110px;
+}
