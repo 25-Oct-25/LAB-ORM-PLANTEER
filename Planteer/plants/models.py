@@ -19,8 +19,8 @@ class Plant(models.Model):
 
     name = models.CharField(max_length=255)
     about = models.TextField()
-    used_for = models.TextField()
-    image = models.ImageField(upload_to="plant_images/")
+    used_for = models.TextField(blank=True, null=True)
+    image = models.ImageField(upload_to="plant_images/", blank=True, null=True)
     category = models.CharField(
         max_length=20,
         choices=Category.choices,
@@ -30,7 +30,14 @@ class Plant(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     countries = models.ManyToManyField(Country, related_name="plants", blank=True)
 
-
     def __str__(self):
         return self.name
 
+class Comment(models.Model):
+    plant = models.ForeignKey(Plant, on_delete=models.CASCADE, related_name='comments')
+    name = models.CharField(max_length=100)
+    content = models.TextField()
+    date_added = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f'Comment by {self.name} on {self.plant.name}'

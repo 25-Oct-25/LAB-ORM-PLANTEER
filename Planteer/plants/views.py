@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpRequest
-from .models import Plant, Country
-from .forms import PlantForm
+from .models import Plant, Country,Comment
+from .forms import PlantForm, CommentForm
 
 # 1) Show all plants
 def plants_view(request: HttpRequest):
@@ -9,9 +9,28 @@ def plants_view(request: HttpRequest):
     return render(request, 'plants/all_plants.html', {"plants": plants})
 
 # 2) Plant details
-def plant_details_view(request: HttpRequest, plant_id):
+def plant_details_view(request, plant_id):
     plant = get_object_or_404(Plant, id=plant_id)
-    return render(request, 'plants/plant_detail.html', {"plant": plant})
+    related = Plant.objects.filter(category=plant.category).exclude(id=plant.id)[:3]
+    comments = plant.comments.all()
+
+    if request.method == 'POST':
+        form = CommentForm(request.POST)
+        if form.is_valid():
+            new_comment = form.save(commit=False)
+            new_comment.plant = plant
+            new_comment.save()
+            return redirect('plants:plant_details_view', plant_id=plant.id)
+    else:
+        form = CommentForm()
+
+    context = {
+        'plant': plant,
+        'related': related,
+        'comments': comments,
+        'form': form,
+    }
+    return render(request, 'plants/plant_detail.html', context)
 
 # 3) Add plant
 def add_plant_view(request: HttpRequest):

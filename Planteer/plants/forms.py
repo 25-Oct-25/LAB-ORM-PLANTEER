@@ -1,5 +1,5 @@
 from django import forms
-from .models import Plant, Country
+from .models import Plant, Country, Comment
 
 class PlantForm(forms.ModelForm):
     class Meta:
@@ -15,3 +15,12 @@ class PlantForm(forms.ModelForm):
             'countries': forms.CheckboxSelectMultiple()
         }
 
+
+class CommentForm(forms.ModelForm):
+    class Meta:
+        model = Comment
+        fields = ['name', 'content']
+        widgets = {
+            'name': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Your name'}),
+            'content': forms.Textarea(attrs={'class': 'form-control', 'placeholder': 'Your comment', 'rows': 3}),
+        }
