@@ -1,13 +1,69 @@
 {% extends 'main/base.html' %}
+{% block extra-css %}
+<style>
+    p a  {
+        color: rgb(0, 211, 78);
+        text-decoration: underline;
+    }
+
+    .pagination {
+    --bs-pagination-padding-x: 0.75rem;
+    --bs-pagination-padding-y: 0.375rem;
+    --bs-pagination-font-size: 1rem;
+    --bs-pagination-color: #008a10;
+    --bs-pagination-bg: var(--bs-body-bg);
+    --bs-pagination-border-width: var(--bs-border-width);
+    --bs-pagination-border-color: var(--bs-border-color);
+    --bs-pagination-border-radius: var(--bs-border-radius);
+    --bs-pagination-hover-color: #008a10;
+    --bs-pagination-hover-bg: var(--bs-tertiary-bg);
+    --bs-pagination-hover-border-color: rgb(0, 211, 78);
+    --bs-pagination-focus-color: rgb(0, 211, 78);
+    --bs-pagination-focus-bg: var(--bs-secondary-bg);
+    --bs-pagination-focus-box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25);
+    --bs-pagination-active-color: #fff;
+    --bs-pagination-active-bg: #008a10;
+    --bs-pagination-active-border-color: #008a10;
+    --bs-pagination-disabled-color: var(--bs-secondary-color);
+    --bs-pagination-disabled-bg: var(--bs-secondary-bg);
+    --bs-pagination-disabled-border-color: var(--bs-border-color);
+    display: flex;
+    padding-left: 0;
+    list-style: none;
+}
+</style>
+{% endblock %}
+
+
 {% block content %}
 
-<h2 class="mb-4">All Plants</h2>
+<h2 class="mb-4 d-flex justify-content-between align-items-center">
+    All Plants
+    <form method="get" class="d-flex gap-2">
+        <select name="category" class="form-select">
+            <option value="">All Categories</option>
+            {% for value, label in categories %}
+                <option value="{{ value }}" {% if selected_category == value %}selected{% endif %}>{{ label }}</option>
+            {% endfor %}
+        </select>
+
+        <select name="country" class="form-select">
+            <option value="">All Countries</option>
+            {% for c in countries %}
+                <option value="{{ c.id }}" {% if selected_country == c.id|stringformat:"s" %}selected{% endif %}>{{ c.name }}</option>
+            {% endfor %}
+        </select>
+
+        <button type="submit" class="btn btn-dark">Filter</button>
+    </form>
+</h2>
+
 
 <div class="row g-4">
-    {% for plant in plants %}
+    {% for plant in page_obj %}
     <div class="col-md-4">
         <a href="{% url 'plants:plant_details_view' plant.id %}" class="text-decoration-none text-dark">
-            <div class="card shadow-sm">
+            <div class="card shadow">
                 <img src="{{ plant.image.url }}" class="card-img-top" style="height:200px; object-fit:cover;">
                 <div class="card-body">
                     <h5>{{ plant.name }}</h5>
@@ -28,5 +84,36 @@
     </div>
     {% endfor %}
 </div>
+
+<nav aria-label="Page navigation" class="mt-4">
+  <ul class="pagination justify-content-center">
+    {% if page_obj.has_previous %}
+      <li class="page-item">
+        <a class="page-link" href="?page={{ page_obj.previous_page_number }}{% if selected_category %}&category={{ selected_category }}{% endif %}{% if selected_country %}&country={{ selected_country }}{% endif %}">Previous</a>
+      </li>
+    {% else %}
+      <li class="page-item disabled"><span class="page-link">Previous</span></li>
+    {% endif %}
+
+    {% for num in page_obj.paginator.page_range %}
+        {% if page_obj.number == num %}
+            <li class="page-item active"><span class="page-link">{{ num }}</span></li>
+        {% else %}
+            <li class="page-item">
+                <a class="page-link" href="?page={{ num }}{% if selected_category %}&category={{ selected_category }}{% endif %}{% if selected_country %}&country={{ selected_country }}{% endif %}">{{ num }}</a>
+            </li>
+        {% endif %}
+    {% endfor %}
+
+    {% if page_obj.has_next %}
+      <li class="page-item">
+        <a class="page-link" href="?page={{ page_obj.next_page_number }}{% if selected_category %}&category={{ selected_category }}{% endif %}{% if selected_country %}&country={{ selected_country }}{% endif %}">Next</a>
+      </li>
+    {% else %}
+      <li class="page-item disabled"><span class="page-link">Next</span></li>
+    {% endif %}
+  </ul>
+</nav>
+
 
 {% endblock %}

@@ -16,11 +16,20 @@ class PlantForm(forms.ModelForm):
         }
 
 
+# class CommentForm(forms.ModelForm):
+#     class Meta:
+#         model = Comment
+#         fields = ['name', 'content']
+#         widgets = {
+#             'name': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Your name'}),
+#             'content': forms.Textarea(attrs={'class': 'form-control', 'placeholder': 'Your comment', 'rows': 3}),
+#         }
+
 class CommentForm(forms.ModelForm):
     class Meta:
         model = Comment
-        fields = ['name', 'content']
+        fields = ['content']
         widgets = {
-            'name': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Your name'}),
             'content': forms.Textarea(attrs={'class': 'form-control', 'placeholder': 'Your comment', 'rows': 3}),
         }
+
