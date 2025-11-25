@@ -8,5 +8,8 @@ urlpatterns = [
     path('<int:plant_id>/update/', views.update_plant, name="update_plant"),
     path('<int:plant_id>/delete/', views.delete_plant, name="delete_plant"),
     path('search/', views.search_plants, name="search_plants"),
-    path("country/<int:country_id>/", views.plants_by_country, name="plants_by_country") 
+    path("country/<int:country_id>/", views.plants_by_country, name="plants_by_country"),
+    path("signup/", views.signup_view, name="signup"),
+    path("login/", views.login_view, name="login"),
+    path("logout/", views.logout_view, name="logout"),
 ]

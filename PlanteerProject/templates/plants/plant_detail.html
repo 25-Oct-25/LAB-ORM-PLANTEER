@@ -32,10 +32,12 @@
         </div>
 
 
-        <div class="buttons">
-            <a href="/plants/{{ plant.id }}/update/" class="btn update">Update</a>
-            <a href="/plants/{{ plant.id }}/delete/" class="btn delete">Delete</a>
-        </div>
+        {% if user.is_staff %} 
+            <div class="buttons">
+                <a href="/plants/{{ plant.id }}/update/" class="btn update">Update</a>
+                <a href="/plants/{{ plant.id }}/delete/" class="btn delete">Delete</a>
+            </div>
+        {% endif %}
         
     </div>
 </div>
@@ -55,12 +57,17 @@
 
 <h2>Comments</h2>
 
+{% if user.is_authenticated %}
 <form method="POST">
     {% csrf_token %}
-    <input type="text" name="full_name" placeholder="Your name" required>
-    <textarea name="content" placeholder="Write a comment..." required></textarea>
-    <button type="submit">Add Comment</button>
+    <input type="text" name="full_name" placeholder="Your Name" required>
+    <textarea name="content" placeholder="Write comment..." required></textarea>
+    <button type="submit">Add comment</button>
 </form>
+{% else %}
+<p class="alert">You must <a href="/login/">Login</a> to comment.</p>
+{% endif %}
+
 
 <div class="comments">
     {% for c in comments %}

@@ -17,9 +17,22 @@
     <nav>
         <a href="/plants/all/">All Plants</a>
         <a href="/contact/">Contact Us</a>
-        <a class="add-btn" href="/plants/new/">Add Plant</a>
+
+        {% if user.is_authenticated %}
+            {% if user.is_staff %}
+                <a class="add-btn" href="/plants/new/">Add Plant</a>
+            {% endif %}
+
+            <span class="welcome">Hi, {{ user.username }}</span>
+            <a href="/logout/" class="auth-btn logout">Logout</a>
+
+        {% else %}
+            <a href="/login/" class="auth-btn">Login</a>
+            <a href="/signup/" class="auth-btn">Sign Up</a>
+        {% endif %}
     </nav>
 </header>
+
 
 <!-- PAGE CONTENT -->
 <main>
