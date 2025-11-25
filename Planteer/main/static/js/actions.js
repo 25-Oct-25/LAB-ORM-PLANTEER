@@ -37,4 +37,20 @@ document.addEventListener("DOMContentLoaded", function () {
       commentForm.classList.toggle("hidden");
     });
   }
+
+  const userBtn = document.getElementById("userMenuBtn");
+  const dropdown = document.getElementById("userDropdown");
+
+  if (userBtn) {
+    userBtn.addEventListener("click", () => {
+      dropdown.classList.toggle("hidden");
+    });
+  }
+
+  // Close menu when clicking outside
+  document.addEventListener("click", function(event) {
+    if (!userBtn.contains(event.target) && !dropdown.contains(event.target)) {
+      dropdown.classList.add("hidden");
+    }
+  });
 });

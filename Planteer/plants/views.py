@@ -2,14 +2,16 @@ from django.shortcuts import render
 from django.http import HttpRequest, HttpResponse
 from django.shortcuts import get_object_or_404, redirect
 from django.contrib import messages
+from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
-from django.db.models import Count, Q, F
+from django.db.models import Count, Q
 from .models import Plant, Country
 from .forms import PlantForm,CommentForm
 
 # Create your views here.
 
 # All Plants
+@login_required(login_url='/login/')
 def plants_view(request:HttpRequest):
   # Get all plants
   plants_qs = Plant.objects.all().order_by('-created_at')
@@ -31,6 +33,7 @@ def plants_view(request:HttpRequest):
   return render(request, 'plants/all_plants.html', context)
 
 # Add New Plants
+@login_required(login_url='/login/')
 def add_plant_view(request:HttpRequest):
   if request.method == 'POST':
         form = PlantForm(request.POST, request.FILES)
@@ -50,22 +53,32 @@ def plant_details_view(request:HttpRequest, plant_id):
   plant = get_object_or_404(Plant, id=plant_id)
   comments = plant.comments.all().order_by('-created_at')
 
+  form = CommentForm()
+
   if request.method == "POST":
+      if not request.user.is_authenticated:
+          messages.error(request, "You must be logged in to add a comment.")
+          return redirect('accounts:login_view')  # redirect to login page
+
       form = CommentForm(request.POST)
       if form.is_valid():
           comment = form.save(commit=False)
           comment.plant = plant
+          comment.user = request.user  # optional: associate comment with user
           comment.save()
-          messages.success(request, "Your comment was added.")
+          messages.success(request, "Your comment was added successfully.")
           return redirect("plants:plant_details_view", plant_id=plant.id)
-  else:
-      form = CommentForm()
+      else:
+          for field, errors in form.errors.items():
+              for error in errors:
+                  messages.error(request, f"{field}: {error}")
 
   # Get related plants based on the same category
   related_plants = Plant.objects.filter(category=plant.category).exclude(id=plant.id)[:4]  # Limit to 4 related plants
   return render(request, 'plants/plant_details.html', {'plant': plant, 'related_plants': related_plants, 'comments': comments,'form': form})
 
 # Update Plants
+@login_required(login_url='/login/')
 def update_plant_view(request:HttpRequest, plant_id):
   plant = get_object_or_404(Plant, id=plant_id)
   if request.method == 'POST':
@@ -79,6 +92,7 @@ def update_plant_view(request:HttpRequest, plant_id):
   return render(request, 'plants/update_plant.html', {'form': form, 'plant': plant})
 
 # Delete Plants
+@login_required(login_url='/login/')
 def delete_plant(request:HttpRequest, plant_id):
     plant = get_object_or_404(Plant, id=plant_id)
     if request.method == "POST":

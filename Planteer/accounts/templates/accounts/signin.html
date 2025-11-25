@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Login{% endblock %}
+
+{% block content %}
+<div class="login-page">
+  <div class="login-card">
+    <h2 class="login-title">Login</h2>
+
+    <!-- Messages -->
+    {% if messages %}
+      <div class="mb-4">
+        {% for message in messages %}
+          <div class="p-3 mb-2 rounded
+            {% if message.tags == 'success' %}bg-green-100 text-green-800
+            {% elif message.tags == 'error' %}bg-red-100 text-red-800
+            {% else %}bg-gray-100 text-gray-800{% endif %}">
+            {{ message }}
+          </div>
+        {% endfor %}
+      </div>
+    {% endif %}
+
+    <form method="POST" class="login-form">
+      {% csrf_token %}
+
+      <div class="form-group">
+        <label>Username</label>
+        <input type="text" name="username" placeholder="Enter your username">
+      </div>
+
+      <div class="form-group">
+        <label>Password</label>
+        <input type="password" name="password" placeholder="Enter your password">
+      </div>
+
+      <button type="submit" class="btn-submit">
+        Login
+      </button>
+
+      <p class="form-footer">
+        Don’t have an account?
+        <a href="{% url 'accounts:register_view' %}" class="form-link">Register</a>
+      </p>
+    </form>
+  </div>
+</div>
+{% endblock %}

@@ -8,6 +8,7 @@
 
     <h1 class="text-4xl font-bold mb-16">Messages from Users</h1>
 
+    {% if request.user.is_superuser %}
     <!-- 3-Column Grid -->
     <div class="grid grid-cols-1 md:grid-cols-3 gap-12">
         {% for c in contacts %}
@@ -26,6 +27,9 @@
         </div>
         {% endfor %}
     </div>
+    {% else %}
+        <p class="text-red-600 font-semibold">You are not authorized to view this page.</p>
+    {% endif %}
 
 </section>
 {% endblock %}

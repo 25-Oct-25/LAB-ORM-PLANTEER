@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'main',
     'plants',
     'contact',
+    'accounts',
     'tailwind',
     'theme',
 ]
@@ -146,3 +147,9 @@ EMAIL_PORT= 587
 EMAIL_HOST_USER = os.environ.get("EMAIL_HOST_USER")
 EMAIL_HOST_PASSWORD = os.environ.get("EMAIL_HOST_PASSWORD")
 EMAIL_USE_TLS= True
+
+
+# Authentication
+LOGIN_URL = '/login/'
+LOGIN_REDIRECT_URL = '/'
+LOGOUT_REDIRECT_URL = '/'

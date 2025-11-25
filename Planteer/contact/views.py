@@ -3,10 +3,12 @@ from django.http import HttpRequest
 from django.core.mail import EmailMessage
 from django.conf import settings
 from django.contrib import messages
+from django.contrib.auth.decorators import login_required, user_passes_test
 from django.template.loader import render_to_string
 from .models import Contact
 from .forms import ContactForm
 
+@login_required
 def contact_view(request: HttpRequest):
     if request.method == "POST":
         form = ContactForm(request.POST)
@@ -32,8 +34,17 @@ def contact_view(request: HttpRequest):
     return render(request, 'contact/contact.html', {'form': form})
 
 
+# Custom decorator to show a message if user is not superuser
+def superuser_required(view_func):
+    def _wrapped_view(request, *args, **kwargs):
+        if not request.user.is_superuser:
+            messages.error(request, "You are not authorized to view this page.")
+        return view_func(request, *args, **kwargs)
+    return login_required(_wrapped_view, login_url='/login/')
+
 
 # Contact Us Messages page (admin or staff)
+@superuser_required
 def contact_messages_view(request):
     contacts = Contact.objects.all().order_by('-created_at')
     return render(request, 'contact/contact_messages.html', {'contacts': contacts})
