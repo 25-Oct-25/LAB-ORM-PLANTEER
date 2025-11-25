@@ -1,5 +1,6 @@
 from django.shortcuts import render, redirect
 from .models import Plant, Comment, Country
+from django.db.models import Count 
 
 def plants_all_view(request):
 
@@ -21,6 +22,8 @@ def plants_all_view(request):
 
     if country and country != "all":
         plants = plants.filter(Countries__id=country)
+
+    plants = plants.annotate(countries_count=Count("Countries"))
 
     return render(request, "plants/plants_all.html", {
         "plants": plants,
