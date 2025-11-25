@@ -1,0 +1,13 @@
+a {
+  text-decoration: none;
+}
+
+.navbar-brand {
+  font-weight: 600;
+  font-size: 22px;
+}
+footer {
+  padding: 40px 0;
+  border-top: 1px solid #eee;
+  margin-top: 60px;
+}

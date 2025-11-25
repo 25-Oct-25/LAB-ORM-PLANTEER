@@ -1,0 +1,21 @@
+<div class="col-md-4">
+    <div class="card mb-4">
+        <img src="{{ plant.image.url }}" class="card-img-top" style="width:100%; height:200px; object-fit:cover;">
+
+        <div class="card-body">
+            <h5 class="card-title">{{ plant.name }}</h5>
+            <p class="card-text">{{ plant.description|truncatewords:15 }}</p>
+
+            <p>
+                Native to:
+                {% for c in plant.countries.all %}
+                    <a href="{% url 'plants:plants_by_country' c.id %}">{{ c.name }}</a>
+                    {% if not forloop.last %}, {% endif %}
+                {% endfor %}
+            </p>
+
+            <a href="{% url 'plants:plant_details_view' plant.id %}" class="btn btn-success">Details</a>
+
+        </div>
+    </div>
+</div>
