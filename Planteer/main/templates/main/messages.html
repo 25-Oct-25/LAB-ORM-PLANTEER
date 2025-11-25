@@ -1,0 +1,44 @@
+{% extends "main/base.html" %}
+{% load static %}
+
+{% block content %}
+
+<div class="page-container">
+    <div class="container">
+        <h1 class="fw-bold mb-4">Messages from Users ({{ count }})</h1>
+
+        <div class="row gy-4">
+
+            {% for msg in messages %}
+            <div class="col-md-6">
+                <div class="message-card p-3 rounded shadow-sm">
+
+                    <div class="d-flex align-items-start mb-2">
+
+                        <span class="material-icons me-2" style="font-size:26px; color:#555;">
+                            account_circle
+                        </span>
+
+                        <div>
+                            <strong class="d-block text-capitalize fs-6">
+                                {{ msg.first_name }} {{ msg.last_name }}
+                            </strong>
+                            <a href="mailto:{{ msg.email }}" class="text-primary small">
+                                {{ msg.email }}
+                            </a>
+                        </div>
+                    </div>
+
+                    <p class="text-secondary mb-0 small">
+                        {{ msg.message }}
+                    </p>
+
+                </div>
+            </div>
+            {% endfor %}
+
+        </div>
+    </div>
+</div>
+
+{% endblock %}

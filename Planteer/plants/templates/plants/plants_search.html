@@ -1,0 +1,37 @@
+{% extends "main/base.html" %}
+{% load static %}
+
+{% block content %}
+
+<div class="search-page-wrapper">
+
+    <h1 class="search-title">Search Results</h1>
+
+    <form method="GET" action="{% url 'plants:plants_search_view' %}" class="search-bar-container">
+        <input 
+            type="text" 
+            name="search" 
+            placeholder="Placeholder"
+            value="{{ query }}"
+            class="search-input"
+        >
+        <button class="search-button">Search</button>
+    </form>
+
+    {% if plants %}
+        <p class="result-count">{{ plants|length }} results found</p>
+
+        <div class="cards-grid search-cards">
+            {% for plant in plants %}
+                {% include 'plants/plant_card.html' with plant=plant %}
+
+            {% endfor %}
+        </div>
+
+    {% else %}
+        <p class="no-results">No results found.</p>
+    {% endif %}
+
+</div>
+
+{% endblock %}
