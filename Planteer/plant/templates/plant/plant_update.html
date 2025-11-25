@@ -1,0 +1,53 @@
+{% extends 'main/base.html' %}
+{% load static %}
+
+{% block content %}
+
+<h1>Update {{plant.name}}</h1>
+
+<div class="row">
+
+    <div class="col-6">
+
+      <form class="d-flex flex-column gap-2" action="{% url 'plant:plant_update_view' plant.id %}" method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+  
+        <label for="new plant" class="form-label">Plant Name:</label>
+        <input type="text"name="name" class="form-control" placeholder="name" value="{{plant.name}}">
+        <textarea name="about" class="form-control" placeholder="about">{{plant.about}}</textarea>
+        <input type="text"name="used_for" class="form-control"placeholder="used_for" value="{{plant.used_for}}">         
+        <label for="category">Category:</label>
+        <select name="category" class="form-control">
+           <option value="1" {% if plant.category == "1" %}selected{% endif %}>Aromatic</option>
+           <option value="2" {% if plant.category == "2" %}selected{% endif %}>Indoor</option>
+           <option value="3" {% if plant.category == "3" %}selected{% endif %}>Outdoor</option>
+           <option value="4" {% if plant.category == "4" %}selected{% endif %}>Medicinal</option>
+           <option value="5" {% if plant.category == "5" %}selected{% endif %}>Flowering</option>
+        </select>
+        <select name="is_edible" class="form-control"value="{{plant.is_edible}}">
+           <option value="True">Edible</option>
+           <option value="False">Non-edible</option>
+        </select>
+         <input type="date"name="created_at" class="form-control" value="{{plant.created_at}}">
+        <div class="row">
+          <div class="col-3">
+            <img src="{{plant.image.url}}" class="w-100"/>
+          </div>
+          <div class="col">
+            <input type="file"name="image" class="form-control"placeholder="image">
+        </div>  
+        
+        <input type="submit" value="Update Plant" class="btn btn-primary">
+
+
+
+    </form>
+
+
+
+  
+
+  </div>
+</div>
+
+{% endblock %}

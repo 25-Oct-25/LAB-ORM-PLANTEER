@@ -1,0 +1,50 @@
+{% extends 'main/base.html' %}
+{% load static %}
+{% block title %}All Plants{% endblock %}
+
+{% block content %}
+
+<div class="container mt-5">
+
+    <h2 class="mb-4">All Plants</h2>
+
+    <div class="row">
+        {% for plant in plant %}
+            <div class="col-md-4 mb-4">
+                <div class="card" style="min-height: 380px;">
+
+                    <!-- صورة النبات -->
+                    {% if plant.image %}
+                        <img src="{{ plant.image.url }}" class="card-img-top" style="height:200px; object-fit:cover;">
+                    {% else %}
+                        <img src="https://via.placeholder.com/300" class="card-img-top" style="height:200px; object-fit:cover;">
+                    {% endif %}
+
+                    <div class="card-body">
+                      <a href="{% url 'plant:plant_detail_view' plant.id %}" class="text-decoration-none text dark">{{plant.name}}</a>
+                        <p class="card-text">{{ plant.category|truncatewords:12 }}</p>
+                        <p class="text-muted">
+                            <strong>Edible:</strong>
+                            {% if plant.is_edible %}
+                                Yes
+                            {% else %}
+                                No
+                            {% endif %}
+                        </p>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+
+
+{% endblock %}
+
+
+
+
+
+
+
+
+
