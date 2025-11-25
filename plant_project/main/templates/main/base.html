@@ -1,0 +1,105 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Plant Site{% endblock %}</title>
+
+    <!-- الخطوط -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&family=Phudu:wght@400;600&display=swap" rel="stylesheet">
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+    <!-- ملف CSS -->
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+
+<body>
+
+    <!-- 🔹 شريط علوي -->
+    <header class="top-nav">
+        <a href="{% url 'main:index' %}" class="logo">🌿 Plants</a>
+
+        <div class="nav-buttons">
+
+            <!-- 🔹 أزرار النباتات -->
+            <a href="{% url 'plants:all_plants' %}" class="pill-btn">All Plants</a>
+            <a href="{% url 'plants:add_plant' %}" class="pill-btn">Add Plant</a>
+
+            <!-- 🔹 تسجيل دخول / خروج تفاعلي -->
+            {% if user.is_authenticated %}
+                <a href="{% url 'account:logout' %}" class="pill-btn auth-btn">Logout</a>
+            {% else %}
+                <a href="{% url 'account:signin' %}" class="pill-btn auth-btn">Sign In</a>
+                <a href="{% url 'account:signup' %}" class="pill-btn auth-btn">Sign Up</a>
+            {% endif %}
+
+            <div class="dropdown">
+                <button class="drop-btn">Menu ▼</button>
+                <div class="dropdown-content">
+                    <a href="{% url 'main:index' %}">Home</a>
+                    <a href="{% url 'plants:all_plants' %}">All Plants</a>
+                    <a href="{% url 'plants:add_plant' %}">Add Plant</a>
+                    <a href="{% url 'plants:search' %}">Search</a>
+
+                    {% if user.is_authenticated %}
+                        <a href="{% url 'account:logout' %}">Logout</a>
+                    {% else %}
+                        <a href="{% url 'account:signin' %}">Sign In</a>
+                        <a href="{% url 'account:signup' %}">Sign Up</a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- 🔹 محتوى الصفحات -->
+    <main class="content">
+        {% block content %}
+        {% endblock %}
+
+        <!-- 🔹 Footer -->
+        <footer class="footer">
+            <div class="footer-columns">
+
+                <div class="footer-col">
+                    <h4>Site name</h4>
+                </div>
+
+                <div class="footer-col">
+                    <h4>Topic</h4>
+                    <p>Page</p>
+                    <p>Page</p>
+                    <p>Page</p>
+                </div>
+
+                <div class="footer-col">
+                    <h4>Topic</h4>
+                    <p>Page</p>
+                    <p>Page</p>
+                    <p>Page</p>
+                </div>
+
+                <div class="footer-col">
+                    <h4>Topic</h4>
+                    <p>Page</p>
+                    <p>Page</p>
+                    <p>Page</p>
+                </div>
+            </div>
+
+            <div class="footer-icons">
+                <i class="fab fa-facebook icon"></i>
+                <i class="fab fa-twitter icon"></i>
+                <i class="fab fa-instagram icon"></i>
+                <i class="fab fa-github icon"></i>
+            </div>
+        </footer>
+
+    </main>
+
+</body>
+</html>

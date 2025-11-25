@@ -1,0 +1,75 @@
+{% extends 'main/base.html' %}
+{% load static %}
+
+{% block content %}
+
+<div class="detail-page">
+
+    <div class="detail-container">
+
+        <!-- صورة النبات -->
+        <div class="detail-image-box">
+            <img src="{{ plant.image.url }}" alt="{{ plant.name }}" class="detail-image">
+        </div>
+
+        <!-- معلومات النبات -->
+        <div class="detail-info">
+
+            <h1 class="detail-title">{{ plant.name }}</h1>
+
+            <p class="detail-category">{{ plant.category }}</p>
+
+            <p class="detail-about">{{ plant.about }}</p>
+
+            <p><strong>Is Edible:</strong> 
+                {% if plant.is_edible %} Yes {% else %} No {% endif %}
+            </p>
+
+            <p><strong>Used For:</strong> {{ plant.used_for }}</p>
+
+            <p><strong>Added On:</strong> {{ plant.created_at|date:"Y-m-d" }}</p>
+
+            <p><strong>Native Countries:</strong></p>
+
+            <div class="country-list">
+                {% for c in plant.countries.all %}
+                    <span class="country-tag">{{ c.name }}</span>
+                {% empty %}
+                    <span class="country-tag none">No countries</span>
+                {% endfor %}
+            </div>
+
+            <!--  شارة عدد التعليقات الصغيرة -->
+            <div class="comments-mini">
+                <span class="mini-title">Comments:</span>
+                <span class="mini-count">{{ comments_count }}</span>
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- Related Plants -->
+    <h2 class="related-title">Related Plants</h2>
+
+    <div class="related-container">
+
+        {% for p in related %}
+        <div class="related-card">
+
+            <img src="{{ p.image.url }}" class="related-img" alt="{{ p.name }}">
+
+            <h3 class="related-name">{{ p.name }}</h3>
+
+            <p class="related-category">{{ p.category }}</p>
+
+        </div>
+        {% empty %}
+        <p>No related plants available.</p>
+        {% endfor %}
+
+    </div>
+
+</div>
+
+{% endblock %}

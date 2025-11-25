@@ -1,0 +1,61 @@
+{% extends 'main/base.html' %}
+{% load static %}
+
+{% block content %}
+
+<div class="add-plant-page">
+
+    <h1 class="add-plant-title">Add New Plant</h1>
+
+    <form class="add-plant-form" action="" method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+
+        <!-- اسم النبات -->
+        <label class="add-label">Plant Name:</label>
+        <input type="text" name="name" class="add-input" required>
+
+        <!-- وصف النبات -->
+        <label class="add-label">About:</label>
+        <textarea name="about" class="add-textarea" required></textarea>
+
+        <!-- يستخدم في -->
+        <label class="add-label">Used For:</label>
+        <textarea name="used_for" class="add-textarea" required></textarea>
+
+        <!-- الفئة -->
+        <label class="add-label">Category:</label>
+        <select name="category" class="add-select" required>
+            <option value="Tree">Tree</option>
+            <option value="Fruit">Fruit</option>
+            <option value="Vegetables">Vegetables</option>
+            <option value="Flower">Flower</option>
+            <option value="Other">Other</option>
+        </select>
+
+        <!-- هل صالح للأكل؟ -->
+        <label class="add-checkbox-label">
+            <input type="checkbox" name="is_edible">
+            Edible?
+        </label>
+
+        <!-- اختيار الدول (ManyToMany) -->
+        <label class="add-label">Native Countries:</label>
+        <select name="countries" class="add-select" multiple style="height: 120px;">
+            {% for country in countries %}
+                <option value="{{ country.id }}">{{ country.name }}</option>
+            {% endfor %}
+        </select>
+        <p class="small-note">Hold CTRL (Windows) or CMD (Mac) to select multiple.</p>
+
+        <!-- رفع صورة -->
+        <label class="add-label">Plant Image:</label>
+        <input type="file" name="image" class="add-input" required>
+
+        <!-- زر الإرسال -->
+        <button class="add-btn">Add Plant</button>
+
+    </form>
+
+</div>
+
+{% endblock %}

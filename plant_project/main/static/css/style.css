@@ -1,0 +1,884 @@
+/* base.html */
+body {
+    margin: 0;
+    font-family: "Poppins", sans-serif;
+    background: #f5f5f5;
+}
+
+.top-nav {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 70px;
+    background: #344e41;
+    
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    padding: 0 20px;        
+    box-sizing: border-box; 
+
+    z-index: 20;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+}
+
+
+.logo {
+    font-family: "Phudu", sans-serif;
+    font-size: 26px;
+    font-weight: 600;
+    color: #ffffff;
+    text-decoration: none;
+    padding: 6px 14px;
+    border-radius: 12px;
+    background: #3a5a40;  
+    display: inline-block;
+    transition: 0.3s ease;
+}
+
+.nav-buttons {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+
+.pill-btn {
+    padding: 8px 18px;
+    background: #3a5a40;
+    color: #fff;
+    border-radius: 20px;
+    text-decoration: none;
+    font-size: 15px;
+    transition: 0.3s;
+}
+
+.pill-btn:hover {
+    background: #588157;
+    transform: translateY(-2px);
+}
+
+
+.highlight-btn {
+    background: #588157 !important;
+}
+
+.highlight-btn:hover {
+    background: #74a37e !important;
+}
+
+/* نفس شكل الزر الأساسي */
+.auth-btn {
+    border-radius: 20px;
+}
+
+
+/* dropdown */
+.dropdown {
+    position: relative;
+}
+
+.drop-btn {
+    padding: 8px 18px;
+    background: #2d4b36;
+    color: white;
+    border: none;
+    border-radius: 20px;
+    cursor: pointer;
+    font-size: 15px;
+    transition: 0.3s;
+}
+
+.drop-btn:hover {
+    background: #44694f;
+}
+
+.dropdown-content {
+    display: none;
+    position: absolute;
+    right: 0;
+    background: #344e41;
+    min-width: 150px;
+    border-radius: 10px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.25);
+    padding: 10px 0;
+}
+
+.dropdown-content a {
+    display: block;
+    padding: 10px 15px;
+    text-decoration: none;
+    color: #e0e0e0;
+    font-size: 15px;
+    transition: 0.3s;
+}
+
+.dropdown-content a:hover {
+    background: #3a5a40;
+    color: white;
+}
+
+.dropdown:hover .dropdown-content {
+    display: block;
+}
+
+.content {
+    padding: 40px;
+    margin-top: 100px; 
+}
+   
+.footer {
+    margin-top: 50px;
+    padding: 40px 20px;
+    background: #f5f5f5;
+    border-top: 1px solid #ddd;
+}
+
+.footer-columns {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    margin-bottom: 25px;
+}
+
+.footer-col h4 {
+    margin-bottom: 10px;
+    font-weight: 600;
+    color: #333;
+}
+
+.footer-col p {
+    margin: 5px 0;
+    color: #555;
+}
+
+.footer-icons {
+    text-align: center;
+    margin-top: 20px;
+}
+
+.footer-icons .icon {
+    font-size: 26px;
+    margin: 0 12px;
+    opacity: 0.7;
+    transition: 0.3s;
+}
+
+.footer-icons .icon:hover {
+    opacity: 1;
+    transform: scale(1.15);
+}
+
+
+/* 📱 تنسيق الجوال */
+@media (max-width: 600px) {
+
+    .top-nav {
+        height: 60px;
+        padding: 0 12px;
+    }
+
+    .logo {
+        font-size: 12px;
+        padding: 5px 10px;
+        border-radius: 10px;
+    }
+
+    .nav-buttons {
+        gap: 8px;
+    }
+
+    .pill-btn, 
+    .drop-btn {
+        padding: 6px 14px;
+        font-size: 13px;
+        border-radius: 16px;
+    }
+
+    .dropdown-content {
+        min-width: 140px;
+        right: 0;
+    }
+
+    .dropdown-content a {
+        padding: 10px 12px;
+        font-size: 14px;
+    }
+
+    .content {
+        padding: 20px;
+        margin-top: 80px;
+    }
+
+    .footer-columns {
+        flex-direction: column;
+        gap: 15px;
+    }
+
+    .footer-col h4 {
+        font-size: 16px;
+    }
+
+    .footer-col p {
+        font-size: 14px;
+    }
+
+    .footer-icons .icon {
+        font-size: 22px;
+    }
+}
+
+
+/* home.html */
+.home-page {
+  padding-top: 20px;
+}
+
+.home-hero {
+  position: relative;
+}
+
+.home-hero img {
+  width: 100%;
+  height: 300px;
+  object-fit: cover;
+  border-radius: 10px;
+}
+
+.home-search-box {
+  position: absolute;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+}
+
+.home-search-input {
+  padding: 10px 15px;
+  border: none;
+  border-radius: 25px 0 0 25px;
+  width: 250px;
+}
+
+.home-search-btn {
+  padding: 10px 20px;
+  border: none;
+  background: #4caf50;
+  color: white;
+  border-radius: 0 25px 25px 0;
+  cursor: pointer;
+}
+
+
+.home-section-title {
+  margin: 30px 0 10px;
+  font-size: 26px;
+  font-weight: bold;
+}
+
+
+.home-cards {
+  display: flex;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+.plant-card {
+  width: 250px;
+  background: white;
+  border-radius: 10px;
+  padding: 10px;
+  box-shadow: 0px 3px 10px rgba(0,0,0,0.1);
+}
+
+.plant-card img {
+  width: 100%;
+  height: 150px;
+  object-fit: cover;
+  border-radius: 10px;
+}
+
+.more-btn {
+  display: inline-block;
+  padding: 10px 20px;
+  background: #333;
+  color: white;
+  border-radius: 20px;
+  text-decoration: none;
+  margin-top: 20px;
+}
+
+/* ===== MOBILE HOME PAGE ===== */
+@media (max-width: 600px) {
+
+  .home-hero img {
+    height: 200px;
+  }
+
+  .home-search-box {
+    bottom: 10px;
+  }
+
+  .home-search-input {
+    width: 140px;
+    font-size: 13px;
+    padding: 8px 10px;
+  }
+
+  .home-search-btn {
+    padding: 8px 12px;
+    font-size: 13px;
+  }
+
+  .home-section-title {
+    font-size: 20px;
+    text-align: center;
+  }
+
+  .home-cards {
+    justify-content: center;
+    gap: 15px;
+  }
+
+  .plant-card {
+    width: 90%;
+    max-width: 320px;
+  }
+
+  .plant-card img {
+    height: 130px;
+  }
+
+  .more-btn {
+    display: block;
+    margin: 20px auto 0;
+    padding: 8px 16px;
+    font-size: 14px;
+  }
+}
+
+/* 🌱 Add Plant Page Styles    */
+
+
+.add-plant-page {
+    max-width: 600px;
+    margin: auto;
+    background: white;
+    padding: 25px;
+    border-radius: 12px;
+    box-shadow: 0 0 15px #00000015;
+}
+
+.add-plant-title {
+    text-align: center;
+    margin-bottom: 20px;
+    color: #3a5a40;
+    font-size: 28px;
+}
+
+.add-plant-form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.add-label {
+    font-weight: 600;
+    color: #333;
+}
+
+.add-input,
+.add-textarea,
+.add-select {
+    padding: 10px;
+    border-radius: 8px;
+    border: 1px solid #bbb;
+    width: 100%;
+}
+
+.add-textarea {
+    height: 100px;
+    resize: none;
+}
+
+.add-checkbox-label {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.add-btn {
+    background: #3a5a40;
+    color: white;
+    padding: 12px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 17px;
+    margin-top: 10px;
+}
+
+.add-btn:hover {
+    background: #2e4a34;
+}
+
+/* 🔹 note styling */
+.small-note {
+    font-size: 13px;
+    color: #666;
+    margin-top: -10px;
+    margin-bottom: 5px;
+}
+ 
+/* ALL PLANTS PAGE */
+
+.allplants-page {
+    padding: 20px;
+}
+
+.allplants-title {
+    font-size: 28px;
+    font-weight: 600;
+    margin-bottom: 25px;
+    color: #335533;
+}
+
+/* -------- FILTER BOX -------- */
+.filter-box {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 25px;
+    padding: 12px 20px;
+    background: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 3px 12px rgba(0,0,0,0.08);
+    width: fit-content;
+}
+
+.filter-select {
+    padding: 8px 12px;
+    border: 1px solid #bbb;
+    border-radius: 8px;
+    font-size: 15px;
+    background: #f8f8f8;
+    outline: none;
+}
+
+.filter-check {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 15px;
+    color: #2d4d2d;
+}
+
+.filter-btn {
+    padding: 8px 16px;
+    background: #3a5a40;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 15px;
+}
+.filter-btn:hover {
+    background: #2f4a34;
+}
+
+/* -------- PLANT CARDS -------- */
+.allplants-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 25px;
+}
+
+.allplants-card {
+    width: 260px;
+    height: auto; 
+    background: #ffffff;
+    border-radius: 12px;
+    overflow: hidden;
+    padding-bottom: 15px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+    transition: 0.3s;
+    display: flex;
+    flex-direction: column;
+}
+
+.allplants-card:hover {
+    transform: translateY(-4px);
+}
+
+.allplants-img {
+    width: 100%;
+    height: 180px;
+    object-fit: cover;
+}
+
+.allplants-name {
+    font-size: 20px;
+    margin: 10px 12px 5px;
+    color: #2d4d2d;
+}
+
+.allplants-about {
+    font-size: 14px;
+    color: #555;
+    margin: 0 12px;
+}
+
+.allplants-date {
+    font-size: 12px;
+    color: #777;
+    margin: 8px 12px 12px;
+}
+
+/* -------- COUNTRIES -------- */
+.allplants-country {
+    margin: 0 12px;
+    font-size: 13px;
+    color: #2d4d2d;
+    font-weight: 600;
+}
+
+.country-tag {
+    background: #eaf3ea;
+    padding: 3px 8px;
+    border-radius: 8px;
+    font-size: 12px;
+    margin-right: 5px;
+}
+
+/* -------- BUTTONS -------- */
+.allplants-buttons {
+    display: flex;
+    justify-content: space-around;
+    margin: 10px 0;
+}
+
+.allplants-buttons a {
+    padding: 7px 12px;
+    text-decoration: none;
+    color: white;
+    border-radius: 6px;
+    font-size: 14px;
+}
+
+.btn-detail { background: #4a7856; }
+.btn-update { background: #2b6bc0; }
+.btn-delete { background: #c63636; }
+
+/* -------- COMMENT FORM -------- */
+.global-comment-box {
+    margin-top: 45px;
+    background: #ffffff;
+    padding: 28px;
+    border-radius: 14px;
+    box-shadow: 0 4px 18px rgba(0,0,0,0.08);
+    max-width: 900px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.global-comment-box h3 {
+    color: #2d4d2d;
+    font-size: 24px;
+    font-weight: 600;
+    text-align: center;
+    margin-bottom: 18px;
+}
+
+.global-comment-form {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.comment-select,
+.comment-input,
+.comment-textarea {
+    padding: 12px 14px;
+    border: 1px solid #b8c6b8;
+    border-radius: 10px;
+    font-size: 15px;
+    background: #f8faf8;
+    color: #2d4d2d;
+    outline: none;
+}
+
+.comment-textarea {
+    width: 320px;
+    height: 70px;
+    resize: none;
+}
+
+.comment-btn {
+    padding: 12px 20px;
+    background: #3a5a40;
+    color: white;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+}
+.comment-btn:hover {
+    background: #294131;
+}
+
+/*COMMENT GRID SECTION (B)*/
+.comments-section {
+    margin-top: 50px;
+    background: #ffffff;
+    padding: 25px;
+    border-radius: 14px;
+    box-shadow: 0 4px 18px rgba(0,0,0,0.08);
+    max-width: 950px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.comments-section h3 {
+    text-align: center;
+    color: #2d4d2d;
+    font-size: 26px;
+    margin-bottom: 25px;
+}
+
+/* GRID */
+.comments-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 18px;
+}
+
+/* -------- COMMENT CARD -------- */
+.comment-card {
+    backdrop-filter: blur(8px);
+    background: rgba(155, 199, 155, 0.20);
+    border: 1px solid rgba(80, 120, 80, 0.3);
+    border-radius: 14px;
+    padding: 18px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    transition: 0.3s;
+}
+
+.comment-card:hover {
+    transform: translateY(-4px);
+}
+
+.comment-card-title {
+    font-size: 18px;
+    font-weight: 700;
+    color: #275c27;
+    margin-bottom: 8px;
+}
+
+.comment-card-user {
+    font-weight: 600;
+    margin-bottom: 5px;
+    color: #1f3d1f;
+}
+
+.comment-card-text {
+    color: #222;
+    margin-bottom: 10px;
+}
+
+.comment-card-date {
+    font-size: 12px;
+    color: #666;
+}
+
+
+/* PLANT DETAIL PAGE — FINAL STYLE*/
+
+.detail-page {
+    max-width: 1200px;
+    margin: auto;
+    padding: 20px;
+}
+
+/* 🔹 البطاقة الرئيسية */
+.detail-container {
+    display: flex;
+    gap: 30px;
+    align-items: flex-start;
+    background: #ffffff;
+    padding: 25px;
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+    margin-bottom: 40px;
+}
+
+/* 🔹 صورة النبات */
+.detail-image-box {
+    flex: 1;
+    text-align: center;
+}
+
+.detail-image {
+    width: 100%;
+    height: auto;
+    max-height: 420px;
+    object-fit: contain;
+    border-radius: 12px;
+    background: white;
+}
+
+/* 🔹 معلومات النبات */
+.detail-info {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.detail-title {
+    font-size: 32px;
+    font-weight: 600;
+    color: #1f1f1f;
+}
+
+.detail-category {
+    font-size: 18px;
+    font-weight: 600;
+    color: #6a6a6a;
+}
+
+.detail-about {
+    font-size: 16px;
+    color: #444;
+    line-height: 1.7;
+    margin-bottom: 10px;
+}
+
+/* 🔹 الدول */
+.country-list {
+    margin: 10px 0 10px;
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
+.country-tag {
+    padding: 6px 12px;
+    background: #e8f5e9;
+    color: #2d4d2d;
+    border-radius: 20px;
+    font-size: 14px;
+    border: 1px solid #b7d1b7;
+}
+
+.country-tag.none {
+    background: #f4f4f4;
+    color: #777;
+    border-color: #ddd;
+}
+
+/* COMMENT MINI BADGE — Small & Clean */
+
+.comments-mini {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: #e8f5e9;
+    padding: 6px 12px;
+    border-radius: 20px;
+    border: 1px solid #cfe9d1;
+    width: fit-content;
+    margin-top: 5px;
+}
+
+.mini-title {
+    font-size: 14px;
+    font-weight: 600;
+    color: #2d4d2d;
+}
+
+.mini-count {
+    background: #3a5a40;
+    color: white;
+    padding: 3px 10px;
+    border-radius: 14px;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+/* RELATED PLANTS */
+
+.related-title {
+    margin-top: 40px;
+    font-size: 24px;
+    font-weight: 600;
+    color: #1f1f1f;
+}
+
+.related-container {
+    margin-top: 20px;
+    display: flex;
+    gap: 25px;
+    flex-wrap: wrap;
+}
+
+.related-card {
+    width: 260px;
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 3px 12px rgba(0,0,0,0.08);
+    overflow: hidden;
+    transition: 0.3s;
+}
+
+.related-card:hover {
+    transform: translateY(-5px);
+}
+
+.related-img {
+    width: 100%;
+    height: 160px;
+    object-fit: cover;
+}
+
+.related-name {
+    margin: 10px 12px 4px;
+    font-size: 18px;
+    font-weight: 600;
+    color: #1f1f1f;
+}
+
+.related-category {
+    margin: 0 12px 12px;
+    font-size: 14px;
+    color: #6a6a6a;
+}
+
+/*RESPONSIVE */
+
+@media (max-width: 900px) {
+    .detail-container {
+        flex-direction: column;
+    }
+
+    .detail-image {
+        height: 300px;
+    }
+
+    .comments-mini {
+        margin: 5px auto;
+    }
+}
+
+/* search results page */
+
+.search-input-field {
+    padding: 8px 12px;
+    border: 1px solid #bbb;
+    border-radius: 8px;
+    font-size: 15px;
+    width: 220px;
+    background: #f8f8f8;
+    outline: none;
+}

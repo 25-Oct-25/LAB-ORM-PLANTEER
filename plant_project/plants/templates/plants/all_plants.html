@@ -1,0 +1,135 @@
+{% extends 'main/base.html' %}
+{% load static %}
+
+{% block content %}
+
+<div class="allplants-page">
+
+    <h2 class="allplants-title">All Plants</h2>
+
+    <!-- Filter Box -->
+    <form method="GET" class="filter-box">
+
+        <select name="category" class="filter-select">
+            <option value="">All Categories</option>
+            <option value="Tree">Tree</option>
+            <option value="Fruit">Fruit</option>
+            <option value="Vegetables">Vegetables</option>
+            <option value="Flower">Flower</option>
+            <option value="Other">Other</option>
+        </select>
+
+        <select name="country" class="filter-select">
+            <option value="">All Countries</option>
+            {% for c in countries %}
+                <option value="{{ c.id }}">{{ c.name }}</option>
+            {% endfor %}
+        </select>
+
+        <label class="filter-check">
+            <input type="checkbox" name="is_edible">
+            Edible Only
+        </label>
+
+        <button class="filter-btn">Filter</button>
+    </form>
+
+    <!-- All Plants Cards -->
+    <div class="allplants-container">
+
+        {% for plant in plants %}
+        <div class="allplants-card">
+
+            <img src="{{ plant.image.url }}" class="allplants-img">
+
+            <h3 class="allplants-name">{{ plant.name }}</h3>
+
+            <p class="allplants-about">
+                {{ plant.about|slice:":90" }}{% if plant.about|length > 90 %}...{% endif %}
+            </p>
+
+            <p class="allplants-date">Added: {{ plant.created_at|date:"Y-m-d" }}</p>
+
+            <!-- Countries -->
+            <p class="allplants-country">
+                {% for country in plant.countries.all %}
+                    <span class="country-tag">{{ country.name }}</span>
+                {% empty %}
+                    <span class="country-tag none">No Country</span>
+                {% endfor %}
+            </p>
+
+            <div class="allplants-buttons">
+                <a href="{% url 'plants:plant_detail' plant.id %}" class="btn-detail">Detail</a>
+                <a href="{% url 'plants:update_plant' plant.id %}" class="btn-update">Update</a>
+                <a href="{% url 'plants:delete_plant' plant.id %}" class="btn-delete">Delete</a>
+            </div>
+
+        </div>
+        {% endfor %}
+
+    </div>
+
+    <!-- ===== COMMENT FORM (Only for logged in users) ===== -->
+    {% if request.user.is_authenticated %}
+    <div class="global-comment-box">
+
+        <h3>Add a Comment</h3>
+
+        <form method="POST" class="global-comment-form">
+            {% csrf_token %}
+
+            <select name="plant_id" class="comment-select" required>
+                <option value="">Select a plant</option>
+                {% for p in plants %}
+                    <option value="{{ p.id }}">{{ p.name }}</option>
+                {% endfor %}
+            </select>
+
+            <!-- username removed (we use request.user.username) -->
+
+            <textarea name="text" placeholder="Write a comment..." class="comment-textarea" required></textarea>
+
+            <button class="comment-btn">Add Comment</button>
+        </form>
+    </div>
+
+    {% else %}
+    <div class="p-3 rounded bg-warning d-flex flex-column gap-2" style="margin-top: 30px;">
+        <p>Only registered users can add comments.</p>
+    </div>
+    {% endif %}
+
+    <!-- ===== ALL COMMENTS (Grid) ===== -->
+    <div class="comments-section">
+
+        <h3>All Comments</h3>
+
+        <div class="comments-grid">
+
+            {% for plant in plants %}
+                {% for c in plant.comments.all %}
+                
+                    {% if c.user %}
+                    <div class="comment-card">
+                        <h4 class="comment-card-title">{{ plant.name }}</h4>
+
+                        <!-- name from user model -->
+                        <p class="comment-card-user">{{ c.user.username }}</p>
+
+                        <p class="comment-card-text">{{ c.text }}</p>
+
+                        <span class="comment-card-date">{{ c.created_at|date:"Y-m-d H:i" }}</span>
+                    </div>
+                    {% endif %}
+
+                {% endfor %}
+            {% endfor %}
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}
