@@ -5,6 +5,7 @@ from django.core.mail import send_mail, EmailMessage
 from django.conf import settings
 from django.template.loader import render_to_string
 from django.contrib import messages
+from django.contrib.auth.decorators import login_required
 
 
 def get_plant_or_none(plant_id):
@@ -45,24 +46,22 @@ def plant_list(request):
     }
     return render(request, "plants/plant_list.html", context)
 
-
 def plant_detail(request, plant_id):
     plant = get_plant_or_none(plant_id)
     if plant is None:
         return render(request, "plants/not_found.html", status=404)
 
-    # 1. جزئية حفظ التقييم (كانت ناقصة عندك)
     if request.method == "POST":
         name = request.POST.get("name")
         content = request.POST.get("content")
-        rating = request.POST.get("rating") # استلام التقييم
+        rating = request.POST.get("rating") 
 
         if name and content:
             Comment.objects.create(
                 plant=plant,
                 name=name,
                 content=content,
-                rating=rating if rating else 0 # حفظ التقييم
+                rating=rating if rating else 0 
             )
             return redirect("plants:plant_detail", plant_id=plant.id)
 
@@ -72,7 +71,6 @@ def plant_detail(request, plant_id):
 
     comments = plant.comments.all().order_by('-created_at')
 
-    # 2. جزئية حساب المتوسط (كانت ناقصة عندك)
     avg = comments.aggregate(Avg("rating"))
 
     context = {
@@ -82,11 +80,12 @@ def plant_detail(request, plant_id):
         "is_edible": plant.is_edible,
         "used_for": plant.used_for,
         "comments": comments,
-        "average_rating": avg["rating__avg"] # إرسال المتوسط للقالب
+        "average_rating": avg["rating__avg"] 
     }
 
     return render(request, "plants/plant_detail.html", context)
 
+@login_required
 def plant_create(request):
     all_benefits = Benefit.objects.all()
     all_countries = Countries.objects.all() 
@@ -138,6 +137,7 @@ def plant_create(request):
     return render(request, "plants/plant_form.html", context)
 
 
+@login_required
 def plant_update(request, plant_id):
     plant = get_plant_or_none(plant_id)
     if plant is None:
@@ -196,6 +196,7 @@ def plant_update(request, plant_id):
     return render(request, "plants/plant_form.html", context)
 
 
+@login_required
 def plant_delete(request, plant_id):
     plant = get_plant_or_none(plant_id)
 
