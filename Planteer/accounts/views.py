@@ -12,12 +12,15 @@ def sign_up(request):
             password = request.POST.get("password")
             first_name = request.POST.get("first_name")
             last_name = request.POST.get("last_name")
+            email = request.POST.get("email")
 
             new_user = User.objects.create_user(
                 username=username,
                 password=password,
                 first_name=first_name,
                 last_name=last_name,
+                email=email 
+                
             )
             new_user.save()
             messages.success(request, "Registered User Successfully")

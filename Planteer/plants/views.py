@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect
 from .models import Plant, Comment, Country
 from django.db.models import Count 
+from django.contrib import messages
 
 def plants_all_view(request):
 
@@ -34,6 +35,9 @@ def plants_all_view(request):
     })
 
 def plants_new_view(request):
+    if not request.user.is_staff:  
+        messages.warning(request, "Only staff members can add plants.")
+        return redirect("plants:plants_all")  
     countries = Country.objects.all()  
 
     if request.method == "POST":
@@ -60,22 +64,31 @@ def plants_new_view(request):
     return render(request, "plants/plants_new.html", {"countries": countries})
 
 
-
 def plants_detail_view(request, plant_id):
     try:
         plant = Plant.objects.get(id=plant_id)
     except Plant.DoesNotExist:
         return redirect("plants:plants_all")
 
+
     related_plants = Plant.objects.filter(category=plant.category).exclude(id=plant.id)[:3]
 
+
+    comments = Comment.objects.filter(plant=plant).order_by('-created_at')
+
+   
     return render(request, "plants/plants_detail.html", {
         "plant": plant,
-        "related_plants": related_plants
+        "related_plants": related_plants,
+        "comments": comments,  
     })
 
 
+
 def plants_update_view(request, plant_id):
+    if not request.user.is_staff:
+        messages.warning(request, "Only staff members can edit plants.")
+        return redirect("plants:plants_all")
     plant = Plant.objects.get(id=plant_id)
     countries = Country.objects.all()
 
@@ -99,6 +112,9 @@ def plants_update_view(request, plant_id):
     return render(request, "plants/plants_update.html", {"plant": plant, "countries": countries})
 
 def plants_delete_view(request, plant_id):
+    if not request.user.is_staff:
+        messages.warning(request, "Only staff members can delete plants.")
+        return redirect("plants:plants_all")
     plant = Plant.objects.get(id=plant_id)
     plant.delete()
     return redirect('plants:plants_all')
@@ -120,9 +136,13 @@ def plants_search_view(request):
 
 def add_comment_view(request,plant_id):
 
+    if not request.user.is_authenticated:
+        messages.warning(request, "You must be logged in to add a comment.")
+        return redirect("accounts:sign_in") 
+
     if request.method == "POST":
         plant_object=Plant.objects.get(pk=plant_id)
-        new_comment=Comment(plant=plant_object,name=request.POST["name"], content=request.POST["content"])
+        new_comment=Comment(plant=plant_object,user=request.user, content=request.POST["content"])
         new_comment.save()
         return redirect("plants:plants_detail", plant_id=plant_id)  
     

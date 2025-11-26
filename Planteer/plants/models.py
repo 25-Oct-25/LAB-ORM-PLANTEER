@@ -1,5 +1,5 @@
 from django.db import models
-from django.utils import timezone
+from django.contrib.auth.models import User 
 
 
 class Country(models.Model):
@@ -34,6 +34,6 @@ class Plant(models.Model):
 
 class Comment(models.Model):
     plant=models.ForeignKey(Plant, on_delete=models.CASCADE)
-    name=models.CharField(max_length=1024)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True)
     content=models.TextField()
     created_at=models.DateTimeField(auto_now_add=True)

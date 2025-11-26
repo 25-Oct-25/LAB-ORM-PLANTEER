@@ -20,7 +20,9 @@
         <div class="nav-right">
             <a href="{% url 'plants:plants_all' %}">All Plants</a>
             <a href="{% url 'main:contact' %}">Contact Us</a>
-            <a href="{% url 'plants:plants_new' %}" class="add-btn">Add Plant</a>
+            {% if request.user.is_staff %}
+                <a href="{% url 'plants:plants_new' %}" class="add-btn">Add Plant</a>
+            {% endif %}
            
 
             {% if user.is_authenticated %}

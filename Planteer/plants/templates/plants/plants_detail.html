@@ -39,17 +39,18 @@
             </p>
 
             <p><strong>Used For:</strong> {{ plant.used_for }}</p>
-
-            <div class="detail-actions">
-                <a href="{% url 'plants:plants_update' plant.id %}" class="edit-btn">Edit</a>
-               <a href="{% url 'plants:plants_delete' plant.id %}" 
-                    class="delete-btn"
-                    onclick="return confirm('Are you sure?');">
-                    Delete
+            
+            {% if request.user.is_staff %}
+                <div class="detail-actions">
+                    <a href="{% url 'plants:plants_update' plant.id %}" class="edit-btn">Edit</a>
+                <a href="{% url 'plants:plants_delete' plant.id %}" 
+                        class="delete-btn"
+                        onclick="return confirm('Are you sure?');">
+                        Delete
                 </a>
 
-
-            </div>
+                </div>
+            {% endif %} 
 
         </div>
     </div>
@@ -82,22 +83,10 @@
 
 <h2>Comments</h2>
 
-<form class="add-form" action="{% url 'plants:add_comment' plant.id %}" method="POST">
-    {% csrf_token %}
-
-    <label for="name">Name</label>
-    <input type="text" name="name" required minlength="3" placeholder="Your Name"/>
-
-    <label for="content">Comment</label>
-    <textarea name="content" required minlength="3" placeholder="Write your comment..."></textarea>
-
-    <button type="submit" class="submit-btn">Add Comment</button>
-</form>
-
 <div class="comments-section">
     {% for c in comments %}
         <div class="comment-card">
-            <p><strong>{{ c.name }}</strong></p>
+            <p><strong>{{ c.user }}</strong></p>
             <p>{{ c.content }}</p>
             <p class="comment-date">{{ c.created_at|date:"M d, Y H:i" }}</p>
         </div>
@@ -105,6 +94,22 @@
         <p>No comments yet. Be the first to comment!</p>
     {% endfor %}
 </div>
+
+<hr />
+
+{% if request.user.is_authenticated %}
+    <form class="add-form" action="{% url 'plants:add_comment' plant.id %}" method="POST">
+        {% csrf_token %}
+        <textarea name="content" required minlength="3" placeholder="Write your comment..."></textarea>
+        <button type="submit" class="submit-btn">Add Comment</button>
+    </form>
+{% else %}
+    <div class="p-3 rounded bg-warning mt-3">
+        <p>Only registered users can add comments.</p>
+    </div>
+{% endif %}
+
+
 
 
 {% endblock %}

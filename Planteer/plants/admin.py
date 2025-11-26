@@ -7,7 +7,7 @@ class PlantAdmin(admin.ModelAdmin):
 
 
 class CommentAdmin(admin.ModelAdmin):
-    list_display= ("name",)
+    list_display= ("user",)
    
 
 admin.site.register(Plant, PlantAdmin)

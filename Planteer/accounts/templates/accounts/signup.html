@@ -1,31 +1,32 @@
 {% extends "main/base.html" %}
 {% block content %}
 
-<h2>Sign Up</h2>
-{% if messages %}
-  {% for message in messages %}
-    <div class="alert {{ message.tags }}">
-      {{ message }}
-    </div>
-  {% endfor %}
-{% endif %}
 
 
-<form method="POST">
+<div class="form-wrapper">
+  <h1 class="form-title">Sign Up</h1>
+
+  <form method="POST" class="add-form">
     {% csrf_token %}
+    
     <label>Username</label>
-    <input type="text" name="username" required><br><br>
+    <input type="text" name="username" required>
+
+    <label>Email</label>
+    <input type="email" name="email" required>
 
     <label>First Name</label>
-    <input type="text" name="first_name" required><br><br>
+    <input type="text" name="first_name" required>
 
     <label>Last Name</label>
-    <input type="text" name="last_name" required><br><br>
+    <input type="text" name="last_name" required>
 
     <label>Password</label>
-    <input type="password" name="password" required><br><br>
+    <input type="password" name="password" required>
 
-    <button type="submit">Sign Up</button>
-</form>
+    <button type="submit" class="submit-btn">Sign Up</button>
+  </form>
+</div>
+
 
 {% endblock %}
