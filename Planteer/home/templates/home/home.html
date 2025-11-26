@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+
+<div class="hero-box">
+  <div class="hero-image"></div>
+
+  <div class="hero-content">
+    <h1 class="hero-title">Planteer</h1>
+    <h2 class="hero-sub">Plant Database For Plants Lovers</h2>
+
+    <form method="get" action="{% url 'plants:plant_search' %}">
+      <div class="search-box">
+        <input type="text" name="q" placeholder="Search For Plant..." value="{{ request.GET.q }}">
+        <button type="submit">Search</button>
+      </div>
+    </form>
+
+
+  </div>
+</div>
+
+<section class="plants-section">
+  <div class="plants-head">
+    <div>
+      <h3 class="plants-title">Plants</h3>
+      <p class="plants-sub">Learn more about plants</p>
+    </div>
+
+    <a href="{% url 'plants:plant_list' %}" class="more-link">More →</a>
+  </div>
+
+  <div class="row gy-4">
+    {% for plant in plants %}
+
+    {% include "plants/plant_card.html" %}
+
+    {% empty %}
+    <div class="col-12">
+      <p class="no-plants">No plants yet.</p>
+    </div>
+    {% endfor %}
+  </div>
+
+</section>
+
+{% endblock %}
