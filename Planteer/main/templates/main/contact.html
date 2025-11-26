@@ -1,0 +1,53 @@
+{% extends "main/base.html" %}
+{% load static %}
+{% block content %}
+
+<div class="contact-wrapper">
+
+    <div class="contact-left">
+        <h1>Contact us</h1>
+        <p class="subhead">Subheading for description or instructions</p>
+
+        {% if success %}
+        <div class="success-message">
+            Your message has been sent successfully!
+        </div>
+        {% endif %}
+
+        <form class="contact-form" method="POST">
+            {% csrf_token %}
+
+            <div class="row">
+                <div class="input-group">
+                    <label>First name</label>
+                    <input type="text" name="first_name" required>
+                </div>
+
+                <div class="input-group">
+                    <label>Last name</label>
+                    <input type="text" name="last_name" required>
+                </div>
+            </div>
+
+            <div class="input-group">
+                <label>Email address</label>
+                <input type="email" name="email" required>
+            </div>
+
+            <div class="input-group">
+                <label>Your message</label>
+                <textarea rows="5" name="message" required></textarea>
+            </div>
+
+            <button class="submit-btn">Submit</button>
+        </form>
+    </div>
+
+   
+    <div class="contact-right">
+        <img src="{% static 'images/contact.png' %}" alt="Contact Image">
+    </div>
+
+</div>
+
+{% endblock %}

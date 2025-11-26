@@ -1,0 +1,27 @@
+{% extends 'main/base.html' %}
+
+{% block content %}
+
+<div class="container">
+
+    <h1 class="search-title">Search Results</h1>
+
+    <form method="GET" action="{% url 'plants:plants_search' %}" class="search-bar big-search">
+        <input type="text" name="q" placeholder="Search..." value="{{ query }}">
+        <button type="submit">Search</button>
+    </form>
+
+    <p class="search-info">
+        Showing <strong>{{ count }}</strong> result(s) for:
+        <strong>"{{ query }}"</strong>
+    </p>
+
+    <div class="plants-grid">
+        {% for plant in results %}
+            {% include 'plants/plants_list.html' %}
+        {% endfor %}
+    </div>
+
+</div>
+
+{% endblock %}

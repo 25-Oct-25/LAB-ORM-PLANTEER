@@ -1,0 +1,29 @@
+{% extends "main/base.html" %}
+
+{% block content %}
+<div class="form-wrapper">
+  <h1 class="form-title">Sign In</h1>
+
+  <form method="POST" class="add-form">
+    {% csrf_token %}
+    
+    <label>Username</label>
+    <input type="text" name="username" required>
+
+    <label>Password</label>
+    <input type="password" name="password" required>
+
+    <button type="submit" class="submit-btn">Sign In</button>
+
+    <p style="margin-top: 10px; font-size: 14px;">
+      Don't have an account? 
+      <a href="{% url 'accounts:sign_up' %}" style="color: purple; text-decoration: underline;">Sign up here</a>
+    </p>
+
+    {% if error %}
+      <p style="color: red; margin-top: 10px;">{{ error }}</p>
+    {% endif %}
+  </form>
+</div>
+
+{% endblock %}

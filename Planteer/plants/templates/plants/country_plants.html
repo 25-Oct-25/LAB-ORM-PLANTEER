@@ -1,0 +1,14 @@
+{% extends 'main/base.html' %}
+{% block content %}
+
+<div class="detail-wrapper">
+    <h2 class="related-title">Plants native to {{ country.name }}</h2>
+
+    <div class="related-grid">
+        {% for plant in plants %}
+            {% include 'plants/plants_list.html' %}
+        {% endfor %}
+    </div>
+
+
+{% endblock %}

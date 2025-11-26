@@ -1,0 +1,45 @@
+{% extends "main/base.html" %}
+
+{% block content %}
+
+<h2>All Plants</h2>
+
+<form method="GET" class="filter-bar">
+
+    <select name="category">
+        <option value="all">All Categories</option>
+
+        <option value="MED" {% if selected_category == 'MED' %}selected{% endif %}>Medicinal</option>
+        <option value="ORN" {% if selected_category == 'ORN' %}selected{% endif %}>Ornamental</option>
+        <option value="ARO" {% if selected_category == 'ARO' %}selected{% endif %}>Aromatic</option>
+        <option value="FRT" {% if selected_category == 'FRT' %}selected{% endif %}>Fruit Plants</option>
+        <option value="TOX" {% if selected_category == 'TOX' %}selected{% endif %}>Toxic Plants</option>
+        <option value="IN" {% if selected_category == 'IN' %}selected{% endif %}>Indoor Plants</option>
+        <option value="OUT" {% if selected_category == 'OUT' %}selected{% endif %}>Outdoor Plants</option>
+    </select>
+
+
+    <select name="edible">
+        <option value="">Edible?</option>
+        <option value="yes" {% if selected_edible == 'yes' %}selected{% endif %}>Yes</option>
+        <option value="no" {% if selected_edible == 'no' %}selected{% endif %}>No</option>
+    </select>
+    <select name="country">
+    <option value="all">All Countries</option>
+    {% for country in countries %}
+        <option value="{{ country.id }}" {% if selected_country == country.id|stringformat:"s" %}selected{% endif %}>
+            {{ country.name }}
+        </option>
+    {% endfor %}
+    </select>
+    <button type="submit">Filter</button>
+</form>
+
+<div class="plants-grid">
+    {% for plant in plants %}
+        {% include 'plants/plants_list.html' %}
+    {% endfor %}
+</div>
+
+
+{% endblock %}

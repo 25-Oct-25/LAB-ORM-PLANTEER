@@ -1,0 +1,115 @@
+{% extends 'main/base.html' %}
+
+{% block content %}
+
+<div class="detail-wrapper">
+
+    <div class="detail-flex">
+
+        <div class="detail-left">
+            {% if plant.image %}
+                <img src="{{ plant.image.url }}" alt="{{ plant.name }}">
+            {% else %}
+                <img src="/media/images/default.jpeg" alt="default plant">
+            {% endif %}
+        </div>
+
+        <div class="detail-right">
+            <h1 class="detail-title">{{ plant.name }}</h1>ٍ
+            <div class="d-flex align-items-center gap-2 mt-2">
+                {% for country in plant.Countries.all %}
+                    <div class="d-flex align-items-center gap-1">
+                        <img src="{{ country.flag.url }}" alt="{{ country.name }}" width="30" height="20" style="border-radius:4px;">
+                        <a href="{% url 'plants:country_plants' country.id %}" 
+                        class="country-link fw-bold">
+                            {{ country.name }}
+                        </a>
+                    </div>
+
+                {% endfor %}
+            </div>
+
+
+            <p class="detail-category">{{ plant.get_category_display }}</p>
+
+            <p class="detail-text">{{ plant.about }}</p>
+
+            <p><strong>Is Edible:</strong>
+                {% if plant.is_edible %} Yes {% else %} No {% endif %}
+            </p>
+
+            <p><strong>Used For:</strong> {{ plant.used_for }}</p>
+            
+            {% if request.user.is_staff %}
+                <div class="detail-actions">
+                    <a href="{% url 'plants:plants_update' plant.id %}" class="edit-btn">Edit</a>
+                <a href="{% url 'plants:plants_delete' plant.id %}" 
+                        class="delete-btn"
+                        onclick="return confirm('Are you sure?');">
+                        Delete
+                </a>
+
+                </div>
+            {% endif %} 
+
+        </div>
+    </div>
+
+
+<h2 class="related-title">Related Plants</h2>
+
+<div class="related-grid">
+    {% for p in related_plants %}
+        <div class="related-card">
+            <div class="related-img">
+                {% if p.image %}
+                    <img src="{{ p.image.url }}" alt="{{ p.name }}">
+                {% else %}
+                    <img src="/media/images/default.jpeg" alt="default">
+                {% endif %}
+            </div>
+
+            <div class="related-info">
+                <h3>{{ p.name }}</h3>
+                <p class="brief">{{ p.about|truncatechars:40 }}</p>
+                <p class="cat">{{ p.get_category_display }}</p>
+            </div>
+        </div>
+    {% empty %}
+        <p>No related plants available.</p>
+    {% endfor %}
+</div>
+<hr />
+
+<h2>Comments</h2>
+
+<div class="comments-section">
+    {% for c in comments %}
+        <div class="comment-card">
+            <p><strong>{{ c.user }}</strong></p>
+            <p>{{ c.content }}</p>
+            <p class="comment-date">{{ c.created_at|date:"M d, Y H:i" }}</p>
+        </div>
+    {% empty %}
+        <p>No comments yet. Be the first to comment!</p>
+    {% endfor %}
+</div>
+
+<hr />
+
+{% if request.user.is_authenticated %}
+    <form class="add-form" action="{% url 'plants:add_comment' plant.id %}" method="POST">
+        {% csrf_token %}
+        <textarea name="content" required minlength="3" placeholder="Write your comment..."></textarea>
+        <button type="submit" class="submit-btn">Add Comment</button>
+    </form>
+{% else %}
+    <div class="p-3 rounded bg-warning mt-3">
+        <p>Only registered users can add comments.</p>
+    </div>
+{% endif %}
+
+
+
+
+{% endblock %}
