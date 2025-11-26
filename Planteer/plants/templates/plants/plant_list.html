@@ -1,0 +1,29 @@
+<div class="row">
+    {% for plant in plants %}
+    <div class="col-md-6 col-lg-4 mb-4">
+        <div class="plant-card">
+            {% if plant.image %}
+            <img src="{{ plant.image.url }}" class="plant-image w-100" style="height: 250px; object-fit: cover;">
+            {% else %}
+            <div class="plant-image w-100 bg-light d-flex align-items-center justify-content-center"
+                style="height: 250px;">
+                <i class="fas fa-leaf fa-3x text-muted"></i>
+            </div>
+            {% endif %}
+        </div>
+        <div class="plant-info mt-3">
+            <a href="{% url 'plants:plant_detail_view' plant.id %}">
+                <h5 class="fw-bold mb-2">{{ plant.name }}</h5>
+            </a>
+            <p class="text-muted mb-2">{{ plant.about|truncatewords:15 }}</p>
+            <span class="fw-bold mb-2">{{ plant.get_category_display }}</span>
+
+            <div class="mt-2">
+                <small class="text-muted">
+                    Native to: {{ plant.countries.all|join:", " }}
+                </small>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>

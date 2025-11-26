@@ -27,27 +27,8 @@
 
 <section class="py-5">
     <div class="container">
-        {% if plant %}
-        <div class="row">
-            {% for plant in plant %} 
-            <div class="col-md-6 col-lg-4 mb-4">
-                <div class="plant-card">
-                    {% if plant.image %}
-                    <img src="{{ plant.image.url }}" class="plant-image w-100" style="height: 250px; object-fit: cover;">
-                    {% else %}
-                    <div class="plant-image w-100 bg-light d-flex align-items-center justify-content-center" style="height: 250px;">
-                        <i class="fas fa-leaf fa-3x text-muted"></i>
-                    </div>
-                    {% endif %}
-                </div>
-                <div class="plant-info mt-3">
-                    <a href="{% url 'plants:plant_detail_view' plant.id %}"><h5 class="fw-bold mb-2">{{ plant.name }}</h5></a>
-                    <p class="text-muted mb-2">{{ plant.about|truncatewords:15 }}</p>
-                    <span class="fw-bold mb-2">{{ plant.get_category_display }}</span>
-                </div>
-            </div>
-            {% endfor %}
-        </div>
+        {% if plants %}
+        {% include 'plants/plant_list.html' %}
         {% else %}
         <div class="text-center py-5">
             <i class="fas fa-seedling fa-5x text-muted mb-3"></i> 
