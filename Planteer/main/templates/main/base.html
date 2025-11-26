@@ -47,7 +47,6 @@
     </div>
 
 
-
     {% if request.user.is_authenticated %}
     <h6 class="p-0 m-0">wlcome {{ request.user.username }}, <a class="dropdown-item" href="{% url 'accounts:log_out_view' %}">Log out</a></h6>
 
@@ -62,6 +61,19 @@
             <li><a class="dropdown-item" href="{% url 'accounts:signin_view' %}">Sign in</a></li>
         </ul>
     </div>
+
+    {% endif %}
+
+    {% if messages %}
+
+        {% for message in messages %}
+
+        <div class="alert alert-dismissible fade show {{message.tags}}" role="alert">
+            {{ message }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+
+        {% endfor %}
 
     {% endif %}
     <main>

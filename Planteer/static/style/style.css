@@ -1,24 +1,29 @@
 :root {
-  --clr-background: #E8EBE2;
-  --clr-text-primary: #344833;
-  --clr-text-secondary: #587157;
-  --clr-form-background: #ffffff;
-  --clr-card-background: #ffffff;
+--clr-background: #E8EBE2;
+--clr-text-primary: #344833;
+--clr-text-secondary: #587157;
+--clr-form-background: #ffffff;
+--clr-card-background: #ffffff;
 
-  --clr-primary-main: #6e8f6a;
-  --clr-primary-hover: #5c7a59;
+--clr-primary-main: #6e8f6a;
+--clr-primary-hover: #5c7a59;
 
-  --clr-border-light: #d3d9c8;
-  --clr-input-background: #f6f7f2;
-  --clr-input-focus: #92a889;
+--clr-border-light: #d3d9c8;
+--clr-input-background: #f6f7f2;
+--clr-input-focus: #92a889;
 
-  --clr-tag-category-bg: #eef4ea;
-  --clr-tag-category-border: #e2eadc;
-  --clr-tag-edible-bg: #fff6e6;
-  --clr-tag-edible-border: #f1e6d3;
+--clr-tag-category-bg: #eef4ea;
+--clr-tag-category-border: #e2eadc;
+--clr-tag-edible-bg: #fff6e6;
+--clr-tag-edible-border: #f1e6d3;
 
-  --font-primary: "Sniglet", system-ui;
-  --font-heading: "Bubblegum Sans", sans-serif;
+--clr-tag-watering-bg: #e6f8ff;
+--clr-tag-watering-border: #bdd8e3;
+
+  
+
+--font-primary: "Sniglet", system-ui;
+--font-heading: "Bubblegum Sans", sans-serif;
 }
 
 * {
@@ -279,6 +284,41 @@ a {
   margin-bottom: 20px;
 }
 
+.watering-options {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 20px;
+}
+
+.watering-options .option {
+    background: var(--clr-input-background);
+    padding: 10px 12px;
+    border-radius: 10px;
+    border: 1px solid var(--clr-border-light);
+    cursor: pointer;
+    color: var(--clr-text-secondary);
+    transition: 0.2s;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 14px;
+}
+
+.watering-options .option:hover {
+    background: #e9ece4;
+}
+
+.watering-options .option:has(input:checked) {
+    background: var(--clr-tag-category-bg);
+    border-color: var(--clr-primary-main);
+    color: var(--clr-text-primary);
+}
+
+.watering-options input[type="radio"] {
+    accent-color: var(--clr-primary-main);
+    margin: 0;
+}
+
 /* all plants page styling */
 
 .filter-bar {
@@ -325,6 +365,37 @@ a {
 
 .filter-bar button[type="submit"]:hover {
   background: var(--clr-primary-hover);
+}
+
+.pagination {
+    display: flex;
+    justify-content: center; /* يوسّط العناصر */
+    align-items: center;
+    gap: 10px; /* المسافة بين العناصر */
+    margin-top: 20px;
+    font-size: 14px;
+}
+
+.pagination a {
+    display: inline-block;
+    padding: 6px 12px;
+    border-radius: 6px;
+    background: var(--clr-primary-main);
+    color: white;
+    text-decoration: none;
+    transition: 0.2s;
+}
+
+.pagination a:hover {
+    background: var(--clr-primary-hover);
+}
+
+.pagination span {
+    display: inline-block;
+    padding: 6px 12px;
+    border-radius: 6px;
+    background: #f2f4ec;
+    color: #555;
 }
 
 .plants-page {
@@ -413,7 +484,7 @@ a {
 }
 
 .category,
-.edible {
+.edible, .watering{
   padding: 4px 10px;
   border-radius: 999px;
   border: 1px solid;
@@ -430,6 +501,12 @@ a {
   background: var(--clr-tag-edible-bg);
   border-color: var(--clr-tag-edible-border);
   color: #a07d4b;
+}
+
+.watering {
+  background: var(--clr-tag-watering-bg);
+  border-color: var(--clr-tag-watering-border);
+  color: #4b86a0;
 }
 
 .plant-about,

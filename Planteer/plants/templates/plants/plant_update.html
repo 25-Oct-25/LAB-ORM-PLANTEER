@@ -19,22 +19,22 @@
             <label class="label-title">Category:</label>
             <div class="category-choices">
                 <label class="category-option">
-                    <input type="radio" name="category" value="ornamental" {% if plant.category == 'ornamental' %}checked{% endif %}>
+                    <input type="radio" name="category" value="ornamental" {% if plant.category == "ornamental" %}checked{% endif %}>
 
                 </label>
 
                 <label class="category-option">
-                    <input type="radio" name="category" value="indoor" {% if plant.category == 'indoor' %}checked{% endif %}>
+                    <input type="radio" name="category" value="indoor" {% if plant.category == "indoor" %}checked{% endif%}>
                     Indoor
                 </label>
 
                 <label class="category-option">
-                    <input type="radio" name="category" value="outdoor" {% if plant.category == 'outdoor' %}checked{% endif %}>
+                    <input type="radio" name="category" value="outdoor" {% if plant.category == "outdoor" %}checked{%endif %}>
                     Outdoor
                 </label>
 
                 <label class="category-option">
-                    <input type="radio" name="category" value="flowering" {% if plant.category == 'flowering' %}checked{% endif %}>
+                    <input type="radio" name="category" value="flowering" {% if plant.category == "flowering" %}checked{%endif %}>
                     Flowering
                 </label>
             </div>
@@ -46,7 +46,28 @@
             <input type="radio" name="is_edible" value="false" {% if not plant.is_edible %}checked{% endif %}>
             <span>No</span>
 
+
+            <label class="label-title">Watering Frequency</label>
+
+            <input type="radio" name="watering" value="daily" {% if plant.watering %}checked{% endif %}>
+            <span>Daily</span>
+
+            <input type="radio" name="watering" value="weekly" {% if plant.watering %}checked{% endif %}>
+            <span>Weekly</span>
+
+            <input type="radio" name="watering" value="monthly" {% if plant.watering %}checked{% endif %}>
+            <span>Monthly</span>
+
             <input type="datetime-local" name="created_at" value="{{ plant.created_at|date:'Y-m-d\\TH:i' }}">
+
+            <h3>Countries</h3>
+            {% for country in countries %}
+                <input type="checkbox" class="form-check-input" name="countries" id="check-{{ country.id }}"
+                    value="{{ country.id }}" {% if country in plant.countries.all %}checked{% endif %}>
+                <label for="check-{{ country.id }}">{{ country.name }}</label>
+            <br>
+            {% endfor %}
+
 
             {% if plant.image %}
             <img src="{{ plant.image.url }}" alt="{{ plant.name }}" style="max-width:220px;">

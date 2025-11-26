@@ -24,7 +24,7 @@
                 </label>
 
                 <label class="category-option">
-                    <input type="radio" name="category" value="indoor" checked> Indoor
+                    <input type="radio" name="category" value="indoor"> Indoor
                 </label>
 
                 <label class="category-option">
@@ -45,12 +45,33 @@
                 </label>
 
                 <label class="option">
-                    <input type="radio" name="is_edible" value="false" checked>
+                    <input type="radio" name="is_edible" value="false">
                     No
                 </label>
             </div>
 
+            <label class="label-title">Watering Frequency</label>
+
+            <div class="edible-options">
+                <label class="option">
+                    <input type="radio" name="watering" value="daily">
+                    Daily
+                </label>
+
+                <label class="option">
+                    <input type="radio" name="watering" value="weekly">
+                    Weekly
+                </label>
+
+                <label class="option">
+                    <input type="radio" name="watering" value="monthly">
+                    Monthly
+                </label>
+            </div>
+
+
             <input type="datetime-local" name="created_at" required>
+
 
             <h3>Countries</h3>
             {% for country in countries %}

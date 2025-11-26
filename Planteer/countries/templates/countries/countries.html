@@ -3,6 +3,28 @@
 
 {% block content %}
 
-<h2>all Countries</h2>
+<h2 class="page-title">Countries</h2>
+
+<div class="plants-grid">
+    {% for country in countries %}
+
+    <div class="plant-card">
+
+        <img src="{{ country.image.url }}" alt="{{ country.name }}" class="plant-thumb">
+
+        <div class="plant-body">
+
+            <h3 class="plant-title">
+                {{ country.name }}
+            </h3>
+
+        </div>
+
+    </div>
+
+    {% empty %}
+    <p>No countries available.</p>
+    {% endfor %}
+</div>
 
 {% endblock %}

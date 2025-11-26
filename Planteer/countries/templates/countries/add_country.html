@@ -5,7 +5,7 @@
 
 <div class="row plant-form-container">
 
-    <form class="plant-form" action="{% url 'countries:add_country' %}" method="post" enctype="multipart/form-data">
+    <form class="plant-form" action="{% url 'countries:add_country_view' %}" method="post" enctype="multipart/form-data">
         <h2>Add a New Country</h2>
 
         {% csrf_token %}
@@ -13,7 +13,8 @@
         <input type="text" placeholder="Country Name" name="name" required />
 
         <label class="label-title">Flag Image</label>
-        <input type="file" name="image" class="file-input" required accept="image/*">
+        <input type="file" name="flag" class="file-input" required accept="image/*">
+
 
         <button type="submit" class="btn submit-btn">Add Country</button>
 

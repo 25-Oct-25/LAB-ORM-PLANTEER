@@ -2,6 +2,9 @@ from django.shortcuts import render, redirect
 from django.http import HttpRequest, HttpResponse
 from .models import Plant, Review, Country
 from .forms import PlantForm
+from django.core.paginator import Paginator
+from django.contrib import messages
+
 
 # Create your views here.
 
@@ -29,13 +32,17 @@ def add_plant_view(request : HttpRequest):
                         is_edible = request.POST.get("is_edible", "false") == "true",
                         image = request.FILES["image"],
                         created_at = request.POST["created_at"],
+                        watering = request.POST.get("watering"),
                         # countries = request.POST["countries"]
                         )
         
+        
         new_plant.save()
+        messages.success(request, "Added plant successfully", "alert-success")
         new_plant.countries.set(request.POST.getlist("countries"))
         return redirect('main:home_view')
 
+        
     return render(request, "plants/add_plant.html", {"countries" : countries})
 
 def all_plants_view(request : HttpRequest):
@@ -59,13 +66,18 @@ def all_plants_view(request : HttpRequest):
         plants = plants.filter(countries__name__iexact = country)
         
     countries = Country.objects.values_list('name', flat=True).distinct()
-    
+
+    #pagination      
+    page_num = request.GET.get("page", 1)
+    paginator = Paginator(plants, 6)
+    plants_page = paginator.get_page(page_num)
 
         
     return render(request, "plants/all_plants.html", {
-        "plants": plants,
+        "plants": plants_page,
         "categories": categories,
         "countries" : countries,
+        "paginator": paginator,
     })
     
 
@@ -85,24 +97,42 @@ def plant_details_view(request : HttpRequest, plant_id:int):
 
 def update_plant_view(request : HttpRequest, plant_id:int):
     plant = Plant.objects.get(pk = plant_id)
+    countries = Country.objects.all()
     
     if request.method == "POST":
         plant.name = request.POST["name"]
         plant.about = request.POST["about"]
         plant.used_for = request.POST["used_for"]   
         plant.category = request.POST.get("category") 
+        plant.watering = request.POST.get("watering")
         plant.is_edible = request.POST["is_edible"] == "true" #converting string to boolean
         if "image" in request.FILES: 
             plant.image = request.FILES["image"]
         plant.save()
         
+        selected_country_ids = request.POST.getlist("countries")
+        selected_country_ids = [int(cid) for cid in selected_country_ids if cid]
+        valid_countries = Country.objects.filter(id__in=selected_country_ids)
+        plant.countries.set(valid_countries)
+        plant.save()
+
+        
         return redirect("plants:plant_details_view", plant_id = plant.id)
     
-    return render(request, "plants/plant_update.html", {"plant" : plant})
+    return render(request, "plants/plant_update.html", {"plant" : plant, "countries" : countries})
+
 
 def delete_plant_view(request : HttpRequest, plant_id:int):
-    plant = Plant.objects.get(pk = plant_id)
-    plant.delete()
+    
+    try:
+        plant = Plant.objects.get(pk = plant_id)
+        plant.delete()
+        messages.success(request, "Deleted plant successfully", "alert-success")
+        
+    except Exception as e:
+        print(e)
+        messages.error(request, "Couldn't delete plant", "alert-danger")
+        
     return redirect('main:home_view')
 
 def search_view(request : HttpRequest):

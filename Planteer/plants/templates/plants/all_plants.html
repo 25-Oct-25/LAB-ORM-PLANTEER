@@ -3,6 +3,7 @@
 
 {% block content %}
 
+
 <div class="filter-bar">
     <form method="get">
         <select name="category">
@@ -37,6 +38,19 @@
         </div>
     </div>
 
+
 {% include 'plants/plants_list.html' %}
+
+<div class="pagination">
+    {% if plants.has_previous %}
+        <a href="?page={{ plants.previous_page_number }}"> &laquo; Previous </a>
+    {% endif %}
+
+    <span>Page {{ plants.number }} of {{ plants.paginator.num_pages }}</span>
+
+    {% if plants.has_next %}
+        <a href="?page={{ plants.next_page_number }}"> Next &raquo; </a>
+    {% endif %}
+</div>
 
 {% endblock %}

@@ -17,9 +17,14 @@
 
             <div class="d-flex gap-2">
                 <p>found in:</p>
+
                 {% for country in plant.countries.all %}
-                <p>{{ country }} {% if not forloop.last %} - {% endif %} </p>
+                <p>{{ country.name }} {% if not forloop.last %} - {% endif %} </p>
+                {% empty %}
+                    <span>No countries listed</span>
+                
                 {% endfor %}
+
             </div>
 
             <div class="meta">
@@ -29,6 +34,8 @@
                 {% if plant.is_edible %}
                 <span class="edible">🍽️ Edible</span>
                 {% endif %}
+
+                <span class="watering">💧 {{ plant.get_watering_display }}</span>
             </div>
 
             <div class="detail-block">

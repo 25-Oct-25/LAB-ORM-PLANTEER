@@ -13,6 +13,9 @@
                 {% if plant.is_edible %}
                 <span class="edible">🍽️ edible</span>
                 {% endif %}
+
+                <span class="watering">💧 {{ plant.get_watering_display }}</span>
+
             </div>
 
             <p class="plant-about">{{ plant.about }}</p>

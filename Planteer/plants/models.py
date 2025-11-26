@@ -9,7 +9,12 @@ class Plant(models.Model):
         INDOOR = 'indoor'
         OUTDOOR = 'outdoor'
         FLOWERING = 'flowering'
-    
+        
+    class WateringFrequency(models.TextChoices):
+        DAILY = 'daily'
+        WEEKLY = 'weekly'
+        MONTHLY = 'monthly'
+        
     name = models.CharField(max_length = 2048)
     about = models.TextField()
     used_for = models.TextField()
@@ -20,8 +25,12 @@ class Plant(models.Model):
     )
     is_edible = models.BooleanField(default=False)
     created_at = models.DateTimeField(auto_now_add=True)
-    
     countries = models.ManyToManyField(Country)
+    watering = models.CharField(
+        max_length = 64, 
+        choices = WateringFrequency.choices, 
+        default = WateringFrequency.WEEKLY
+        )
     
     def __str__(self):
         return self.name
