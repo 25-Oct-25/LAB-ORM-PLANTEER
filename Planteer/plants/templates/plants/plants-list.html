@@ -1,0 +1,17 @@
+<div class="row mt-2 row-cols-1 row-cols-md-3 g-4 d-flex justify-content-center">
+
+    {% for plant in plants %}
+      <div class="col">
+          
+            <div class="d-flex flex-column justify-content-start align-items-start h-100 p-4 shadow gap-2">
+
+                <img src="{{plant.image.url}}" class="w-100 poster-thumb object-fit-cover"/>
+                <a href="{% url 'plants:plant_detail_view' plant.id %}"><h3>{{plant.name}}</h3></a>
+                <p> Click on the title to know more about it </p>
+                <h5>{{plant.category}}</h5>
+            </div>
+      </div>
+    {% endfor %}
+  
+  
+</div>
