@@ -42,6 +42,7 @@ class PlantListView(ListView):
         return context
 
 plant_list_view = PlantListView.as_view()
+
 def plant_detail_view(request, pk):
     plant = get_object_or_404(Plant, pk=pk)
     related_plants = Plant.objects.filter(
@@ -60,17 +61,21 @@ def plant_detail_view(request, pk):
 
 @login_required(login_url='/accounts/login/') 
 def plants_add_view(request):
+    
+    if not request.user.is_superuser and not request.user.is_staff:
+        messages.error(request, 'You do not have permission to add new plants.')
+        return redirect('plants:plant_list')
+        
     if request.method == "POST":
         form = PlantForm(request.POST, request.FILES)
         if form.is_valid():
             new_plant = form.save(commit=False)
+            new_plant.creator = request.user 
             new_plant.save()
             form.save_m2m() 
-            
             return redirect('plants:plant_list') 
     else:
         form = PlantForm()
-    
     context = {
         'form': form,
         'page_title': 'Add New Plant'
@@ -124,6 +129,7 @@ def plant_search_view(request):
     }
     return render(request, 'plants/plant_search.html', context)
 
+
 @login_required(login_url='/accounts/login/') 
 def add_review_view(request, plant_id):
     plant_object = get_object_or_404(Plant, pk=plant_id)
@@ -139,12 +145,21 @@ def add_review_view(request, plant_id):
                 new_review.user = request.user 
                 new_review.full_name = request.user.username
                 new_review.email = request.user.email
-            else:
-                pass 
-            new_review.save()
+                new_review.save()
             messages.success(request, 'Review added successfully!')
-            
-        return redirect("plants:plant_detail", pk=plant_id)
-    form = CommentForm()
-    context = {'plant': plant_object, 'form': form}
-    return render(request, 'plants/plant_detail.html', context)
+            return redirect("plants:plant_detail", pk=plant_id)
+        
+        reviews = Comment.objects.filter(plant=plant_object).order_by('-created_at')
+        related_plants = Plant.objects.filter(
+            category=plant_object.category
+        ).exclude(pk=plant_object.pk).order_by('?')[:4] 
+        
+        context = {
+            'plant': plant_object, 
+            'comment_form': form, 
+            'reviews': reviews,
+            'related_plants': related_plants,
+            'page_title': plant_object.name,
+        }
+        return render(request, 'plants/plant_detail.html', context)
+    return redirect("plants:plant_detail", pk=plant_id)

@@ -7,8 +7,7 @@ from .views import (
     plant_delete_view, 
     plant_search_view ,
     plants_add_view,
-    add_review_view
-    
+    add_review_view  
 )
 
 app_name = 'plants'
@@ -20,9 +19,5 @@ urlpatterns = [
     path('<int:pk>/delete/', plant_delete_view, name='plant_delete'),
     path('search/', plant_search_view, name='plant_search'),
     path('add/', plants_add_view, name='plants_add_view'),
-    path('add/review/<int:plant_id>/', add_review_view, name='add_review'), 
-    path('add/review/<int:plant_id>/', views.add_review_view, name='add_review_view'),
-    
-    
-  
+    path('add/review/<int:plant_id>/', add_review_view, name='add_review_view'),
 ]

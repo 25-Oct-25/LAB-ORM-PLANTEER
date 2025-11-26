@@ -1,42 +1,24 @@
-/* main/static/css/home_styles.css */
-
-/* 1. تنسيق قسم الـ Hero */
 .hero-section-container {
-    /* يجب أن يكون المسار من نقطة Static إلى المجلد الذي يحتوي على الصورة */
-    /* بما أن الصورة في مجلد MEDIA، يجب أن يتم التعامل معها بشكل مختلف */
-    /* ولكن للتبسيط ولتجنب مشاكل static/media، سنفترض أننا سنستخدم صورة موجودة في مجلد STATIC/main/images */
-    /* إذا كانت الصورة في مجلد media/images، لا يمكن الوصول إليها مباشرة من static CSS إلا بتعريف متغير URL */
-    
-    /* بما أنك ذكرت المسار Planteer/media/images/hero-section.jpg */
-    /* سنستخدم صورة placeholder في static ونفترض أنكِ ستقومين بتحميل الصورة هناك أيضاً مؤقتاً */
-    /* أو (وهو الحل الأفضل): سنستخدم مساراً حقيقياً لمجلد media/images/ بعد تعريف MEDIA_URL */
-    
-    /* لنستخدم المسار الحقيقي الذي يجب أن يصل إليه Django لـ Media Files: */
-    /* يجب أن يتم التعامل مع خلفية تحتوي على صورة من مجلد Media عبر التمرير من الـ View أو القالب. */
-
-    /* بما أن القالب لا يمكنه تمرير مسار متغير إلى ملف CSS خارجي، سنستخدم مسار ثابت للصورة في Media */
-    /* هذا المسار هو الحل الأمثل في بيئة الإنتاج: */
+   
     background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url("/media/images/hero-section.jpg");
     
     background-size: cover;
     background-position: center;
-    min-height: 450px; /* ارتفاع مناسب */
+    min-height: 450px; 
     display: flex;
     align-items: center;
     justify-content: flex-start;
     overflow: hidden;
 }
 
-/* 2. تحسين مظهر النص على الخلفية */
 .hero-section-container .bg-overlay {
-    background-color: rgba(0, 0, 0, 0.4); /* طبقة تعتيم خفيفة لجعل النص قابلاً للقراءة */
+    background-color: rgba(0, 0, 0, 0.4); 
     padding: 30px !important; 
     border-radius: 8px; 
-    max-width: 60%; /* لتحديد عرض منطقة النص */
+    max-width: 60%; 
 }
 
 
-/* 3. تنسيق بطاقات النباتات (Plant Cards) - للتذكير */
 .plant-card { 
     border: none; 
     border-radius: 8px; 
@@ -54,7 +36,6 @@
     object-fit: cover;
 }
 
-/* 4. تأثيرات الدخول للصفحة (Fade-in) */
 .fade-in {
     opacity: 0;
     animation: fadeInAnimation 1s ease-in forwards;

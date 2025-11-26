@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Plant, Country # 1. استيراد موديل Country
+from .models import Plant, Country 
 
 @admin.register(Country)
 class CountryAdmin(admin.ModelAdmin):
