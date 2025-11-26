@@ -38,9 +38,10 @@
                         </li>
                     </ul>
                 </div>
-
+                    {% if user.is_staff %}
                 <a href="{% url 'plants:plant_create' %}" id="add-btn" class="btn btn-dark btn-sm">Add Plant</a>
-
+                {% endif %}
+                
                 {% else %}
                 <a href="{% url 'accounts:sign_in' %}" class="btn btn-outline-dark btn-sm">Log In</a>
                 <a href="{% url 'accounts:sign_up' %}" class="btn btn-dark btn-sm text-white">Sign Up</a>

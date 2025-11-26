@@ -1,3 +1,4 @@
+from django.http import HttpResponse , HttpRequest , HttpResponseForbidden
 from django.shortcuts import render, redirect
 from .models import Benefit, Contact, Plant , Comment , Countries
 from django.db.models import Q, Avg
@@ -87,6 +88,8 @@ def plant_detail(request, plant_id):
 
 @login_required
 def plant_create(request):
+    if not request.user.is_staff:
+        return HttpResponseForbidden("Access denied", status=401)
     all_benefits = Benefit.objects.all()
     all_countries = Countries.objects.all() 
 
@@ -139,6 +142,8 @@ def plant_create(request):
 
 @login_required
 def plant_update(request, plant_id):
+    if not request.user.is_staff:
+        return HttpResponseForbidden("Access denied", status=401)
     plant = get_plant_or_none(plant_id)
     if plant is None:
         return render(request, "plants/not_found.html")
@@ -198,6 +203,9 @@ def plant_update(request, plant_id):
 
 @login_required
 def plant_delete(request, plant_id):
+
+    if not request.user.is_staff:
+        return HttpResponseForbidden("Access denied", status=401)
     plant = get_plant_or_none(plant_id)
 
     if plant is None:
