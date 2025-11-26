@@ -1,0 +1,83 @@
+{% extends "main/base.html" %}
+{% load static %}
+
+{% block title %}Plants{% endblock %}
+
+{% block style %}
+
+{% endblock %}
+
+{% block content %}
+
+  <section class="container">
+  <div class="card text-bg-dark">
+    <img src="{% static 'images/home_background.jpg' %}" class="card-img" alt="Plants">
+    
+    <div class="card-img-overlay d-flex flex-column justify-content-center align-items-center text-center">
+      
+      <h1 class="text-dark display-2 fw-bold">Planteer</h1>
+      <h2 class="text-dark display-5 fw-bold mb-4">Plants Database for Plant Lovers</h2>
+
+      <div class="container w-75 mt-5">
+        <form role="search" method="get" action="{% url 'plant:plant_search_view' %}"  class="row g-3 align-items-center">
+          
+          <div class="col-lg-9 col-md-12">
+            <input class="form-control form-control-lg " type="search"  name="search" minlength="3" placeholder="Search for a plant..." aria-label="Search" value="{{request.GET.search}}" required>
+          </div>
+          
+          <div class="col-lg-3 col-md-12">
+            <button class="btn btn-dark btn-lg w-100 " type="submit">Search</button>
+          </div>
+
+        </form>
+      </div>
+      
+    </div>
+  </div>
+</section>
+
+
+
+<section class="container mt-5">
+ <div class="row mb-3">
+  <div class="d-flex justify-content-between align-items-center">
+    <div>
+      <h1>Plants</h1>
+      <small><p>Learn more about plants</p></small>
+    </div>
+    <b><a href="{% url 'plant:all_plants_view' %}" class="text-decoration-none text-dark">
+      More <span>&rarr;</span>
+    </a></b>
+  </div>
+</div>
+ 
+<div class="container">
+    <div class="row">
+      
+        {% if plants %}
+            {% for plant in plants %}
+                <div class="col-lg-4 col-md-6 col-sm-12 my-3">
+                    <a href="{% url 'plant:plant_detail_view' plant.id %}" style="text-decoration: none;">
+                  <div class="card mx-auto shadow-sm" style="width: 18rem; cursor: pointer;">
+                      <img src="{{ plant.image.url }}" class="card-img-top " alt="{{ plant.name }}">
+                      <div class="card-body">
+                          <h5 class="card-title">{{ plant.name }}</h5>
+                          <p class="card-text">
+                              <strong>About:</strong> {{ plant.about }}<br>
+                              <strong>Category:</strong> {{ plant.category }}<br>
+                          </p>
+                      </div>
+                  </div>
+              </a>
+
+                </div>
+            {% endfor %}
+       {% else %}
+            <p class="text-center mt-4">No plants to display.</p>
+        {% endif %}
+    </div>
+</div>
+</section>
+  </div>
+
+{% endblock %}

@@ -1,0 +1,88 @@
+{% extends "main/base.html" %}
+{% load static %}
+
+{% block title %}Create Plant{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <h2 class="mb-4 text-center">Create New Plant</h2>
+
+    <form action="{% url 'plant:create_plant_view' %}" 
+          method="post" 
+          enctype="multipart/form-data"
+          class="mx-auto"
+          style="max-width: 600px;">
+          
+        {% csrf_token %}
+
+        <!-- Plant Name -->
+        <div class="mb-3">
+            <label for="name" class="form-label">Plant Name</label>
+            <input type="text" class="form-control" id="name" name="name" required>
+        </div>
+
+        <!-- About -->
+        <div class="mb-3">
+            <label for="about" class="form-label">About</label>
+            <textarea class="form-control" id="about" name="about" rows="3" required></textarea>
+        </div>
+
+        <!-- Used For -->
+        <div class="mb-3">
+            <label for="used_for" class="form-label">Used For</label>
+            <textarea class="form-control" id="used_for" name="used_for" rows="3"></textarea>
+        </div>
+
+        <!-- Category -->
+        <div class="mb-3">
+            <label class="form-label">Category</label><br>
+            {% for value, label in CategoryChoices %}
+            <div class="form-check">
+                <input class="form-check-input" type="radio" name="category" id="{{value}}" value="{{value}}" required>
+                <label class="form-check-label" for="{{value}}">
+                    {{label}}
+                </label>
+            </div>
+            {% endfor %}
+        </div>
+
+        <!--  Countries  -->
+        <div class="mb-3">
+            <label class="form-label">Countries</label>
+            <div class="p-3 border rounded bg-light">
+
+                {% for country in countries %}
+                <label class="d-flex align-items-center mb-2" style="gap:8px;">
+                    <input 
+                        type="checkbox" 
+                        name="countries" 
+                        value="{{ country.id }}"
+                    >
+                    <span>{{ country.name }}</span>
+                </label>
+                {% endfor %}
+
+            </div>
+        </div>
+
+        <!-- Is Edible -->
+        <div class="mb-3 form-check">
+            <input type="checkbox" class="form-check-input" id="is_edible" name="is_edible">
+            <label class="form-check-label" for="is_edible">Is Edible</label>
+        </div>
+
+        <!-- Image -->
+        <div class="mb-3">
+            <label for="image" class="form-label">Plant Image</label>
+            <input class="form-control" type="file" id="image" name="image" required>
+        </div>
+
+        <!-- Buttons -->
+        <div class="text-center">
+            <button type="submit" class="btn btn-success">Create Plant</button>
+            <a href="{% url 'main:home_view' %}" class="btn btn-secondary ms-2">Cancel</a>
+        </div>
+
+    </form>
+</div>
+{% endblock %}

@@ -1,0 +1,42 @@
+{% extends "main/base.html" %}
+{% load static %}
+
+{% block title %}Messages from Users{% endblock %}
+
+{% block content %}
+<div class="container my-5">
+  <h1 class="fw-bold mb-4 text-center">Messages from Users</h1>
+
+  {% if contacts %}
+    <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+      {% for contact in contacts %}
+        <div class="col">
+          <div class="card h-100 border-0 shadow-sm">
+            <div class="card-body">
+              <div class="mb-2">
+                <i class="bi bi-person-circle fs-2 text-secondary"></i>
+              </div>
+              <h5 class="card-title mb-1">{{ contact.first_name }} {{ contact.last_name }}</h5>
+              <a href="mailto:{{ contact.email }}" class="text-decoration-none text-primary">{{ contact.email }}</a>
+              <p class="card-text mt-2">{{ contact.message }}</p>
+            </div>
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+  {% else %}
+    <p class="text-center">No messages to display.</p>
+  {% endif %}
+
+
+  <div class="text-center mb-4">
+  <form action="{% url 'main:delete_all_contacts' %}" method="post" onsubmit="return confirm('Are you sure you want to delete all messages?');">
+    {% csrf_token %}
+    <button type="submit" class="btn btn-danger">Delete All Messages</button>
+  </form>
+</div>
+
+</div>
+        <div style="min-height: 300px;"></div>
+
+{% endblock %}

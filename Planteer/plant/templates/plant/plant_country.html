@@ -1,0 +1,53 @@
+{% extends "main/base.html" %}
+{% load static %}
+
+{% block title %}Plants from {{ country.name }}{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+
+    <div class="text-center mb-4">
+        <h2 class="fw-bold">Plants Native to {{ country.name }}</h2>
+        <p class="text-muted">{{ count }} plants found</p>
+        <img src="{{ country.flag.url }}" style="width:60px; height:40px; object-fit:cover; border-radius:5px;">
+    </div>
+
+    <div class="row">
+
+        {% for plant in plants %}
+        <div class="col-lg-4 col-md-6 col-sm-12 my-3">
+            <a href="{% url 'plant:plant_detail_view' plant.id %}" style="text-decoration: none;">
+                <div class="card mx-auto shadow-sm" style="width: 18rem; cursor: pointer;">
+                    
+                    <img src="{{ plant.image.url }}" class="card-img-top" alt="{{ plant.name }}">
+
+                    <div class="card-body">
+                        <h5 class="card-title">{{ plant.name }}</h5>
+
+                        <p class="card-text">
+                            <strong>Category:</strong> {{ plant.get_category_display }}<br>
+                        </p>
+
+                        {% if plant.countries.all %}
+                        <div class="d-flex flex-wrap" style="gap:8px;">
+                            {% for c in plant.countries.all %}
+                            <span class="d-flex align-items-center px-2 py-1 border rounded" style="gap:6px;">
+                                <img src="{{ c.flag.url }}" style="width:22px; height:16px; object-fit:cover; border-radius:3px;">
+                                <small>{{ c.name }}</small>
+                            </span>
+                            {% endfor %}
+                        </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </a>
+        </div>
+        {% empty %}
+
+        <p class="text-center text-muted">No plants found for this country.</p>
+
+        {% endfor %}
+    </div>
+
+</div>
+{% endblock %}

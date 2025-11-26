@@ -1,0 +1,52 @@
+{% extends "main/base.html" %}
+{% load static %}
+
+{% block title %}All Plants{% endblock %}
+
+{% block content %}
+<div class="container">
+          <h2 class="text-dark fw-bold mb-4">Search Results: {{ plants.count}}</h2> <!--هنا عشان يعرض لي عدد النتائج-->
+
+
+          <div class="container w-100 mt-5">
+        <form role="search" method="get"  action="{% url 'plant:plant_search_view' %}" class="row g-3 align-items-center my-5">
+          
+          <div class="col-lg-10 col-md-12">
+            <input class="form-control form-control-lg " minlength="3" type="search" name="search" placeholder="Search for a plant..." aria-label="Search" value="{{request.GET.search}}"> <!-- اخر خانه عشان لو بحث يحتفظ بالي بحثت فيه في خانه البحث ولا يحذفه وقت عرض النتائج-->
+          </div>
+          
+          <div class="col-lg-2 col-md-12">
+            <button class="btn btn-dark btn-lg w-100 " type="submit">Search</button>
+          </div>
+
+        </form>
+      </div>
+
+
+
+    <div class="row">
+       
+           {% if plants %}
+            {% for plant in plants %}
+                <div class="col-lg-4 col-md-6 col-sm-12 my-3">
+                    <a href="{% url 'plant:plant_detail_view' plant.id %}" style="text-decoration: none;">
+                  <div class="card mx-auto shadow-sm" style="width: 18rem; cursor: pointer;">
+                      <img src="{{ plant.image.url }}" class="card-img-top" alt="{{ plant.name }}">
+                      <div class="card-body">
+                          <h5 class="card-title">{{ plant.name }}</h5>
+                          <p class="card-text">
+                              <strong>About:</strong> {{ plant.about }}<br>
+                              <strong>Category:</strong> {{ plant.category }}<br>
+                          </p>
+                      </div>
+                  </div>
+              </a>
+
+                </div>
+            {% endfor %}
+        {% else %}
+            <p class="text-center mt-4">No plants to display for your search "{{request.GET.search}}"</p>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

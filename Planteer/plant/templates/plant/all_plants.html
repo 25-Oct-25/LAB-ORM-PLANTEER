@@ -1,0 +1,94 @@
+{% extends "main/base.html" %}
+{% load static %}
+
+{% block title %}All Plants{% endblock %}
+
+{% block content %}
+
+<div class="container">
+  <div class="row">
+    <div class="col-lg-4 col-md-4">
+      <h2 class="my-4">{{ request.GET.category|default:"All" }} Plants</h2>
+    </div>
+
+   <!-- Filters Form -->
+<div class="col-12 d-flex justify-content-end">
+  <form action="{% url 'plant:all_plants_view' %}" method="GET" class="w-100">
+    <div class="row g-3 align-items-center">
+
+      <!-- Category -->
+      <div class="col-lg-4 col-md-4 col-sm-12">
+        <label class="form-label mb-1">Category</label>
+        <select name="category" id="category" class="form-select">
+          <option value="all" {% if request.GET.category == "all" %}selected{% endif %}>All</option>
+
+          {% for value, label in categories %}
+          <option value="{{ value }}" {% if request.GET.category == value %}selected{% endif %}>
+            {{ label }}
+          </option>
+          {% endfor %}
+        </select>
+      </div>
+
+      <!-- Edibility -->
+      <div class="col-lg-4 col-md-4 col-sm-12">
+        <label class="form-label mb-1">Edibility</label>
+        <select name="is_edible" id="is_edible" class="form-select">
+          <option value="" {% if not request.GET.is_edible %}selected{% endif %}>All</option>
+          <option value="true" {% if request.GET.is_edible == "true" %}selected{% endif %}>Yes</option>
+          <option value="false" {% if request.GET.is_edible == "false" %}selected{% endif %}>No</option>
+        </select>
+      </div>
+
+      <!-- Country -->
+      <div class="col-lg-3 col-md-3 col-sm-12">
+        <label class="form-label mb-1">Country</label>
+        <select name="country" id="country" class="form-select">
+          <option value="ALL" {% if request.GET.country == "ALL" %}selected{% endif %}>All</option>
+
+          {% for country in countries %}
+          <option value="{{ country.id }}"
+            {% if request.GET.country == country.id|stringformat:"s" %}selected{% endif %}>
+            {{ country.name }}
+          </option>
+          {% endfor %}
+        </select>
+      </div>
+
+      <!-- Button -->
+      <div class="col-lg-1 col-md-1 col-sm-12 d-flex align-items-end">
+        <button type="submit" class="btn btn-primary w-100">Go</button>
+      </div>
+
+    </div>
+  </form>
+</div>
+
+<!-- Plants Grid -->
+<div class="container">
+  <div class="row">
+
+    {% for plant in plants %}
+    <div class="col-lg-4 col-md-6 col-sm-12 my-3">
+      <a href="{% url 'plant:plant_detail_view' plant.id %}" style="text-decoration: none;">
+        <div class="card mx-auto shadow-sm" style="width: 18rem; cursor: pointer;">
+          <img src="{{ plant.image.url }}" class="card-img-top" alt="{{ plant.name }}">
+          <div class="card-body">
+            <h5 class="card-title">{{ plant.name }}</h5>
+            <p class="card-text">
+              <strong>About:</strong> {{ plant.about }}<br>
+              <strong>Category:</strong> {{ plant.get_category_display }}<br>
+            </p>
+          </div>
+        </div>
+      </a>
+    </div>
+
+    {% empty %}
+    <p class="text-center mt-4">No plants to display.</p>
+    {% endfor %}
+
+  </div>
+</div>
+
+{% endblock %}
