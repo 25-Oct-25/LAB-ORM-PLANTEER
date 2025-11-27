@@ -1,0 +1,122 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}Planteer{% endblock %}</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/habibmhamadi/multi-select-tag@2.0.1/dist/css/multi-select-tag.min.css">
+    
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+</head>
+<body>
+<div class="page">
+
+    <header class="site-header">
+        <div class="container header-inner">
+            <div class="logo">
+                <a href="{% url 'main:home' %}">Planteer</a>
+            </div>
+            <nav class="main-nav">
+                <a href="{% url 'plants:plant_list' %}">All Plants</a>
+                <a href="{% url 'main:contact' %}">Contact Us</a>
+
+                {% if user.is_authenticated %}
+                    <span class="nav-username">Hi, {{ user.username }}</span>
+                    <a href="{% url 'plants:plant_create' %}" class="btn-primary">Add Plant</a>
+                    <a href="{% url 'main:logout' %}">Logout</a>
+                {% else %}
+                    <a href="{% url 'main:login' %}">Login</a>
+                    <a href="{% url 'main:signup' %}" class="btn-primary">Sign Up</a>
+                {% endif %}
+            </nav>
+
+        </div>
+    </header>
+
+<main class="site-main">
+    <div class="container">
+
+        {% if messages %}
+            <div class="messages">
+                {% for message in messages %}
+                    <div class="message message-{{ message.tags }}">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            </div>
+        {% endif %}
+
+        {% block content %}{% endblock %}
+    </div>
+</main>
+
+
+    <footer class="site-footer">
+        <div class="container footer-inner">
+
+            <div class="footer-left">
+                <div class="footer-sitename">Planteer</div>
+
+                <div class="footer-social">
+                    <a href="https://facebook.com" target="_blank">
+                        <i class="fa-brands fa-facebook"></i>
+                    </a>
+                    <a href="https://linkedin.com" target="_blank">
+                        <i class="fa-brands fa-linkedin fa-lg"></i>
+                    </a>
+                    <a href="https://youtube.com" target="_blank">
+                        <i class="fa-brands fa-youtube"></i>
+                    </a>
+                    <a href="https://instagram.com" target="_blank">
+                        <i class="fa-brands fa-instagram"></i>
+                    </a>
+                </div>
+            </div>
+
+            <div class="footer-columns">
+                
+                <div class="footer-col">
+                    <div class="footer-topic">Discover</div>
+                    <a href="{% url 'plants:plant_list' %}">All Plants</a>
+                    <a href="{% url 'plants:plant_search' %}">Search</a>
+                    <a href="{% url 'plants:plant_create' %}">Add New Plant</a>
+                </div>
+
+                <div class="footer-col">
+                    <div class="footer-topic">Categories</div>
+                    <a href="{% url 'plants:plant_list' %}?category=indoor">Indoor</a>
+                    <a href="{% url 'plants:plant_list' %}?category=outdoor">Outdoor</a>
+                    <a href="{% url 'plants:plant_list' %}?category=succulent">Succulents</a>
+                </div>
+
+                <div class="footer-col">
+                    <div class="footer-topic">About</div>
+                    <a href="{% url 'main:home' %}">Home</a>
+                    <a href="{% url 'main:contact' %}">Contact Us</a>
+                    <a href="{% url 'admin:index' %}" target="_blank" >Admin</a> 
+                </div>
+            </div>
+
+        </div>
+    </footer>
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/gh/habibmhamadi/multi-select-tag@2.0.1/dist/js/multi-select-tag.js"></script>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    const el = document.getElementById('id_countries');
+    if (el) {
+      new MultiSelectTag('id_countries');
+    }
+  });
+</script>
+
+</body>
+</html>

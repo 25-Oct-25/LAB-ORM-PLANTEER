@@ -1,0 +1,23 @@
+{% extends 'main/base.html' %}
+{% load static %}
+
+{% block title %}Plants Native to {{ country.name }} - Planteer{% endblock %}
+
+{% block content %}
+
+<h1 class="page-title">
+    Plants Native to {{ country.name }} 
+    {% if country.flag %}
+        <img src="{{ country.flag.url }}" alt="{{ country.name }} flag" style="height: 30px; border: 1px solid #ccc; vertical-align: middle; margin-left: 10px;">
+    {% endif %}
+</h1>
+
+<div class="plants-grid">
+    {% for plant in plants %}
+        {% include 'plants/_plant_card.html' with plant=plant %}
+    {% empty %}
+        <p>No plants found native to {{ country.name }}.</p>
+    {% endfor %}
+</div>
+
+{% endblock %}
