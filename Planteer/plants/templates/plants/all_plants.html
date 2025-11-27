@@ -1,0 +1,56 @@
+{% extends "main/base.html" %}
+{% load static %}
+
+{% block content %}
+
+
+<div class="filter-bar">
+    <form method="get">
+        <select name="category">
+            <option value="">All Categories</option>
+            {% for cat in categories %}
+                <option value="{{ cat }}" {% if request.GET.category == cat %}selected{% endif %}>{{ cat }}</option>
+            {% endfor %}
+        </select>
+
+        <select name="is_edible">
+            <option value="">All Plants</option>
+            <option value="1" {% if request.GET.is_edible == '1' %}selected{% endif %}>Edible</option>
+            <option value="0" {% if request.GET.is_edible == '0' %}selected{% endif %}>Non-Edible</option>
+        </select>
+
+        <select name="country">
+            <option value="">Countries</option>
+            {% for country in countries %}
+                <option value="{{ country }}" {% if request.GET.country == country %}selected{% endif %}>{{ country }}</option>
+            {% endfor %}
+        </select>
+
+        <button type="submit">Filter</button>
+    </form>
+</div>
+
+<div class="plants-page">
+    <div class="page-header">
+        <h1>Our Full Collection</h1>
+        <p class="subtitle">Explore all the flora we have gathered, from indoor favorites to medicinal herbs.</p>
+        <div class="plants-grid">
+        </div>
+    </div>
+
+
+{% include 'plants/plants_list.html' %}
+
+<div class="pagination">
+    {% if plants.has_previous %}
+        <a href="?page={{ plants.previous_page_number }}"> &laquo; Previous </a>
+    {% endif %}
+
+    <span>Page {{ plants.number }} of {{ plants.paginator.num_pages }}</span>
+
+    {% if plants.has_next %}
+        <a href="?page={{ plants.next_page_number }}"> Next &raquo; </a>
+    {% endif %}
+</div>
+
+{% endblock %}

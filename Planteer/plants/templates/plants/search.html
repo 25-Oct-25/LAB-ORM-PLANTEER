@@ -1,0 +1,22 @@
+{% extends "main/base.html" %}
+{% load static %}
+
+{% block content %}
+<div class="plants-page">
+    <div class="page-header">
+
+        {% if plants %}
+        <h1>Search Plants ({{plants.count}})</h1>
+        <h5>results for: {{request.GET.search}}</h5>
+
+        {% else %}
+        <p>No results found for your search "{{request.GET.search}}"</p>
+
+        {% endif %}
+        <p class="subtitle">Discover Our Collection</p>
+    </div>
+
+{% include 'plants/plants_list.html' %}
+
+</div>
+{% endblock %}

@@ -1,0 +1,137 @@
+{% extends "main/base.html" %}
+{% load static %}
+
+{% block content %}
+
+<div class="plant-detail-page">
+
+    <div class="detail-card">
+
+        <div class="image-section">
+            <img src="{{ plant.image.url }}" alt="{{ plant.name }}">
+        </div>
+
+        <div class="info-section">
+
+            <h1 class="plant-title">{{ plant.name }}</h1>
+
+            <div class="d-flex gap-2">
+                <p>found in:</p>
+
+                {% for country in plant.countries.all %}
+                <p>{{ country.name }} {% if not forloop.last %} - {% endif %} </p>
+                {% empty %}
+                    <span>No countries listed</span>
+                
+                {% endfor %}
+
+            </div>
+
+            <div class="meta">
+
+                <span class="category">{{ plant.category|capfirst }}</span>
+
+                {% if plant.is_edible %}
+                <span class="edible">🍽️ Edible</span>
+                {% endif %}
+
+                <span class="watering">💧 {{ plant.get_watering_display }}</span>
+            </div>
+
+            <div class="detail-block">
+                <h3>About</h3>
+                <p>{{ plant.about }}</p>
+            </div>
+
+            <div class="detail-block">
+                <h3>Used for</h3>
+                <p>{{ plant.used_for }}</p>
+            </div>
+
+            <div class="detail-block">
+                <h3>Added on</h3>
+                <p>{{ plant.created_at|date:"F d, Y" }}</p>
+            </div>
+
+            <div class="details-btns">
+                <a class="btn details-actions" href="{% url 'plants:all_plants_view' %}">←</a>
+                <a class="btn details-actions" href="{% url 'plants:update_plant_view' plant.id %}">Update Plant</a>
+                <button type="button" class="btn details-actions" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                    delete
+                </button>
+            </div>
+        </div>
+
+    </div>
+
+</div>
+
+
+<div class="plants-page">
+    <div class="page-header">
+        <h1>Similar Plants...</h1>
+        <div class="plants-grid">
+        </div>
+    </div>
+
+    {% include 'plants/plants_list.html' %}
+
+</div>
+
+<div class="comments-section">
+    <h2>Comments ({{reviews.count}})</h2>
+    {% for review in reviews %}
+    <div class="comment-details">
+        <h4>{{review.name}}</h4>
+        <p>{{review.comment}}</p>
+        <p class="text-muted">{{review.review_date}}</p>
+    </div>
+    {% endfor %}
+</div>
+
+<div class="comments-form">
+    <form class="plant-form" action="{% url 'plants:add_review_view' plant.id%}" method="post">
+        {% csrf_token %}
+
+        <h2>Add a comment</h2>
+        <input class="form-control" name="name" required minlength="3" placeholder="Name">
+        <textarea class="form-control" name="comment" required minlength="3" placeholder="Comment">
+            </textarea>
+        <select class="form-select" name="rating">
+            <option value="">Will you recommend it to a friend?</option>
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+            <option value="4">4</option>
+            <option value="5">5</option>
+        </select>
+
+        <input type="submit" class="btn submit-btn" value="Send Review">
+
+    </form>
+</div>
+
+
+<!-- Button trigger modal -->
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="exampleModalLabel">Delete Post</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                Are you sure you want to delete {{ plant.name }}?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <a href="{% url 'plants:delete_plant_view' plant.id %}" class="btn btn-delete">Delete</a>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
