@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+
+{% block title %}Search | Planteer{% endblock %}
+
+{% block content %}
+<h1>Search plants</h1>
+
+<form method="get" class="plants-search-form">
+    <input type="text" name="q" placeholder="Search by name, about, or usage"
+           value="{{ query }}">
+    <button type="submit">Search</button>
+</form>
+
+<section class="plants-grid">
+    {% for plant in plants %}
+        {% include "plants/_plant_card.html" with plant=plant %}
+    {% empty %}
+        <p>No plants found.</p>
+    {% endfor %}
+</section>
+{% endblock %}
