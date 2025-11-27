@@ -12,7 +12,7 @@ html, body {
 }
 
 body {
-  font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+  font-family: system-ui, -apple-system, "Segoe UI", sans-serif !important;
   background: #f5f5f7;
   color: #111827;
 }
@@ -539,3 +539,81 @@ li {
   margin-bottom: 0.25rem;
 }
 
+/* 1. تنسيق أزرار التواصل الاجتماعي */
+.social-btn {
+    width: 40px;
+    height: 40px;
+    background-color: white;
+    color: #111; /* لون الأيقونة */
+    border-radius: 50%; /* يجعلها دائرية */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+.social-btn:hover {
+    background-color: #28a745; /* لون أخضر عند التحويم */
+    color: white;
+    transform: translateY(-3px); /* حركة خفيفة للأعلى */
+}
+
+/* 2. تحسين روابط الفوتر */
+footer a {
+    color: #555 !important; /* لون رمادي غامق للنصوص */
+    text-decoration: none !important;
+    display: block; /* يجعل كل رابط في سطر منفصل مع مسافة */
+    margin-bottom: 8px; /* مسافة بين الروابط */
+    transition: color 0.2s;
+}
+
+footer a:hover {
+    color: #28a745 !important; /* لون أخضر عند التحويم */
+    padding-left: 5px; /* حركة بسيطة لليمين */
+}
+
+/* 3. تنسيق العناوين في الفوتر */
+footer h5 {
+    font-weight: bold;
+    margin-bottom: 1.2rem;
+    position: relative;
+    display: inline-block;
+}
+
+/* الخط الأخضر الصغير تحت العناوين */
+footer h5::after {
+    content: '';
+    display: block;
+    width: 30px;
+    height: 3px;
+    background-color: #28a745;
+    margin-top: 5px;
+    border-radius: 2px;
+}
+
+/* إلغاء مسافة القوائم الافتراضية في الفوتر */
+footer ul {
+    padding-left: 0 !important; /* يلغي الإزاحة اليسرى */
+    margin-left: 0 !important;
+    list-style: none !important; /* يخفي النقاط إذا كانت موجودة */
+    text-align: left !important; /* يجبر النص يكون يسار */
+}
+
+/* التأكد من أن العناصر داخل القائمة ليس لديها هوامش غريبة */
+footer li {
+    margin-left: 0 !important;
+}
+
+footer a {
+    color: #6c757d !important; /* لون رمادي هادئ */
+    text-decoration: none !important;
+    transition: all 0.3s ease;
+    display: inline-block; /* ضروري عشان الحركة تشتغل */
+}
+
+footer a:hover {
+    color: #28a745 !important; /* يتحول للأخضر */
+    transform: translateX(10px); /* يتحرك لليمين 10 بكسل عند التحويم */
+}

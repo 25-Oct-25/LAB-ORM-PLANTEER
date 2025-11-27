@@ -3,7 +3,7 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.db.models import Q
 from .models import Plant, Country
 from .forms import PlantForm, PlantSearchForm, CommentForm
-
+from django.contrib.auth.decorators import login_required
 
 def plant_list(request):
     """
@@ -59,30 +59,40 @@ def plant_list(request):
         "active_country": country_name,
     })
 
-
-def plants_by_country(request, country_name):
-    """مسار مستقل لعرض نباتات دولة معينة."""
-    country = get_object_or_404(Country, name__iexact=country_name)
+# 1. لاحظ أننا غيرنا المدخل إلى name ليطابق ملف urls.py
+def plants_by_country(request, name):
+    
+    # 2. ونستخدم نفس الاسم هنا أيضاً
+    country = get_object_or_404(Country, name__iexact=name)
+    
     plants = Plant.objects.filter(countries=country).prefetch_related("countries")
-    return render(request, "plants/plants_by_country.html", {
+    return render(request, "plants/plants/plants_by_country.html", { # تأكد من مسار القالب هنا
         "country": country,
         "plants": plants
     })
 
 
-def plant_detail(request, plant_id):
+@login_required  # <--- الحماية هنا فقط
+def add_comment(request, plant_id):
     plant = get_object_or_404(Plant, id=plant_id)
-    comments = plant.comments.all()
 
     if request.method == "POST":
         form = CommentForm(request.POST)
         if form.is_valid():
             new_comment = form.save(commit=False)
             new_comment.plant = plant
+            new_comment.user = request.user  # ربط التعليق بالمستخدم
             new_comment.save()
-            return redirect("plants:detail", plant_id=plant.id)
-    else:
-        form = CommentForm()
+            
+    return redirect("plants:detail", plant_id=plant.id)
+
+
+def plant_detail(request, plant_id):
+    plant = get_object_or_404(Plant, id=plant_id)
+    comments = plant.comments.all()
+    
+    # نحتاج الفورم هنا فقط للعرض في ملف HTML
+    form = CommentForm()
 
     related_plants = Plant.objects.filter(category=plant.category).exclude(id=plant.id)[:4]
 
@@ -90,10 +100,14 @@ def plant_detail(request, plant_id):
         "plant": plant,
         "related_plants": related_plants,
         "comments": comments,
-        "comment_form": form,
+        "comment_form": form, # نرسل الفورم فارغاً للعرض
     })
 
 
+
+
+
+@login_required
 def plant_create(request):
     if request.method == "POST":
         form = PlantForm(request.POST, request.FILES)
@@ -107,7 +121,7 @@ def plant_create(request):
         form = PlantForm()
     return render(request, "plants/plant_form.html", {"form": form, "title": "Add Plant"})
 
-
+@login_required
 def plant_update(request, plant_id):
     plant = get_object_or_404(Plant, id=plant_id)
     if request.method == "POST":
@@ -122,7 +136,7 @@ def plant_update(request, plant_id):
 
     return render(request, "plants/plant_form.html", {"form": form, "title": "Update Plant"})
 
-
+@login_required
 def plant_delete(request, plant_id):
     plant = get_object_or_404(Plant, id=plant_id)
     if request.method == "POST":

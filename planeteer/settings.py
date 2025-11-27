@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     # My Apps 
     'main',
     'plants',
+    "accounts",
 ]
 
 MIDDLEWARE = [
@@ -59,7 +60,7 @@ TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
         'DIRS': [BASE_DIR / 'templates'] ,
-        'APP_DIRS': True,
+        'APP_DIRS': True, #بيسمح لحانقو بيفتش داخل مجلدات التطبيقات كلها
         'OPTIONS': {
             'context_processors': [
                 'django.template.context_processors.request',
@@ -131,3 +132,6 @@ MEDIA_ROOT = BASE_DIR / 'media'
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+
+LOGIN_URL = '/accounts/login/'

@@ -11,7 +11,8 @@ urlpatterns = [
     path("<int:plant_id>/update/", views.plant_update, name="update"),
     path("<int:plant_id>/delete/", views.plant_delete, name="delete"),
     path("search/", views.plant_search, name="search"),
+    path("comments/add/<int:plant_id>/", views.add_comment, name="add_comment"),
 
-    # (اختياري) الخاصة بالدول
-    path("country/<str:country_name>/", views.plants_by_country, name="by_country"),
+
+    path('country/<str:name>/', views.plants_by_country, name='by_country'),
 ]

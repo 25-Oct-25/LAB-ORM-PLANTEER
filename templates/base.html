@@ -5,21 +5,26 @@
   <meta charset="utf-8">
   <title>{% block title %}Planeteer{% endblock %}</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  
+  <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+
   <link rel="stylesheet" href="{% static 'css/style.css' %}">
+
 </head>
 <body>
 
-  <!-- Navbar -->
   <header class="navbar">
     <div class="navbar-inner">
 
-      <!-- Logo -->
       <a href="{% url 'main:home' %}" class="navbar-logo">
         <span class="logo-icon">🌿</span>
         <span class="logo-text">Planeteer</span>
       </a>
 
-      <!-- Links -->
       <nav class="nav-links">
         <a href="{% url 'main:home' %}" class="nav-link">Home</a>
         <a href="{% url 'plants:all' %}" class="nav-link">All Plants</a>
@@ -27,20 +32,27 @@
         <a href="{% url 'plants:search' %}" class="nav-link">Search</a>
         <a href="{% url 'main:contact' %}" class="nav-link">Contact</a>
       </nav>
+
+      <div class="auth-links" style="margin-left: 20px; display: flex; align-items: center; gap: 15px;">
+        {% if user.is_authenticated %}
+            <span style="color: #333; font-weight: bold;"> Hello, {{ user.username }} </span>
+            <a href="{% url 'accounts:logout' %}" style="text-decoration: none; color: #d9534f;">Logout</a>
+        {% else %}
+            <a href="{% url 'accounts:login' %}" style="text-decoration: none; color: #333;">Login</a>
+            <a href="{% url 'accounts:register' %}" style="text-decoration: none; padding: 8px 15px; background-color: #28a745; color: white; border-radius: 20px;">حساب جديد</a>
+        {% endif %}
+      </div>
     </div>
   </header>
 
-  <!-- Page content -->
-  <main class="page-container">
+  <main class="page-container" style="min-height: 80vh;">
     {% block content %}{% endblock %}
   </main>
 
-  <!-- Footer -->
   <footer class="footer">
     <div class="footer-inner">
       <div class="footer-columns">
 
-        <!-- Help -->
         <div class="footer-col">
           <h4 class="footer-title">Help</h4>
           <span class="footer-underline"></span>
@@ -52,7 +64,6 @@
           </ul>
         </div>
 
-        <!-- Quick Links -->
         <div class="footer-col">
           <h4 class="footer-title">Quick Links</h4>
           <span class="footer-underline"></span>
@@ -64,7 +75,6 @@
           </ul>
         </div>
 
-        <!-- Top Categories -->
         <div class="footer-col">
           <h4 class="footer-title">Top Categories</h4>
           <span class="footer-underline"></span>
@@ -76,7 +86,6 @@
           </ul>
         </div>
 
-        <!-- Follow Us -->
         <div class="footer-col">
           <h4 class="footer-title">Follow Us</h4>
           <span class="footer-underline"></span>
@@ -92,11 +101,11 @@
             </div>
           </div>
 
-          <div class="footer-socials">
-            <a href="#" class="footer-social">in</a>
-            <a href="#" class="footer-social">X</a>
-            <a href="#" class="footer-social">wa</a>
-            <a href="#" class="footer-social">ig</a>
+          <div class="d-flex gap-2 mt-3">
+            <a href="#" class="social-btn"><i class="fa-brands fa-linkedin-in"></i></a>
+            <a href="#" class="social-btn"><i class="fa-brands fa-x-twitter"></i></a>
+            <a href="#" class="social-btn"><i class="fa-brands fa-whatsapp"></i></a>
+            <a href="#" class="social-btn"><i class="fa-brands fa-instagram"></i></a>
           </div>
         </div>
       </div>
@@ -108,6 +117,22 @@
       </div>
     </div>
   </footer>
+  
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+  <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+
+  <script>
+      $(document).ready(function() {
+          $('.select2-multi').select2({
+              placeholder: "اختر الدول...",
+              allowClear: true,
+              width: '100%' // لضمان ظهورها بعرض كامل
+          });
+      });
+  </script>
 
 </body>
 </html>

@@ -2,6 +2,25 @@
 from django import forms
 from .models import Plant, Country, Comment
 
+class PlantForm(forms.ModelForm):
+    class Meta:
+        model = Plant
+        fields = '__all__'
+        
+        # هنا السر: نحدد أي حقل نريد تنسيقه
+        widgets = {
+            # 1. تحديد حقل الدول (Countries)
+            'countries': forms.SelectMultiple(attrs={
+                'class': 'form-control select2-multi',  # <--- هذا الكلاس هو المسؤول
+                'style': 'width: 100%',
+            }),
+            
+            # 2. (اختياري) تحسين شكل باقي الحقول لتصبح مثل "Category"
+            'name': forms.TextInput(attrs={'class': 'form-control'}),
+            'about': forms.Textarea(attrs={'class': 'form-control', 'rows': 3}),
+            'used_for': forms.TextInput(attrs={'class': 'form-control'}),
+            'category': forms.Select(attrs={'class': 'form-control'}), # إذا كان قائمة
+        }
 
 class PlantForm(forms.ModelForm):
     # اختيار عدة بلدان للنبات (اختياري)
