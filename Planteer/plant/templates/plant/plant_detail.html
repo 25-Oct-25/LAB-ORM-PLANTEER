@@ -22,10 +22,12 @@
         <span class="detail-label">Is Edible:</span>
         <p class="detail-text">{% if plant.is_edible %}Yes, Safe to eat.{% else %}No, Not edible.{% endif %}</p>
 
-        <div style="margin-top: 40px; display: flex; gap: 15px;">
-            <a href="{% url 'plant:plant_update' plant.id %}" class="btn-black">Update</a>
-            <a href="{% url 'plant:plant_delete' plant.id %}" style="color: red; align-self: center;" onclick="return confirm('Sure?')">Delete</a>
-        </div>
+        {% if user.is_staff %}
+            <div style="margin-top: 40px; display: flex; gap: 15px;">
+                <a href="{% url 'plant:plant_update' plant.id %}" class="btn-black">Update</a>
+                <a href="{% url 'plant:plant_delete' plant.id %}" style="color: red; align-self: center;" onclick="return confirm('Sure?')">Delete</a>
+            </div>
+        {% endif %}
     </div>
 </div>
 
@@ -49,25 +51,33 @@
 
 
 
-<div class="comments-section" style="max-width: 800px; margin: 0 auto 80px auto;">
-    <h3 class="section-title">Comments ({{ comments.count }})</h3>
-
-    <div class="comment-form-box">
-        <h4 style="margin-bottom: 15px;">Add a comment</h4>
+<div class="comment-form-box">
+    
+    {% if user.is_authenticated %}
+        <h4 style="margin-bottom: 15px;">Add a comment as <span style="color: #16a34a;">{{ user.username }}</span></h4>
+        
         <form method="POST" style="display: flex; flex-direction: column; gap: 15px;">
             {% csrf_token %}
+            
             <div>
                 <label style="display: block; margin-bottom: 5px; font-weight: 600; font-size: 0.9rem;">Name</label>
-                <input type="text" name="full_name" required style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 6px;">
+                <input type="text" name="full_name" value="{{ user.username }}" required style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 6px;">
             </div>
+
             <div>
                 <label style="display: block; margin-bottom: 5px; font-weight: 600; font-size: 0.9rem;">Comment</label>
                 <textarea name="content" required style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 6px; min-height: 100px; resize: vertical;"></textarea>
             </div>
             <button type="submit" class="btn-black" style="align-self: flex-start;">Post Comment</button>
         </form>
-    </div>
 
+    {% else %}
+        <div style="text-align: center; padding: 20px;">
+            <p style="color: #666; margin-bottom: 15px;">You must be logged in to add a comment.</p>
+            <a href="{% url 'accounts:sign_in' %}" class="btn-black">Sign In to Comment</a>
+        </div>
+    {% endif %}
+</div>
     <div class="comments-list">
         {% for comment in comments %}
         <div class="comment-card">

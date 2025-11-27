@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from django.http import HttpRequest
+from django.http import HttpRequest, HttpResponseForbidden
 from .models import Plant, Comment, Category, Country
 from .forms import PlantForm, CommentForm
 
@@ -37,14 +37,19 @@ def plant_detail(request: HttpRequest, plant_id):
     plant = get_object_or_404(Plant, pk=plant_id)
     comments = plant.comments.all().order_by('-created_at')
     if request.method == "POST":
+        if not request.user.is_authenticated:
+            return redirect("accounts:sign_in")
+        # ---------------------
+
         comment_form = CommentForm(request.POST)
         if comment_form.is_valid():
             new_comment = comment_form.save(commit=False)
-            new_comment.plant = plant  
+            new_comment.plant = plant
             new_comment.save()
             return redirect("plant:plant_detail", plant_id=plant.id)
     else:
         comment_form = CommentForm()
+    
     related_plants = Plant.objects.filter(category=plant.category).exclude(pk=plant_id)[:3]
 
     return render(request, "plant/plant_detail.html", {
@@ -57,10 +62,13 @@ def plant_detail(request: HttpRequest, plant_id):
 
 
 def plant_create(request: HttpRequest):
+    if not request.user.is_staff:
+        return HttpResponseForbidden("Access Denied: You must be a staff member.")
+
     if request.method == "POST":
         form = PlantForm(request.POST, request.FILES)
         if form.is_valid():
-            form.save()
+            new_plant = form.save() 
             return redirect("plant:all_plants")
     else:
         form = PlantForm()
@@ -71,6 +79,9 @@ def plant_create(request: HttpRequest):
 
 def plant_update(request: HttpRequest, plant_id):
     plant = get_object_or_404(Plant, pk=plant_id)
+    if not request.user.is_staff:
+        return HttpResponseForbidden("Access Denied.")
+
     if request.method == "POST":
         form = PlantForm(request.POST, request.FILES, instance=plant)
         if form.is_valid():
@@ -84,6 +95,9 @@ def plant_update(request: HttpRequest, plant_id):
 
 def plant_delete(request: HttpRequest, plant_id):
     plant = get_object_or_404(Plant, pk=plant_id)
+    if not request.user.is_staff:
+        return HttpResponseForbidden("Access Denied.")
+
     plant.delete()
     return redirect("plant:all_plants")
 

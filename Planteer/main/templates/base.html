@@ -16,7 +16,23 @@
             <div class="nav-right">
                 <a href="{% url 'plant:all_plants' %}" class="nav-link">All Plants</a>
                 <a href="{% url 'main:contact_us' %}" class="nav-link">Contact Us</a>
-                <a href="{% url 'plant:plant_create' %}" class="btn-black">Add Plant</a>
+
+                {% if user.is_authenticated %}
+                    
+                    <span class="nav-link" style="cursor: default; font-weight: bold; color: #16a34a;">
+                        Hello, {{ user.username }}
+                    </span>
+                    {% if user.is_staff %}
+                    <a href="{% url 'plant:plant_create' %}" class="btn-black">Add Plant</a>
+                    {% endif %}
+                    <a href="{% url 'accounts:sign_out' %}" class="nav-link" style="color: #dc2626;">Sign Out</a>
+
+                {% else %}
+                    
+                    <a href="{% url 'accounts:sign_in' %}" class="nav-link">Sign In</a>
+                    <a href="{% url 'accounts:sign_up' %}" class="btn-black">Sign Up</a>
+
+                {% endif %}
             </div>
         </nav>
 
