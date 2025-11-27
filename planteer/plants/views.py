@@ -1,6 +1,10 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from .models import Plant,Comment,Country
 from .forms import PlantForm, CommentForm
+from django.contrib.auth.decorators import user_passes_test
+
+def staff_required(login_url='/accounts/login/'):
+    return user_passes_test(lambda u: u.is_active and u.is_staff, login_url=login_url)
 
 def plant_list_view(request):
     query = request.GET.get('q', '').strip()
@@ -67,7 +71,7 @@ def plant_detail_view(request, plant_id):
         'comment_form':comment_form
     })
 
-
+@staff_required(login_url='/accounts/login/')
 def plant_create_view(request):
     if request.method == 'POST':
         form = PlantForm(request.POST, request.FILES)
@@ -78,7 +82,7 @@ def plant_create_view(request):
         form = PlantForm()
     return render(request, 'plants/plant_form.html', {'form': form, 'title': 'Add Plant'})
 
-
+@staff_required(login_url='/accounts/login/')
 def plant_update_view(request, plant_id):
     plant = get_object_or_404(Plant, id=plant_id)
     if request.method == 'POST':
@@ -90,7 +94,7 @@ def plant_update_view(request, plant_id):
         form = PlantForm(instance=plant)
     return render(request, 'plants/plant_form.html', {'form': form, 'title': 'Update Plant'})
 
-
+@staff_required(login_url='/accounts/login/')
 def plant_delete_view(request, plant_id):
     plant = get_object_or_404(Plant, id=plant_id)
     if request.method == 'POST':

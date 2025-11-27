@@ -36,4 +36,4 @@ def login_view(request):
 login_required(login_url="/accounts/login/")
 def logout_view(request):
     logout(request)  
-    return redirect("/")
+    return redirect(request.GET.get("next", "/"))

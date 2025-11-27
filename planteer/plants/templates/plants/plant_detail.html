@@ -53,7 +53,8 @@
             <span class="detail-value text-muted small">{{ plant.created_at|date:"F j, Y" }}</span>
         </div>
     </div>
-
+    
+    {% if user.is_authenticated and user.is_staff %}
     <div class="mt-5 pt-3 border-top">
       <a href="{% url 'plants:plant_update' plant.id %}" class="btn btn-dark px-4 me-2">
         Update
@@ -62,6 +63,7 @@
         Delete
       </a>
     </div>
+    {%endif%}
 
   </div>
 </div>
@@ -111,28 +113,33 @@
     {% endif %}
   </div>
 
-  <div class="card p-3">
-    <h5 class="mb-3">Add a comment</h5>
+<div class="card p-3">
+  <h5 class="mb-3">Add a comment</h5>
+
+  {% if user.is_authenticated %}
     <form method="post" novalidate>
       {% csrf_token %}
       {{ comment_form.non_field_errors }}
+
       <div class="mb-3">
-        {{ comment_form.name.label_tag }}
-        {{ comment_form.name }}
-        {% for err in comment_form.name.errors %}
-          <div class="text-danger small">{{ err }}</div>
-        {% endfor %}
-      </div>
-      <div class="mb-3">
+        {# only show content field (textarea) #}
         {{ comment_form.content.label_tag }}
         {{ comment_form.content }}
         {% for err in comment_form.content.errors %}
           <div class="text-danger small">{{ err }}</div>
         {% endfor %}
       </div>
+
       <button type="submit" class="btn btn-dark">Submit</button>
     </form>
-  </div>
+
+  {% else %}
+    <p class="mb-3 text-muted">You must be logged in to post a comment.</p>
+    <a class="btn btn-outline-dark" href="{% url 'accounts:login' %}?next={{ request.path|urlencode }}">
+      Login to write a comment
+    </a>
+  {% endif %}
 </div>
+
 
 {% endblock %}
