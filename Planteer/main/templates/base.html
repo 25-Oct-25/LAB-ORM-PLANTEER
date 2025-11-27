@@ -1,0 +1,57 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Planteer{% endblock %}</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+<body>
+
+    <div class="container">
+        <nav class="navbar">
+            <a href="{% url 'main:home' %}" class="logo">Planteer</a>
+            
+            <div class="nav-right">
+                <a href="{% url 'plant:all_plants' %}" class="nav-link">All Plants</a>
+                <a href="{% url 'main:contact_us' %}" class="nav-link">Contact Us</a>
+
+                {% if user.is_authenticated %}
+                    
+                    <span class="nav-link" style="cursor: default; font-weight: bold; color: #16a34a;">
+                        Hello, {{ user.username }}
+                    </span>
+                    {% if user.is_staff %}
+                    <a href="{% url 'plant:plant_create' %}" class="btn-black">Add Plant</a>
+                    {% endif %}
+                    <a href="{% url 'accounts:sign_out' %}" class="nav-link" style="color: #dc2626;">Sign Out</a>
+
+                {% else %}
+                    
+                    <a href="{% url 'accounts:sign_in' %}" class="nav-link">Sign In</a>
+                    <a href="{% url 'accounts:sign_up' %}" class="btn-black">Sign Up</a>
+
+                {% endif %}
+            </div>
+        </nav>
+
+        <main>
+            {% block content %}
+            {% endblock %}
+        </main>
+
+        <footer class="site-footer">
+            <div class="footer-content">
+                <span class="logo" style="font-size: 1rem;">Planteer</span>
+                <div class="footer-links">
+                    <a href="#">Terms</a>
+                    <a href="#">Privacy</a>
+                    <span>© 2025</span>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+</body>
+</html>

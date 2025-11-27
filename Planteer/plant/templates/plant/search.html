@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+{% block title %}Search Results{% endblock %}
+{% block content %}
+
+<div class="section-header" style="margin-top: 40px;">
+    <h2 class="section-title">Search Results for "{{ query }}"</h2>
+</div>
+
+<div class="plants-grid">
+{% for plant in plants %}
+    {% include 'plant/plant_card.html' %}
+{% endfor %}
+</div>
+
+{% endblock %}

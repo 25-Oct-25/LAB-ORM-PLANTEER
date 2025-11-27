@@ -1,0 +1,116 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ plant.name }}{% endblock %}
+
+{% block content %}
+
+<div class="detail-container">
+    <div>
+        <img src="{{ plant.image.url }}" alt="{{ plant.name }}" class="detail-img-full">
+    </div>
+
+    <div class="detail-content">
+        <h1>{{ plant.name }}</h1>
+        <p class="detail-category">{{ plant.category }}</p>
+
+        <span class="detail-label">About:</span>
+        <p class="detail-text">{{ plant.about }}</p>
+
+        <span class="detail-label">Native to / Used for:</span>
+        <p class="detail-text">{{ plant.used_for }}</p>
+
+        <span class="detail-label">Is Edible:</span>
+        <p class="detail-text">{% if plant.is_edible %}Yes, Safe to eat.{% else %}No, Not edible.{% endif %}</p>
+
+        {% if user.is_staff %}
+            <div style="margin-top: 40px; display: flex; gap: 15px;">
+                <a href="{% url 'plant:plant_update' plant.id %}" class="btn-black">Update</a>
+                <a href="{% url 'plant:plant_delete' plant.id %}" style="color: red; align-self: center;" onclick="return confirm('Sure?')">Delete</a>
+            </div>
+        {% endif %}
+    </div>
+</div>
+
+
+<span class="detail-label">Native to:</span>
+<div style="display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 20px;">
+    {% for country in plant.native_countries.all %}
+        <a href="{% url 'plant:all_plants' %}?country={{ country.id }}" 
+           style="display: flex; align-items: center; gap: 5px; background: #f0f0f0; padding: 5px 10px; border-radius: 20px; font-size: 0.85rem; border: 1px solid #ddd;">
+            
+            {% if country.flag %}
+                <img src="{{ country.flag.url }}" alt="{{ country.name }}" style="width: 20px; height: 15px; object-fit: cover; border-radius: 2px;">
+            {% endif %}
+            
+            {{ country.name }}
+        </a>
+    {% empty %}
+        <span class="detail-text">Unknown location.</span>
+    {% endfor %}
+</div>
+
+
+
+<div class="comment-form-box">
+    
+    {% if user.is_authenticated %}
+        <h4 style="margin-bottom: 15px;">Add a comment as <span style="color: #16a34a;">{{ user.username }}</span></h4>
+        
+        <form method="POST" style="display: flex; flex-direction: column; gap: 15px;">
+            {% csrf_token %}
+            
+            <div>
+                <label style="display: block; margin-bottom: 5px; font-weight: 600; font-size: 0.9rem;">Name</label>
+                <input type="text" name="full_name" value="{{ user.username }}" required style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 6px;">
+            </div>
+
+            <div>
+                <label style="display: block; margin-bottom: 5px; font-weight: 600; font-size: 0.9rem;">Comment</label>
+                <textarea name="content" required style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 6px; min-height: 100px; resize: vertical;"></textarea>
+            </div>
+            <button type="submit" class="btn-black" style="align-self: flex-start;">Post Comment</button>
+        </form>
+
+    {% else %}
+        <div style="text-align: center; padding: 20px;">
+            <p style="color: #666; margin-bottom: 15px;">You must be logged in to add a comment.</p>
+            <a href="{% url 'accounts:sign_in' %}" class="btn-black">Sign In to Comment</a>
+        </div>
+    {% endif %}
+</div>
+    <div class="comments-list">
+        {% for comment in comments %}
+        <div class="comment-card">
+            <div class="comment-header">
+                <span class="comment-author">{{ comment.full_name }}</span>
+                <span class="comment-date">{{ comment.created_at|date:"M d, Y" }}</span>
+            </div>
+            <p class="comment-body">{{ comment.content }}</p>
+        </div>
+        {% empty %}
+        <p style="color: #777; text-align: center; margin-top: 20px;">No comments yet. Be the first!</p>
+        {% endfor %}
+    </div>
+</div>
+
+<div style="margin-top: 80px; margin-bottom: 40px;">
+    <h3 class="section-title">Related Plants</h3>
+</div>
+
+<div class="plants-grid">
+    {% for rp in related_plants %}
+    <a href="{% url 'plant:plant_detail' rp.id %}" class="plant-card">
+        <div class="card-img-box">
+            <img src="{{ rp.image.url }}" alt="{{ rp.name }}" class="card-img">
+        </div>
+        <div class="card-info">
+            <h3>{{ rp.name }}</h3>
+            <span class="card-meta">{{ rp.category }}</span>
+        </div>
+    </a>
+    {% empty %}
+    <p style="color: #777;">No related plants.</p>
+    {% endfor %}
+</div>
+
+{% endblock %}

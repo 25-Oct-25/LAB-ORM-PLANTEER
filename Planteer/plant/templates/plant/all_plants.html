@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+
+{% block title %}All Plants{% endblock %}
+
+{% block content %}
+
+<div class="section-header">
+    <h2 class="section-title">All Plants</h2>
+</div>
+
+<form method="GET" action="." class="filter-bar">
+    
+ <select name="category" class="filter-select" onchange="this.form.submit()">
+    <option value="">All Categories</option>
+    
+    {% for cat in categories %}
+        <option value="{{ cat.id }}" {% if request.GET.category == cat.id|stringformat:"s" %}selected{% endif %}>
+            {{ cat.name }}
+        </option>
+    {% endfor %}
+    
+</select>
+
+
+<select name="country" class="filter-select" onchange="this.form.submit()">
+    <option value="">All Countries</option>
+    {% for country in countries %}
+        <option value="{{ country.id }}" {% if request.GET.country == country.id|stringformat:"s" %}selected{% endif %}>
+            {{ country.name }}
+        </option>
+    {% endfor %}
+</select>
+
+
+    <select name="is_edible" class="filter-select" onchange="this.form.submit()">
+        <option value="">All Types</option>
+        <option value="true" {% if request.GET.is_edible == 'true' %}selected{% endif %}>Edible Only</option>
+        <option value="false" {% if request.GET.is_edible == 'false' %}selected{% endif %}>Not Edible</option>
+    </select>
+
+    <a href="{% url 'plant:all_plants' %}" style="font-size: 0.9rem; text-decoration: underline; color: #666;">Clear Filters</a>
+</form>
+
+
+
+<div class="plants-grid">
+{% for plant in plants %}
+    {% include 'plant/plant_card.html' %}
+{% endfor %}
+</div>
+
+{% endblock %}
