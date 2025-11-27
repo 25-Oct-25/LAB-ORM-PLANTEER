@@ -1,0 +1,42 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>Message Received</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  </head>
+
+  <body style="font-family: Arial, sans-serif; background:#f6f6f6; padding:20px;">
+
+    <div style="
+      max-width:600px;
+      margin:auto;
+      background:#ffffff;
+      padding:24px;
+      border-radius:8px;
+      box-shadow:0 2px 10px rgba(0,0,0,0.06);">
+
+      <h2 style="color:#2e7d32; margin-top:0;">Thank You for Contacting Us 🌿</h2>
+
+      <p style="font-size:15px; color:#333;">
+        Hello <strong>{{ name|default:"there" }}</strong>,
+      </p>
+
+      <p style="font-size:15px; color:#444;">
+        We’ve received your message and appreciate you reaching out.  
+        Our team will review it and get back to you within 24–48 hours.
+      </p>
+
+      <p style="font-size:14px; color:#555;">
+        If your request is urgent, feel free to reply directly to this email.
+      </p>
+
+      <hr style="border:none; border-top:1px solid #eee; margin:20px 0;">
+      <p style="font-size:12px; color:#999; margin:0;">
+        This is an automated confirmation message. Please do not share sensitive data by email.
+      </p>
+
+    </div>
+
+  </body>
+</html>
