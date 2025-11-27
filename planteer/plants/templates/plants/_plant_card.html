@@ -1,0 +1,12 @@
+<a href="{% url 'plants:plant_detail' plant.id %}" class="plant-card">
+    <div class="plant-card-image">
+        {% if plant.image %}
+            <img src="{{ plant.image.url }}" alt="{{ plant.name }}">
+        {% endif %}
+    </div>
+    <div class="plant-card-body">
+        <div class="plant-card-name">{{ plant.name }}</div>
+        <div class="plant-card-brief">Brief about plant</div>
+        <div class="plant-card-category">{{ plant.category|title }}</div>
+    </div>
+</a>

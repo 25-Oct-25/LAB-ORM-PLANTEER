@@ -22,10 +22,8 @@ from django.conf.urls.static import static
 urlpatterns = [
     path('admin/', admin.site.urls),
 
-     # التطبيق الرئيسي
     path('', include('main.urls')),
 
-    # تطبيق النباتات
     path('plants/', include('plants.urls')),
 ]
 

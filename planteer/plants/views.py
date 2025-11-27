@@ -1,38 +1,48 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.db.models import Q
-from .models import Plant, Comment
+from .models import Plant, Comment, Country 
 from .forms import PlantForm, CommentForm
+from django.contrib.auth.decorators import login_required
 
-# Create your views here.
 
 def plant_list(request):
     plants = Plant.objects.all()
 
     category = request.GET.get('category')
     is_edible = request.GET.get('is_edible')
+    country_id = request.GET.get('country')
 
     if category and category != 'all':
         plants = plants.filter(category=category)
     if is_edible == 'true':
         plants = plants.filter(is_edible=True)
-
+        
+    if country_id:
+        plants = plants.filter(countries__id=country_id) 
+        
     context = {
         'plants': plants,
+        'categories': Plant.CATEGORY_CHOICES, 
+        'countries': Country.objects.all(),
         'selected_category': category,
         'selected_is_edible': is_edible,
+        'selected_country_id': country_id,
     }
     return render(request, 'plants/plant_list.html', context)
-    pass
 
 
 def plant_detail(request, plant_id):
     plant = get_object_or_404(Plant, id=plant_id)
     
     if request.method == 'POST':
+        if not request.user.is_authenticated:
+            return redirect(f"/login/?next=/plants/{plant_id}/")
+
         comment_form = CommentForm(request.POST)
         if comment_form.is_valid():
             new_comment = comment_form.save(commit=False)
             new_comment.plant = plant
+            new_comment.name = request.user.username  # ✨ اسم اليوزر
             new_comment.save()
             return redirect('plants:plant_detail', plant_id=plant.id)
     else:
@@ -52,6 +62,8 @@ def plant_detail(request, plant_id):
     })
 
 
+
+@login_required
 def plant_create(request):
     if request.method == 'POST':
         form = PlantForm(request.POST, request.FILES)
@@ -66,6 +78,7 @@ def plant_create(request):
     })
 
 
+@login_required
 def plant_update(request, plant_id):
     plant = get_object_or_404(Plant, id=plant_id)
     if request.method == 'POST':
@@ -81,6 +94,7 @@ def plant_update(request, plant_id):
     })
 
 
+@login_required
 def plant_delete(request, plant_id):
     plant = get_object_or_404(Plant, id=plant_id)
     if request.method == 'POST':
@@ -91,49 +105,49 @@ def plant_delete(request, plant_id):
     })
 
 
-
 def plant_search_view(request):
-    # كل النباتات افتراضياً
     plants_qs = Plant.objects.all()
 
-    # قيم الفلاتر من الـ GET
     query = request.GET.get("q", "").strip()
-    category = request.GET.get("category", "").strip()
-    edible = request.GET.get("edible", "").strip()  # "yes" / "no" / ""
-
-    # فلتر النص (اسم / وصف ...)
+    
     if query:
         plants_qs = plants_qs.filter(
             Q(name__icontains=query) |
             Q(description__icontains=query)
-            # لو عندك حقول ثانية (scientific_name مثلاً) ضفها هنا
-        )
-
-    # فلتر الكاتيقوري
-    if category:
-        plants_qs = plants_qs.filter(category=category)
-
-    # فلتر هل هي صالحة للأكل
-    if edible == "yes":
-        plants_qs = plants_qs.filter(is_edible=True)
-    elif edible == "no":
-        plants_qs = plants_qs.filter(is_edible=False)
-
-    # لو عندك CATEGORY_CHOICES في المودل:
-    try:
-        categories = Plant.CATEGORY_CHOICES
-    except AttributeError:
-        # fallback لو ما عندك choices ثابتة
-        categories = (
-            plants_qs.values_list("category", "category")
-            .distinct()
         )
 
     context = {
-        "results": plants_qs,
-        "query": query,
-        "selected_category": category,
-        "selected_edible": edible,
-        "categories": categories,
+        'results': plants_qs, 
+        'query': query,
     }
-    return render(request, "plants/plant_search.html", context)
+    
+    return render(request, 'plants/plant_search.html', context)
+
+
+def country_detail(request, country_id):
+    country = get_object_or_404(Country, id=country_id)
+    plants = country.native_plants.all().order_by('name') 
+
+    context = {
+        'country': country,
+        'plants': plants,
+    }
+    return render(request, 'plants/country_detail.html', context)
+
+@login_required
+def plant_update(request, plant_id):
+    plant = get_object_or_404(Plant, id=plant_id)
+
+    if request.user != plant.owner and not request.user.is_superuser:
+        return redirect('plants:plant_detail', plant_id=plant.id)
+
+    ...
+
+@login_required
+def plant_delete(request, plant_id):
+    plant = get_object_or_404(Plant, id=plant_id)
+
+    if request.user != plant.owner and not request.user.is_superuser:
+        return redirect('plants:plant_detail', plant_id=plant.id)
+
+    ...

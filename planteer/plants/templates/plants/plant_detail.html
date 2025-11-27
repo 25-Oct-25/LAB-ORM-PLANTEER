@@ -15,9 +15,15 @@
             <div class="plant-actions-header">
                 <div class="plant-detail-info-title">{{ plant.name }}</div>
                 <div class="plant-actions">
-                    <a href="{% url 'plants:plant_update' plant_id=plant.id %}" class="btn-outline">Edit</a>
-                    <a href="{% url 'plants:plant_delete' plant_id=plant.id %}" class="btn-delete">Delete</a>
+                    {% if user.is_authenticated and user == plant.owner %}
+                        <a href="{% url 'plants:plant_update' plant_id=plant.id %}" class="btn-outline">Edit</a>
+                        <a href="{% url 'plants:plant_delete' plant_id=plant.id %}" class="btn-delete">Delete</a>
+                    {% elif user.is_authenticated and user.is_superuser %}
+                        <a href="{% url 'plants:plant_update' plant_id=plant.id %}" class="btn-outline">Edit</a>
+                        <a href="{% url 'plants:plant_delete' plant_id=plant.id %}" class="btn-delete">Delete</a>
+                    {% endif %}
                 </div>
+
             </div>
             
             <div class="plant-detail-category">{{ plant.category|title }}</div>
@@ -27,10 +33,15 @@
             <div class="plant-detail-meta">
                 <p>{{ plant.description }}</p>
 
-                {% if plant.native_to %}
+                {% if plant.countries.all %}
                 <p>
                     <span class="plant-detail-meta-label">Native to:</span>
-                    {{ plant.native_to }}
+                    {% for country in plant.countries.all %}
+                        <a href="{% url 'plants:country_detail' country.id %}" class="country-tag">
+                            {{ country.name }}
+                        </a>
+                        {% if not forloop.last %}, {% endif %} 
+                    {% endfor %}
                 </p>
                 {% endif %}
 
@@ -46,26 +57,34 @@
             </div>
         </div>
     </div>
-    
-    
-    <div class="comments-section">
+
+     <div class="comments-section">
         <h3>Comments ({{ comments|length }})</h3>
-        
+
         <div class="comment-form-container">
             <h4>Add your comment</h4>
-            <form method="post" class="comment-form">
-                {% csrf_token %}
-                <div class="form-group">
-                    <label class="form-label">Name</label>
-                    {{ comment_form.name }}
-                </div>
-                <div class="form-group full-width">
-                    <label class="form-label">Comment</label>
-                    {{ comment_form.content }}
-                </div>
-                <button type="submit" class="btn">Submit Comment</button>
-            </form>
+
+            {% if user.is_authenticated %}
+                <p class="comment-user-info">
+                    You are commenting as <strong>{{ user.username }}</strong>
+                </p>
+                <form method="post" class="comment-form">
+                    {% csrf_token %}
+                    <div class="form-group full-width">
+                        <label class="form-label">Comment</label>
+                        {{ comment_form.content }}
+                    </div>
+                    <button type="submit" class="btn">Submit Comment</button>
+                </form>
+            {% else %}
+                <p class="login-message">
+                    You must
+                    <a href="{% url 'main:login' %}?next={{ request.path }}">log in</a>
+                    to add a comment.
+                </p>
+            {% endif %}
         </div>
+
 
         {% for comment in comments %}
         <div class="comment-card">
@@ -81,23 +100,13 @@
         <p class="no-comments">No comments yet. Be the first to comment!</p>
         {% endfor %}
     </div>
-    
+
+
     <div class="related-section">
         <h3>Related Plants</h3>
         <div class="plants-grid">
             {% for p in related_plants %}
-                <a href="{% url 'plants:plant_detail' p.id %}" class="plant-card">
-                    <div class="plant-card-image">
-                        {% if p.image %}
-                            <img src="{{ p.image.url }}" alt="{{ p.name }}">
-                        {% endif %}
-                    </div>
-                    <div class="plant-card-body">
-                        <div class="plant-card-name">{{ p.name }}</div>
-                        <div class="plant-card-brief">Brief about plant</div>
-                        <div class="plant-card-category">{{ p.category|title }}</div>
-                    </div>
-                </a>
+                {% include 'plants/_plant_card.html' with plant=p %}
             {% empty %}
                 <p>No related plants.</p>
             {% endfor %}

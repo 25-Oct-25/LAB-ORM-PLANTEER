@@ -4,13 +4,13 @@ from .models import Plant, Comment
 class PlantForm(forms.ModelForm):
     class Meta:
         model = Plant
-        fields = ['name', 'description', 'category', 'is_edible', 'image', 'native_to', 'used_for']
+        # UPDATED: استبدال 'native_to' بـ 'countries'
+        fields = ['name', 'description', 'category', 'is_edible', 'image', 'countries', 'used_for']
 
 class CommentForm(forms.ModelForm):
     class Meta:
         model = Comment
-        fields = ['name', 'content']
+        fields = ['content']
         widgets = {
-            'name': forms.TextInput(attrs={'placeholder': 'Your Name'}),
             'content': forms.Textarea(attrs={'placeholder': 'Your Comment'}),
         }
