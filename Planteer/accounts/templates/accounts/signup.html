@@ -1,86 +1,59 @@
 {% extends 'main/base.html' %}
 
+{% block title %} Sign Up {% endblock %}
+
 {% block content %}
-<div class="container my-5">
-    <div class="row justify-content-center">
-        <div class="col-md-7"> <div class="card shadow-lg p-5 border-0">
-                <h2 class="card-title text-center text-success fw-bold mb-4">Sign Up</h2>
-                
-                <form method="POST">
-                    {% csrf_token %}
-                    
-                    {% if form.non_field_errors %}
-                        <div class="alert alert-danger">
-                            {{ form.non_field_errors }}
-                        </div>
-                    {% endif %}
 
-                    {% for field in form %}
-                        {% if field.name != 'password2' %}
-                            
-                            {% if field.name == 'first_name' or field.name == 'last_name' %}
-                                <div class="row mb-3">
-                                    <div class="col-md-6">
-                                        {{ field.label_tag }}
-                                        {{ field }}
-                                        {% for error in field.errors %}
-                                            <div class="text-danger small">{{ error }}</div>
-                                        {% endfor %}
-                                    </div>
-                                    {% if field.name == 'last_name' %}
-                                        </div>
-                                    {% endif %}
-                                {% elif field.name == 'first_name' %}
-                                    <div class="row mb-3">
-                                        <div class="col-md-6">
-                                            {{ field.label_tag }}
-                                            {{ field }}
-                                            {% for error in field.errors %}
-                                                <div class="text-danger small">{{ error }}</div>
-                                            {% endfor %}
-                                        </div>
-                                    </div>
-                                    
-                            {% else %}
-                                <div class="mb-3">
-                                    {{ field.label_tag }}
-                                    {{ field }} 
-                                    
-                                    {% if field.help_text %}
-                                        <small class="form-text text-muted">{{ field.help_text|safe }}</small>
-                                    {% endif %}
-                                    
-                                    {% for error in field.errors %}
-                                        <div class="text-danger small">{{ error }}</div>
-                                    {% endfor %}
-                                </div>
-                            {% endif %}
-                            
-                        {% endif %}
-                    {% endfor %}
+<div class="form-container">
 
-                    <div class="mb-4">
-                        {{ form.password2.label_tag }}
-                        {{ form.password2 }}
-                        
-                        {% if form.password2.help_text %}
-                            <div class="form-text text-muted">{{ form.password2.help_text|safe }}</div>
-                        {% endif %}
+    <h1 class="form-title">Create Account</h1>
 
-                        {% for error in form.password2.errors %}
-                            <div class="text-danger small">{{ error }}</div>
-                        {% endfor %}
-                    </div>
+    <form method="POST" action="{% url 'accounts:signup' %}" enctype="multipart/form-data">
+        {% csrf_token %}
+
+        <!-- Email -->
+        <label class="form-label">Email</label>
+        <input type="email" name="email" class="form-input" placeholder="name@example.com" required>
+
+        <!-- Username -->
+        <label class="form-label">Username</label>
+        <input type="text" name="username" class="form-input" placeholder="Choose a username" required>
+
+        <!-- First Name -->
+        <label class="form-label">First Name</label>
+        <input type="text" name="first_name" class="form-input" required>
+
+        <!-- Last Name -->
+        <label class="form-label">Last Name</label>
+        <input type="text" name="last_name" class="form-input" required>
+
+        <!-- Password -->
+        <label class="form-label">Password</label>
+        <input type="password" name="password" class="form-input" placeholder="Enter password" required>
 
 
-                    <button type="submit" class="btn btn-success w-100 mt-3">Sign Up</button>
-                </form>
-                
-                <p class="mt-3 text-center">
-                    Already have an account? <a href="{% url 'accounts:login' %}">Log In</a>
-                </p>
-            </div>
-        </div>
-    </div>
+        <!-- Bio -->
+        <label class="form-label">Bio</label>
+        <textarea name="bio" class="form-textarea" placeholder="Write something about yourself..."></textarea>
+
+        <!-- Website -->
+        <label class="form-label">Website</label>
+        <input type="url" name="website" class="form-input" placeholder="https://example.com">
+
+        <!-- Profile Picture -->
+        <label class="form-label">Profile Picture</label>
+        <input type="file" name="profile_picture" class="form-input-file">
+
+
+        <button type="submit" class="form-btn">Sign Up</button>
+
+        <p class="form-footer">
+            Already have an account?
+            <a href="{% url 'accounts:signup' %}">Sign in</a>
+        </p>
+
+    </form>
+
 </div>
-{% endblock content %}
+
+{% endblock %}

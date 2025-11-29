@@ -4,52 +4,60 @@
 {% block title %}Home - Planteer{% endblock %}
 
 {% block extra_css %}
-    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
 {% endblock %}
 
 {% block content %}
 <div class="container-fluid p-0 fade-in"> 
-    
-    <div class="hero-section-full-img d-flex align-items-center justify-content-center text-white text-center py-5" style="background-image: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url('/media/images/hero-section.jpg'); background-size: cover; background-position: center;">
-        <div class="col-lg-8"> 
-            <h1 class="display-1 fw-bolder mb-3 text-shadow-lg">Planteer</h1>
-            <h2 class="fs-4 mb-5" style="color: #F8F9FA;">Plant Database For Plants Lovers</h2>
-            
-            <form class="d-flex justify-content-center mb-5">
-                <input class="form-control me-2 form-control-lg search-input shadow-sm" type="search" placeholder="Search For Plant..." aria-label="Search" style="max-width: 550px;">
-                <button class="btn btn-dark btn-lg px-4" type="submit">Search</button> 
-            </form>
-        </div>
-    </div>
-    
+    
+    <div class="hero-section-full-img d-flex align-items-center justify-content-center text-white text-center py-5" style="background-image: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url('/media/images/hero-section.jpg'); background-size: cover; background-position: center;">
+        <div class="col-lg-8"> 
+            <h1 class="display-1 fw-bolder mb-3 text-shadow-lg">Planteer</h1>
+            <h2 class="fs-4 mb-5" style="color: #F8F9FA;">Plant Database For Plants Lovers</h2>
+            
+            <form class="d-flex justify-content-center mb-5">
+                <input class="form-control me-2 form-control-lg search-input shadow-sm" type="search" placeholder="Search For Plant..." aria-label="Search" style="max-width: 550px;">
+                <button class="btn btn-dark btn-lg px-4" type="submit">Search</button> 
+            </form>
+        </div>
+    </div>
+    
 </div>
 
 <div class="container mt-5"> 
-    <div class="d-flex justify-content-between align-items-center mb-4 pb-2 border-bottom">
-        <h2 class="mb-0">Plants</h2>
-        <a href="{% url 'plants:plant_list' %}" class="btn btn-link text-dark fw-bold">More →</a>
-    </div>
+    <div class="d-flex justify-content-between align-items-center mb-4 pb-2 border-bottom">
+        <h2 class="mb-0">Plants</h2>
+        <a href="{% url 'plants:plant_list' %}" class="btn btn-link text-dark fw-bold">More →</a>
+    </div>
 
-    <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
-        {% for plant in recent_plants %}
-        <div class="col">
-            <div class="card h-100 plant-card border-0 shadow-sm rounded-3"> 
-                {% if plant.image %}
-                <img src="{{ plant.image.url }}" class="card-img-top rounded-top-3 plant-card-img" alt="{{ plant.name }}">
-                {% else %}
-                <img src="{% static 'main/images/placeholder.jpg' %}" class="card-img-top rounded-top-3 plant-card-img" alt="Image not available"> 
-                {% endif %}
-                <div class="card-body d-flex flex-column">
-                    <h5 class="card-title fw-bold text-dark">{{ plant.name }}</h5> 
-                    <p class="card-text text-muted mb-3">{{ plant.about|slice:":70" }}...</p>
-                  
-                    <a href="{% url 'plants:plant_detail' plant.pk %}" class="btn btn-outline-dark btn-sm mt-auto stretched-link">View Details</a> {# btn-outline-dark, stretched-link #}
-                </div>
-            </div>
-        </div>
-        {% empty %}
-        <p class="text-center w-100 p-4 text-muted">No plants have been added yet.</p>
-        {% endfor %}
-    </div>
+    <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+        {% for plant in recent_plants %}
+        <div class="col">
+            <div class="card h-100 plant-card border-0 shadow-sm rounded-3"> 
+                {% if plant.image %}
+                <img src="{{ plant.image.url }}" class="card-img-top rounded-top-3 plant-card-img" alt="{{ plant.name }}">
+                {% else %}
+                <img src="{% static 'main/images/placeholder.jpg' %}" class="card-img-top rounded-top-3 plant-card-img" alt="Image not available"> 
+                {% endif %}
+                <div class="card-body d-flex flex-column">
+                    <h5 class="card-title fw-bold text-dark">{{ plant.name }}</h5> 
+                    <p class="card-text text-muted mb-3">{{ plant.about|slice:":70" }}...</p>
+                    
+                    {% if plant.user %}
+                    <p class="text-muted small mb-2">
+                        Added by: 
+                        <a href="{% url 'accounts:user_profile_view' user_name=plant.user.username %}" class="text-decoration-none fw-bold text-dark">
+                            {{ plant.user.username }}
+                        </a>
+                    </p>
+                    {% endif %}
+                                        <a href="{% url 'plants:plant_detail' plant.pk %}" class="btn btn-outline-dark btn-sm mt-auto stretched-link">View Details</a>
+                </div>
+            </div>
+        </div>
+        {% empty %}
+        <p class="text-center w-100 p-4 text-muted">No plants have been added yet.</p>
+        {% endfor %}
+    </div>
 </div>
 {% endblock %}

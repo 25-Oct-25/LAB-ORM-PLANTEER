@@ -137,3 +137,11 @@ MEDIA_ROOT = os.path.join(BASE_DIR,'media')
 
 LOGIN_REDIRECT_URL = '/'
 LOGOUT_REDIRECT_URL = '/'
+
+# في ملف settings.py
+
+DEBUG = True # تأكدي أنها True عند التطوير
+
+# إعدادات ملفات الميديا (الوسائط المحملة)
+MEDIA_URL = '/media/' 
+MEDIA_ROOT = BASE_DIR / 'media'

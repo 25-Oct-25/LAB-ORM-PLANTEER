@@ -9,8 +9,8 @@ from .forms import ContactForm
 def home_view(request):
     recent_plants = Plant.objects.all().order_by('-created_at')[:6] 
     context = {
-        'recent_plants': recent_plants,
-        'page_title': 'Home Page',
+        'recent_plants': recent_plants, 
+        'page_title': 'Home Feed'
     }
     return render(request, 'main/home.html', context)
 
