@@ -9,6 +9,13 @@
                 <a href="{% url 'plants:plant_detail_view' plant.id %}"><h3>{{plant.name}}</h3></a>
                 <p> Click on the title to know more about it </p>
                 <h5>{{plant.category}}</h5>
+                <!-- for show the number of reviews-->
+                <div class="d-flex align-items-center gap-1">
+                  <h5 class="m-0 p-0">
+                    {{plant.review_count}}
+                  </h5>
+                  <span class="material-symbols-outlined">chat_bubble</span>
+                </div>
             </div>
       </div>
     {% endfor %}

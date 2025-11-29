@@ -12,6 +12,15 @@ from django.core.paginator import Paginator
 #for messages notifications
 from django.contrib import messages
 
+#for email messages
+from django.core.mail import EmailMessage
+from django.conf import settings
+from django.template.loader import render_to_string
+
+#for aggregation
+from django.db.models import Count, Avg, Sum, Max, Min, Q, F
+
+
 # Create your views here.
 
 #create new plant
@@ -71,7 +80,11 @@ def all_plants_view(request:HttpRequest):
     #if "countries.all" in request.GET:
         #countries = Country.objects.filter( countries__id = request.GET[""])
 
-    
+    plants = plants.annotate(review_count = Count("review"))
+
+    #How can I use Q
+    #plants = plants.filter( ~Q(name__startswith="O") & Q(name__endswith="i"))
+
     page_number = request.GET.get("page",1)
     paginator = Paginator(plants, 4)
     plants_page = paginator.get_page(page_number )
@@ -162,13 +175,24 @@ def contact_us_view(request:HttpRequest):
         new_msg = Contact( first_name = request.POST["first_name"], last_name = request.POST["last_name"], email = request.POST["email"], message = request.POST["message"],  created_at = request.POST["created_at"]  )
         new_msg.save()
 
+        #send confirmation email
+        content_html = render_to_string ("plants/mail/configration.html")
+        send_to =  new_msg.email
+        email_message = EmailMessage("confirmation",  content_html, settings.EMAIL_HOST_USER, {send_to})
+        email_message.content_subtype = "html"
+
+        email_message.send()
+
+        messages.success(request, "Create game successfuly", "alert-success")
+
+
         return redirect('plants:contact_message_view')
     return render(request, "plants/contact-us.html")
 
 #message page
 def contact_message_view(request:HttpRequest):
 
-    msg = Contact.objects.all()
+    msg = Contact.objects.all().order_by("-created_at")
     
     return render(request, "plants/message.html",{"msg":msg})
 
