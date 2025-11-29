@@ -1,0 +1,23 @@
+{% extends 'main/base.html' %}
+{% load static %}
+
+{% block title %}All Plants Nativ to {{country.name}}{% endblock %}
+
+
+{% block content %}
+
+<div class="alert alert-info mb-4">
+    <div class="d-flex justify-content-between align-items-center">
+        <div class="d-flex align-items-baseline gap-2">
+            <h2 class="mb-0">Plants Native to: {{country.name}}</h2>
+            <img src="{{ country.flag.url }}" alt="{{ country.name }} flag" 
+                style="height: 22px; width: auto; margin-bottom: 2px;">
+        </div>
+        <a href="{% url 'plants:all_view' %}" class="btn btn-sm btn-outline-info">Show All</a>
+    </div>
+</div>
+<div class="row py-5">
+    {% include 'plants/plant_list.html' %}
+</div>
+
+{% endblock %}
