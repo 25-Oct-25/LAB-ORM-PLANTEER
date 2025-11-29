@@ -1,0 +1,22 @@
+{% extends 'main/base.html' %}
+{% block title %}My Reviews{% endblock %}
+
+{% block content %}
+<div class="form-wrapper">
+  <h1 class="form-title">My Reviews</h1>
+
+  {% for comment in user.comment_set.all %}
+  <div class="comment-card">
+    <p><strong>On Plant:</strong>
+      <a href="{% url 'plants:plants_detail' comment.plant.id %}">
+        {{ comment.plant.name }}
+      </a>
+    </p>
+    <p>{{ comment.content }}</p>
+    <p class="comment-date">{{ comment.created_at|date:"F j, Y, g:i a" }}</p>
+  </div>
+  {% empty %}
+  <p>No comments yet.</p>
+  {% endfor %}
+</div>
+{% endblock %}

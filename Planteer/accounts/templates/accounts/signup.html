@@ -1,12 +1,11 @@
 {% extends "main/base.html" %}
 {% block content %}
 
-
-
 <div class="form-wrapper">
   <h1 class="form-title">Sign Up</h1>
 
-  <form method="POST" class="add-form">
+
+  <form method="POST" class="add-form" enctype="multipart/form-data">
     {% csrf_token %}
     
     <label>Username</label>
@@ -21,12 +20,17 @@
     <label>Last Name</label>
     <input type="text" name="last_name" required>
 
+    <label>About</label>
+    <textarea name="about" rows="3" placeholder="Write a short bio..."></textarea>
+
+    <label>Choose Avatar</label>
+    <input type="file" name="avatar" accept="image/*">
+
     <label>Password</label>
     <input type="password" name="password" required>
 
     <button type="submit" class="submit-btn">Sign Up</button>
   </form>
 </div>
-
 
 {% endblock %}

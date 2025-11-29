@@ -1,5 +1,6 @@
 from django.shortcuts import render, redirect
 from .models import Plant, Comment, Country
+from accounts.models import Bookmark 
 from django.db.models import Count 
 from django.contrib import messages
 
@@ -76,11 +77,18 @@ def plants_detail_view(request, plant_id):
 
     comments = Comment.objects.filter(plant=plant).order_by('-created_at')
 
+    is_bookmarked = (
+        Bookmark.objects.filter(plant=plant, user=request.user).exists()
+        if request.user.is_authenticated
+        else False
+    )
+
    
     return render(request, "plants/plants_detail.html", {
         "plant": plant,
         "related_plants": related_plants,
         "comments": comments,  
+        "is_bookmarked": is_bookmarked, 
     })
 
 
@@ -154,3 +162,25 @@ def country_plants_view(request, country_id):
         "country": country,
         "plants": plants
     })
+
+def add_bookmark_view(request, plant_id):
+    if not request.user.is_authenticated:
+        messages.error(request, "Only registered users can add bookmarks.", "alert-danger")
+        return redirect("accounts:sign_in")
+
+    try:
+        plant = Plant.objects.get(pk=plant_id)
+        bookmark = Bookmark.objects.filter(plant=plant, user=request.user).first()
+
+        if not bookmark:
+            new_bookmark = Bookmark(user=request.user, plant=plant)
+            new_bookmark.save()
+            messages.success(request, "Bookmarked added!")
+        else:
+            bookmark.delete()
+            messages.warning(request, "Bookmark removed.")
+
+    except Exception as e:
+        print(e)
+
+    return redirect("plants:plants_detail", plant_id=plant_id)

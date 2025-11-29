@@ -12,6 +12,7 @@ urlpatterns = [
     path('search/', views.plants_search_view, name='plants_search'),
     path("comment/add/<int:plant_id>/", views.add_comment_view, name="add_comment"),
     path('country/<int:country_id>/', views.country_plants_view, name='country_plants'),
+    path("bookmark/add/<int:plant_id>/", views.add_bookmark_view, name="add_bookmark"),
 
 
 ]

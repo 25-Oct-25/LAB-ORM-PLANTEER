@@ -1,0 +1,35 @@
+{% extends "main/base.html" %}
+{% block content %}
+
+<div class="form-wrapper">
+  <h1 class="form-title">Update Profile</h1>
+
+  <form method="POST" class="add-form" enctype="multipart/form-data">
+    {% csrf_token %}
+    
+    <label>Username</label>
+    <input type="text" name="username" value="{{ request.user.username }}" readonly class="readonly-field">
+
+    <label>Email</label>
+    <input type="email" name="email" value="{{ user.email }}" required>
+
+    <label>First Name</label>
+    <input type="text" name="first_name" value="{{ user.first_name }}" required>
+
+    <label>Last Name</label>
+    <input type="text" name="last_name" value="{{ user.last_name }}" required>
+
+    <label>About</label>
+    <textarea name="about" rows="3">{{ user.profile.about }}</textarea>
+
+    <label>Current Avatar</label>
+    <img src="{{ user.profile.avatar.url }}" alt="Avatar" width="90" style="border-radius: 10px; margin: 5px 0;">
+
+    <label>Change Avatar</label>
+    <input type="file" name="avatar" accept="image/*">
+
+    <button type="submit" class="submit-btn">Update Profile</button>
+  </form>
+</div>
+
+{% endblock %}

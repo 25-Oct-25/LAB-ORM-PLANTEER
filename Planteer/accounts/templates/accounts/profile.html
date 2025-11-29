@@ -1,0 +1,74 @@
+{% extends 'main/base.html' %}
+{% load static %}
+
+{% block title %}Profile{% endblock %}
+
+{% block content %}
+<div class="profile-container">
+
+  <div class="profile-sidebar">
+    <img src="{{ profile.avatar.url }}" alt="Profile Picture" class="profile-avatar">
+    <h3>{{ profile_user.first_name }} {{ profile_user.last_name }}</h3>
+    <p class="username">@{{ profile_user.username }}</p>
+
+    {% if profile_user == request.user %}
+        <a href="{% url 'accounts:update_user_profile' %}" class="edit-link">Edit Profile</a>
+    {% endif %}
+
+    <ul class="sidebar-links">
+      <li><a href="{% url 'main:home' %}">Home</a></li>
+      <li><a href="{% url 'accounts:my_reviews' %}">My Reviews</a></li>
+      <li><a href="{% url 'main:contact' %}">Contact Us</a></li>
+      {% if profile_user == request.user %}
+      <li>
+        <a href="{% url 'accounts:log_out' %}"
+           onclick="return confirm('Are you sure you want to log out?');">
+           Logout
+        </a>
+      </li>
+      {% endif %}
+    </ul>
+  </div>
+
+  <div class="profile-main">
+    <div class="profile-section">
+      <h2>About</h2>
+      <p><strong>Full Name:</strong> {{ profile_user.first_name }} {{ profile_user.last_name }}</p>
+      <p><strong>Email:</strong> {{ profile_user.email }}</p>
+      <p><strong>Username:</strong> @{{ profile_user.username }}</p>
+      {% if profile.about %}
+        <p><strong>About:</strong> {{ profile.about }}</p>
+      {% endif %}
+    </div>
+
+    <hr>
+
+    {% if profile_user == request.user %}
+      <div class="profile-section">
+        <h2>Bookmarked Plants</h2>
+
+        {% if request.user.bookmark_set.all %}
+          <div class="bookmarks-grid">
+            {% for bookmark in request.user.bookmark_set.all %}
+              <div class="bookmark-card">
+                <a href="{% url 'plants:plants_detail' bookmark.plant.id %}">
+                  {% if bookmark.plant.image %}
+                    <img src="{{ bookmark.plant.image.url }}" alt="{{ bookmark.plant.name }}">
+                  {% else %}
+                    <img src="/media/images/default.jpeg" alt="default plant">
+                  {% endif %}
+                  <h4>{{ bookmark.plant.name }}</h4>
+                  <p class="category">{{ bookmark.plant.get_category_display }}</p>
+                </a>
+              </div>
+            {% endfor %}
+          </div>
+        {% else %}
+          <p>No bookmarked plants yet.</p>
+        {% endif %}
+      </div>
+    {% endif %}
+
+  </div>
+</div>
+{% endblock %}
