@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Search Results{% endblock %}
+
+{% block content %}
+<div class="search_results_container">
+
+  <form method="get" action="{% url 'plants:search_view' %}" class="search_form">
+    <input type="text" name="q" placeholder="Search For Plant..." class="search_input" id="search_bar" />
+    <button type="submit" class="search_button">Search</button>
+  </form>
+
+  <!-- Include Filter Form -->
+  {% include "plants/_filter_form.html" with categories=categories countries=countries selected_countries=selected_countries hidden=False %}
+
+  <h1 class="search_results_title">Search Results</h1>
+
+  <!-- Include Plant Grid -->
+  {% include "plants/_plant_grid.html" with plants=plants %}
+
+  <div class="back_button_container">
+    <a href="{% url 'plants:plants_view' %}" class="back_button">Back to All Plants</a>
+  </div>
+</div>
+{% endblock %}

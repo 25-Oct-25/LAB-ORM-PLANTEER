@@ -1,0 +1,161 @@
+from django.shortcuts import render
+from django.http import HttpRequest, HttpResponse
+from django.shortcuts import get_object_or_404, redirect
+from django.contrib import messages
+from django.contrib.auth.decorators import login_required
+from django.core.paginator import Paginator
+from django.db.models import Count, Q
+from .models import Plant, Country
+from .forms import PlantForm,CommentForm
+
+# Create your views here.
+
+# All Plants
+@login_required(login_url='/login/')
+def plants_view(request:HttpRequest):
+  # Get all plants
+  plants_qs = Plant.objects.all().order_by('-created_at')
+
+  # Apply filters
+  context = filter_plants(request, queryset=plants_qs)
+
+  # Get the filtered queryset from your context
+  filtered_plants = context.get("plants")
+
+  # --- Add Pagination Here ---
+  paginator = Paginator(filtered_plants, 9)  # show 12 plants per page
+  page_number = request.GET.get("page")
+  page_obj = paginator.get_page(page_number)  # handles invalid page numbers safely
+
+  # Add paginated data to context
+  context["page_obj"] = page_obj
+  
+  return render(request, 'plants/all_plants.html', context)
+
+# Add New Plants
+@login_required(login_url='/login/')
+def add_plant_view(request:HttpRequest):
+  if request.method == 'POST':
+        form = PlantForm(request.POST, request.FILES)
+        if form.is_valid():
+            plant = form.save()
+            messages.success(request, f"Plant '{plant.name}' added successfully.")
+            print("seccess")
+            return redirect('plants:add_plant_view')
+        else:
+            print(form.errors)
+  else:
+      form = PlantForm()
+  return render(request, 'plants/add_plant.html', {'form': form})
+
+# Plants Details
+def plant_details_view(request:HttpRequest, plant_id):
+  plant = get_object_or_404(Plant, id=plant_id)
+  comments = plant.comments.all().order_by('-created_at')
+
+  form = CommentForm()
+
+  if request.method == "POST":
+      if not request.user.is_authenticated:
+          messages.error(request, "You must be logged in to add a comment.")
+          return redirect('accounts:login_view')  # redirect to login page
+
+      form = CommentForm(request.POST)
+      if form.is_valid():
+          comment = form.save(commit=False)
+          comment.plant = plant
+          comment.user = request.user  # optional: associate comment with user
+          comment.save()
+          messages.success(request, "Your comment was added successfully.")
+          return redirect("plants:plant_details_view", plant_id=plant.id)
+      else:
+          for field, errors in form.errors.items():
+              for error in errors:
+                  messages.error(request, f"{field}: {error}")
+
+  # Get related plants based on the same category
+  related_plants = Plant.objects.filter(category=plant.category).exclude(id=plant.id)[:4]  # Limit to 4 related plants
+  return render(request, 'plants/plant_details.html', {'plant': plant, 'related_plants': related_plants, 'comments': comments,'form': form})
+
+# Update Plants
+@login_required(login_url='/login/')
+def update_plant_view(request:HttpRequest, plant_id):
+  plant = get_object_or_404(Plant, id=plant_id)
+  if request.method == 'POST':
+      form = PlantForm(request.POST, request.FILES, instance=plant)
+      if form.is_valid():
+          plant = form.save()
+          messages.success(request, f"Plant '{plant.name}' updated successfully.")
+          return redirect('plants:plant_details_view', plant_id=plant.id)
+  else:
+      form = PlantForm(instance=plant)
+  return render(request, 'plants/update_plant.html', {'form': form, 'plant': plant})
+
+# Delete Plants
+@login_required(login_url='/login/')
+def delete_plant(request:HttpRequest, plant_id):
+    plant = get_object_or_404(Plant, id=plant_id)
+    if request.method == "POST":
+        plant_name = plant.name
+        plant.delete()
+        messages.success(request, f"Plant '{plant.name}' deleted successfully.")
+        return redirect('plants:plants_view')
+
+    return redirect(request.META.get('HTTP_REFERER', '/'))
+
+# Search In Plants
+def search_view(request: HttpRequest):
+    query = request.GET.get('q', '').strip()
+
+    if query:
+        # Use Q for multiple fields (name, about, category)
+        plants_qs = Plant.objects.filter(
+            Q(name__icontains=query) |
+            Q(about__icontains=query) |
+            Q(category__icontains=query)
+        )
+        search_mode = True
+    else:
+        plants_qs = Plant.objects.all()
+        search_mode = False
+
+    # Apply filters and professional annotations
+    context = filter_plants(request, queryset=plants_qs)
+    context.update({'query': query,'search_mode': search_mode})
+
+    return render(request, 'plants/search_plant.html', context)
+
+def filter_plants(request, queryset=None):
+    if queryset is None:
+        queryset = Plant.objects.all()
+
+    # Category filter
+    category = request.GET.get('category', '').strip()
+    if category:
+        queryset = queryset.filter(category=category)
+
+    # Edibility filter
+    is_edible = request.GET.get('is_edible')
+    if is_edible in ['true', 'false']:
+        queryset = queryset.filter(is_edible=is_edible == 'true')
+
+    # Countries filter
+    country_ids = request.GET.getlist('native_countries[]')
+    selected_countries = [str(cid) for cid in country_ids]
+    if country_ids:
+        queryset = queryset.filter(native_countries__id__in=country_ids)
+        if len(country_ids) > 1:
+            queryset = queryset.annotate(
+                num_selected=Count('native_countries', filter=Q(native_countries__id__in=country_ids))
+            ).filter(num_selected=len(country_ids))
+        queryset = queryset.distinct()
+
+    categories = Plant.Category.choices
+    countries = Country.objects.all()
+
+    return {
+        'plants': queryset,
+        'categories': categories,
+        'countries': countries,
+        'selected_countries': selected_countries
+    }

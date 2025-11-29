@@ -1,0 +1,97 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Plant Details{% endblock %}
+
+{% block content %}
+<div class="plant_details_container">
+
+  <!-- Show messages only if they exist -->
+  {% if messages %}
+  <div class="messages_container">
+    {% for message in messages %}
+    <div class="message {{ message.tags }}">{{ message }}</div>
+    {% endfor %}
+  </div>
+  {% endif %}
+
+  <div class="plant_details_content">
+    <img src="{{ plant.image.url }}" alt="{{ plant.name }}" class="plant_image_d" />
+    <div class="plant_info">
+      <h1 class="plant_name">{{ plant.name }}</h1>
+      <p class="plant_category">{{ plant.get_category_display }}</p>
+      <p class="plant_about">{{ plant.about }}</p>
+
+      <h3 class="section_title">Native to:</h3>
+      <p class="plant_native_to">
+        {% if plant.native_countries.exists %}
+          {% for country in plant.native_countries.all %}
+            <a class="inline-block hover:opacity-80 transition" href="/plants/all/?native_countries[]={{ country.id }}" title="{{ country.name }}">
+              <img src="/media/{{country.flag}}" alt="{{country.name}}" class="w-6 h-4 object-cover rounded-sm inline-block">
+            </a>
+          {% endfor %}
+        {% else %}
+          No country native yet
+        {% endif %}
+      </p>
+
+      <h3 class="section_title">Is Edible:</h3>
+      <p class="plant_is_edible">{{ plant.is_edible }}</p>
+
+      <h3 class="section_title">Used For</h3>
+      <p class="plant_used_for">{{ plant.used_for }}</p>
+
+      <div class="plant_actions">
+        <button id="toggleCommentForm" class="add_comment_btn">Add Comment</button>
+        <a href="{% url 'plants:update_plant_view' plant.id %}" class="edit_button">Edit Plant</a>
+      </div>
+      <div id="commentFormContainer" class="comment_form_container hidden">
+        <form method="POST" class="comment_form_container">
+          {% csrf_token %}
+          {{ form.as_p }}
+          <button type="submit" class="comment_form_button">Submit</button>
+        </form>
+      </div>
+
+    </div>
+  </div>
+
+  <h3 class="text-2xl font-bold mt-10 mb-3">Comments</h3>
+
+  {% for comment in comments %}
+  <div class="comment_box">
+    <p class="comment_author">{{ comment.name }}</p>
+    <p class="comment_date">{{ comment.created_at|date:"M d, Y" }}</p>
+    <p class="comment_content">{{ comment.content }}</p>
+  </div>
+  {% empty %}
+  <p class="text-gray-500">No comments yet.</p>
+  {% endfor %}
+
+
+  <!-- Related Plants Section -->
+  <div class="plants_header">
+    <h2 class="plants_title">Related Plants</h2>
+  </div>
+  <div class="plants_grid">
+    {% for related_plant in related_plants %}
+    <div class="plant_card">
+      <a href="{% url 'plants:plant_details_view' related_plant.id %}" class="plant_card_link">
+        <img src="{{ related_plant.image.url }}" alt="{{ related_plant.name }}" class="plant_image" />
+        <div class="plant_info">
+          <h4 class="plant_name">{{ related_plant.name }}</h4>
+          <p class="plant_about">{{ related_plant.about|truncatewords:5 }}</p>
+          <p class="plant_category">{{ related_plant.get_category_display }}</p>
+        </div>
+      </a>
+    </div>
+    {% empty %}
+    <p>No related plants found.</p>
+    {% endfor %}
+  </div>
+
+  <div class="back_button_container">
+    <a href="{% url 'plants:plants_view' %}" class="back_button">Back to All Plants</a>
+  </div>
+</div>
+{% endblock %}

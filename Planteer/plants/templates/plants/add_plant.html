@@ -1,0 +1,62 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Add New Plant{% endblock %}
+
+{% block content %}
+<div class="add_plant_container">
+  <h1 class="add_plant_title">Add New Plant</h1>
+
+  <!-- Show messages only if they exist -->
+  {% if messages %}
+  <div class="messages_container">
+    {% for message in messages %}
+    <div class="message {{ message.tags }}">{{ message }}</div>
+    {% endfor %}
+  </div>
+  {% endif %}
+
+  <form method="post" enctype="multipart/form-data" class="add_plant_form">
+    {% csrf_token %}
+    {{ form.non_field_errors }}
+
+    <div class="form_group">
+      {{ form.name.label_tag }}
+      {{ form.name }}
+      {{ form.name.errors }}
+    </div>
+
+    <div class="form_group">
+      {{ form.category.label_tag }}
+      {{ form.category }}
+      {{ form.category.errors }}
+    </div>
+
+    <div class="form_group">
+      {{ form.about.label_tag }}
+      {{ form.about }}
+      {{ form.about.errors }}
+    </div>
+
+    <div class="form_group">
+      {{ form.used_for.label_tag }}
+      {{ form.used_for }}
+      {{ form.used_for.errors }}
+    </div>
+
+    <div class="form_group">
+      {{ form.image.label_tag }}
+      {{ form.image }}
+      {{ form.image.errors }}
+    </div>
+
+    <div class="form_group">
+      {{ form.is_edible.label_tag }}
+      {{ form.is_edible }}
+      {{ form.is_edible.errors }}
+    </div>
+
+    <button type="submit" class="add_submit_button">Add Plant</button>
+  </form>
+</div>
+{% endblock %}
