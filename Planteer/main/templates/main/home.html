@@ -1,0 +1,59 @@
+{% extends 'main/base.html' %}
+{% load static %}
+
+<!-- Page Title -->
+{% block title %} Home {% endblock %}
+
+<!-- Customize style -->
+{% block style %}
+
+<style>
+
+</style>
+ 
+{% endblock %}
+
+<!-- Page Content -->
+{% block content %}
+    <div class="header">
+        <h1>
+            Planteer
+        </h1>
+        <h2>
+            Plant Database For Plants Lovers
+        </h2>
+        <div class="search-section">
+            <form role="search" method="get" action="{% url 'plants:plant_search_view' %}" >
+                <input class="form-control" type="search" placeholder="Search" aria-label="Search" name="search"  value="{{request.GET.search}}" required minlength="1">
+            </form>
+        </div>
+    </div>
+    <a href="{% url 'plants:all_plants_view' %}">
+        <div class="d-flex align-items-center justify-content-between ">
+            <h2 class="m-0 p-0">Plants</h2>
+            <a href="{% url 'plants:all_plants_view' %}">
+                More 
+                <span class="material-symbols-outlined text-fxl"> arrow_forward</span>
+            </a>
+            
+        </div>
+    </a>
+    <!--
+    <div class="row mt-5 row-cols-1 row-cols-md-3 g-4">
+        {% for plant in plants %}
+            <div class="col">
+                <div class="d-flex flex-column justify-content-start align-items-start h-100 p-4 shadow gap-2">
+                    <img src="{{plant.image.url}}" class="w-100 poster-thumb object-fit-cover"/>
+                    <a href="{% url 'plants:plant_detail_view' plant.id %}"><h3>{{plant.name}}</h3></a>
+                    <p> Click on the title to know more about it </p>
+                    <h6>{{plant.category}}</h6>
+                </div>
+            </div> 
+
+        {% endfor %}
+    </div>    
+    -->
+
+    {% include 'plants/plants-list.html' %}
+
+{% endblock %}

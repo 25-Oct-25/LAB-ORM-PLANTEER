@@ -1,0 +1,57 @@
+{% extends 'main/base.html' %}
+
+
+{% block title %}Search Results{% endblock %}
+
+{% block content %}
+
+{% if plants %}
+    <h1 class="m-3">
+        Search Results {{plants.count}}
+    </h1>
+    <h5 class="m-3">results for: "{{ request.GET.search }}"</h5>
+
+    <div class="d-flex justify-content-end m-3">
+        <form action="{% url 'plants:plant_search_view' %}" method="GET">
+
+            <div class="d-flex gap-2">
+
+                <input type="search" class="form-control" value="{{request.GET.search}}" name="search" required minlength="1">
+
+                <select name="OrderBy" id="" class="form-select">
+                    <option value="">Order By</option>
+                    <option value="name" {% if request.GET.OrderBy == 'name' %} selected {% endif %}>Name</option>
+                    <option value="release_date" {% if request.GET.OrderBy == 'release_date' %} selected {% endif %}>Release date</option>
+                </select>
+
+                <input type="submit" value="apply" class="btn btn-primary">                
+            </div>
+
+        </form>
+    </div>
+
+{% else %}
+    <p class="bg-warning p-3 rounded" > No results found for your search {{ request.GET.search }}</p>
+{% endif %}
+
+<!--
+<div class="row mt-2 row-cols-1 row-cols-md-3 g-4 d-flex justify-content-center ">
+
+    {% for plant in plants %}
+      <div class="col">
+          
+            <div class="d-flex flex-column justify-content-start align-items-start h-100 p-4 shadow gap-2">
+
+                <img src="{{plant.image.url}}" class="w-100 poster-thumb object-fit-cover"/>
+                <a href="{% url 'plants:plant_detail_view' plant.id %}"><h3>{{plant.name}}</h3></a>
+                <p> Click on the title to know more about it </p>
+                <h5>{{plant.category}}</h5>
+            </div>
+      </div>
+    {% endfor %}
+  
+  
+</div>
+-->
+{% include 'plants/plants-list.html' %}
+{% endblock %}

@@ -1,0 +1,92 @@
+{% extends 'main/base.html' %}
+
+
+{% block title %}Show all plant post{% endblock %}
+
+{% block content %}
+<h1>
+    All Plants
+</h1>
+
+<div class="d-flex flex-row gap-2 align-items-center">
+        <h5 >Category: </h5>
+        <form method="GET">
+
+            <div class="d-flex gap-2">
+                <select  name="category" value="">
+                                
+                    <option selected>Category</option>
+                    <option value="fruits" {% if request.GET.category == 'fruits' %} selected {% endif %}>Fruits</option>
+                    <option value="vegetables" {% if request.GET.category == 'vegetables' %} selected {% endif %}>Vegetables</option>
+                    <option value="leafy_greens" {% if request.GET.category == 'leafy_greens' %} selected {% endif %}>Leafy Greens</option>
+                    <option value="ornamental" {% if request.GET.category == 'ornamental' %} selected {% endif %}>Ornamental</option>
+                    <option value="other" {% if request.GET.category == 'other' %} selected {% endif %}>Other</option>
+                </select>   
+
+                <h5 >Is edible: </h5>
+    
+                <select name="is_edible">
+                    <option value="">Any</option>
+                    <option value="True" {% if request.GET.is_edible == 'True' %} selected {% endif %}>Edible</option>
+                    <option value="False" {% if request.GET.is_edible == 'False' %} selected {% endif %}>Not Edible</option>
+                </select>
+
+                <h5>Countries</h5>
+                <select name="name">
+                    <option value="">Any</option>
+                    {% for country in countries %}
+                        <option value="{{country.name}}" {% if request.GET.name == country.name %} selected {% endif %}>{{ country.name }}</option>
+                    {% endfor %}
+                    
+                </select>     
+
+        <!--    <h5>Countries</h5>
+                <select name="name">
+                    <option value="">Any</option>
+                    <option value="Iran" {% if request.GET.countries.name == 'Iran' %} selected {% endif %}>Iran</option>
+                    <option value="Jordan" {% if request.GET.countries.name == 'Jordan' %} selected {% endif %}>Jordan</option>
+                    <option value="Iraq" {% if request.GET.countries.name == 'Iraq' %} selected {% endif %}>Iraq</option>
+                    <option value="India" {% if request.GET.countries.name == 'India' %} selected {% endif %}>India</option>
+                    <option value="New Zealnd" {% if request.GET.countries.name == 'New Zealnd' %} selected {% endif %}>New Zealnd</option>
+                    <option value="China" {% if request.GET.countries.name == 'China' %} selected {% endif %}>China</option>
+                    <option value="America" {% if request.GET.countries.name == 'America' %} selected {% endif %}>America</option>
+                    <option value="New England" {% if request.GET.countries.name == 'New England' %} selected {% endif %}>New England</option>
+                    <option value="Australia" {% if request.GET.countries.name == 'Australia' %} selected {% endif %}>Australia</option>
+                    <option value="Qatar" {% if request.GET.countries.name == 'Qatar' %} selected {% endif %}>Qatar</option>
+                 
+                </select>  
+-->
+
+                <button type="submit"> Apply </button> 
+            </div>
+            
+                    
+        </form>       
+</div>
+
+
+
+{% include 'plants/plants-list.html' %}
+
+<!-- Pagination settings -->
+ <div class="pagination d-flex justify-content-center align-items-center mt-5 gap-4">
+    {% if plants.has_previous %}
+        <div class="d-flex gap-1">
+            <a href="?page=1">&laquo; first page </a>
+            <a href="?page={{ plants.previous_page_number }}">&laquo; previous page </a>
+        </div>
+    {% endif %}
+
+    <div class="current">
+        Page {{ plants.number }} of {{ plants.paginator.num_pages}}
+    </div>
+
+    {% if plants.has_next %}
+        <div class="d-flex gap-1">
+            <a href="?page={{ plants.next_page_number }}"> next page </a>
+            <a href="?page={{ plants.paginator.num.pages }}"> last page </a>
+        </div>
+
+    {% endif %}
+</div>
+{% endblock %}
