@@ -183,7 +183,7 @@ def contact_us_view(request:HttpRequest):
 
         email_message.send()
 
-        messages.success(request, "Create game successfuly", "alert-success")
+        messages.success(request, "Create plant successfuly", "alert-success")
 
 
         return redirect('plants:contact_message_view')
